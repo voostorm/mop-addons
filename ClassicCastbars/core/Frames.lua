@@ -499,12 +499,24 @@ local function ColorPlayerCastbar()
         CastingBarFrame:SetUseStartColorForFinished(false)
         CastingBarFrame:SetUseStartColorForFlash(false)
     else
-        CastingBarFrame_SetStartCastColor(CastingBarFrame, unpack(db.statusColor))
-        CastingBarFrame_SetStartChannelColor(CastingBarFrame, unpack(db.statusColorChannel))
-        CastingBarFrame_SetFailedCastColor(CastingBarFrame, unpack(db.statusColorFailed))
-        CastingBarFrame_SetFinishedCastColor(CastingBarFrame, unpack(db.statusColorSuccess))
-        CastingBarFrame_SetUseStartColorForFinished(CastingBarFrame, false)
-        CastingBarFrame_SetUseStartColorForFlash(CastingBarFrame, false)
+        if CastingBarFrame_SetStartCastColor then
+            CastingBarFrame_SetStartCastColor(CastingBarFrame, unpack(db.statusColor))
+        end
+        if CastingBarFrame_SetStartChannelColor then
+            CastingBarFrame_SetStartChannelColor(CastingBarFrame, unpack(db.statusColorChannel))
+        end
+        if CastingBarFrame_SetFailedCastColor then
+            CastingBarFrame_SetFailedCastColor(CastingBarFrame, unpack(db.statusColorFailed))
+        end
+        if CastingBarFrame_SetFinishedCastColor then
+            CastingBarFrame_SetFinishedCastColor(CastingBarFrame, unpack(db.statusColorSuccess))
+        end
+        if CastingBarFrame_SetUseStartColorForFinished then
+            CastingBarFrame_SetUseStartColorForFinished(CastingBarFrame, false)
+        end
+        if CastingBarFrame_SetUseStartColorForFlash then
+            CastingBarFrame_SetUseStartColorForFlash(CastingBarFrame, false)
+        end
     end
 
     CastingBarFrame:SetStatusBarColor(unpack(db.statusColor))
