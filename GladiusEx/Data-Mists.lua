@@ -319,6 +319,7 @@ function GladiusEx.Data.DefaultClassicon()
         [GladiusEx:SafeGetSpellName(126690)] = 4, -- Call of Conquest
         [GladiusEx:SafeGetSpellName(126683)] = 4, -- Call of Dominance
         [GladiusEx:SafeGetSpellName(126679)] = 4, -- Call of Victory
+        [GladiusEx:SafeGetSpellName(112071)] = 4, -- Celestial Alignment
         [GladiusEx:SafeGetSpellName(113858)] = 4, -- Dark Soul: Instability
         [GladiusEx:SafeGetSpellName(113861)] = 4, -- Dark Soul: Knowledge
         [GladiusEx:SafeGetSpellName(113860)] = 4, -- Dark Soul: Misery

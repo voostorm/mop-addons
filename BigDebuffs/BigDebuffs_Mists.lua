@@ -425,6 +425,7 @@ addon.Spells = {
     [126690] = { type = BUFF_OFFENSIVE }, -- Call of Conquest
     [126683] = { type = BUFF_OFFENSIVE }, -- Call of Dominance
     [126679] = { type = BUFF_OFFENSIVE }, -- Call of Victory
+    [112071] = { type = BUFF_OFFENSIVE }, -- Celestial Alignment
     [113858] = { type = BUFF_OFFENSIVE }, -- Dark Soul: Instability
     [113861] = { type = BUFF_OFFENSIVE }, -- Dark Soul: Knowledge
     [113860] = { type = BUFF_OFFENSIVE }, -- Dark Soul: Misery

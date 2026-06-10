@@ -292,7 +292,7 @@ local major_defensive_buffs = {
 	6940, -- Blessing of Sacrifice
 	111397, -- Blood Horror
 	45182, -- Cheating Death
-	74001, -- Combat Readiness 
+	74001, -- Combat Readiness
 	1742, -- Cower (Pet)
 	110913, -- Dark Bargain 
 	31821, -- Devotion Aura
@@ -388,6 +388,7 @@ local major_offensive_buffs = {
 	126690, -- Call of Conquest 
 	126683, -- Call of Dominance 
 	126679, -- Call of Victory 
+	112071, -- Celestial Alignment
 	113858, -- Dark Soul: Instability
 	113861, -- Dark Soul: Knowledge
 	113860, -- Dark Soul: Misery
