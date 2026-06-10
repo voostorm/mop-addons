@@ -39,7 +39,8 @@ function UILib.OnEnter(Widget)
 	else
 		GameTooltip:SetOwner(Widget, "ANCHOR_TOPRIGHT");
 	end
-	GameTooltip:SetText(Widget.Tooltip, nil, nil, nil, nil, 1);
+	local tip = Widget.Tooltip and tostring(Widget.Tooltip) or ""
+	GameTooltip:SetText(tip, nil, nil, nil, nil, 1);
 end
 
 
@@ -50,6 +51,7 @@ end
 
 function UILib.RefreshTooltip(Widget)
 	if (GameTooltip:GetOwner() == Widget) then
-		GameTooltip:SetText(Widget.Tooltip, nil, nil, nil, nil, 1);
+		local tip = Widget.Tooltip and tostring(Widget.Tooltip) or ""
+		GameTooltip:SetText(tip, nil, nil, nil, nil, 1);
 	end
 end
