@@ -5,7 +5,7 @@
 !*/
 
 # Allow ONLY these files
-!BigDebuffs/BigDebuffs_Mists.lua
+!BigDebuffs/Spells/Mists.lua
 !Diminish/libs/DRList-1.0/Spells.lua
 !Diminish/libs/DRList-1.0/DRList-1.0/Spells.lua
 !flyPlateBuffsFixed/flyPlateBuffsFixed.lua
