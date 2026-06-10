@@ -4590,7 +4590,9 @@ function lib:activate()
     local frame = CreateFrame("Frame")
     self.frame = frame
 
-    frame:RegisterEvent("LEARNED_SPELL_IN_TAB")
+    -- Registering some events may error on clients/versions where they don't exist.
+    -- Use pcall to avoid throwing an error when the event is unknown.
+    pcall(frame.RegisterEvent, frame, "LEARNED_SPELL_IN_TAB")
     frame:RegisterEvent("CHARACTER_POINTS_CHANGED")
     frame:RegisterEvent("SPELLS_CHANGED")
 

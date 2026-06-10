@@ -134,7 +134,8 @@ Data.RandomDebuffType =  {} -- for testmode
 
 do
 	local i = 1
-	for engName, color in pairs(DebuffTypeColor) do
+	local dtc = DebuffTypeColor or {}
+	for engName, color in pairs(dtc) do
 		Data.RandomDebuffType[i] = engName
 		i = i + 1
 	end
@@ -200,7 +201,11 @@ Data.DrCategoryToSpell = {} --key = categorieName, value = table with key = numb
 Data.SpellPriorities = {}
 
 local i = 1
-for categorieName, localizedCategoryName in pairs(DRList:GetCategories()) do
+local categories = {}
+if DRList and DRList.GetCategories then
+	categories = DRList:GetCategories() or {}
+end
+for categorieName, localizedCategoryName in pairs(categories) do
 	Data.RandomDrCategory[i] = categorieName
 	Data.DrCategoryToSpell[categorieName] = {}
 	i = i + 1
@@ -230,7 +235,8 @@ do
 	-- 		Data.SpellPriorities[spellId] = drCategoryToPriority[categorieName]
 	-- 	end
 	-- end
-	for spellId, categorieName in pairs(DRList.spells) do
+	local spells = (DRList and DRList.spells) or {}
+	for spellId, categorieName in pairs(spells) do
 		if type(categorieName) == "table" then
 			for k, categorie in pairs(categorieName) do
 				table_insert(Data.DrCategoryToSpell[categorie], spellId)
