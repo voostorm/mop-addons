@@ -864,16 +864,16 @@ function events:UNIT_NAME_UPDATE(event, unit)
 end
 
 function events:ARENA_CROWD_CONTROL_SPELL_UPDATE(event, unit, spellID)
-  -- V: sometimes we receive such an event for "nameplateX" or "focus"
-  --print("unit = " .. unit .. ", spellId = " .. (spellID or "nil"))
-  if string.sub(unit, 1, 5) ~= "arena" then return end
+	-- V: sometimes we receive such an event for "nameplateX" or "focus"
+	if not unit or type(unit) ~= "string" then return end
+	if string.sub(unit, 1, 5) ~= "arena" then return end
 
-  if not spellID or spellID == 0 then
-    return
-  end
+	if not spellID or spellID == 0 then
+		return
+	end
 
-  lib:DetectSpell(unit, spellID)
-  lib.callbacks:Fire("LCT_CooldownDetected", unit, spellid)
+	lib:DetectSpell(unit, spellID)
+	lib.callbacks:Fire("LCT_CooldownDetected", unit, spellID)
 end
 
 function events:ARENA_OPPONENT_UPDATE(event, unit, unitEvent)
@@ -883,7 +883,8 @@ function events:ARENA_OPPONENT_UPDATE(event, unit, unitEvent)
 end
 
 function events:ARENA_COOLDOWNS_UPDATE(event, unit)
-  if string.sub(unit, 1, 5) ~= "arena" then return end
+	if not unit or type(unit) ~= "string" then return end
+	if string.sub(unit, 1, 5) ~= "arena" then return end
   --print("unit = " .. unit .. ", spellId = " .. (spellID or "nil") .. ", start = " .. (startTime or "nil") .. ", duration = " .. (duration or "nil"))
 
   local spellid, startTime, duration = C_PvP.GetArenaCrowdControlInfo(unit)

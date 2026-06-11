@@ -19,6 +19,13 @@ local STANDARD_TEXT_FONT = _G.STANDARD_TEXT_FONT
 
 local anchorCache = {}
 
+local function NormalizeFontFlags(f)
+    if not f or f == "NONE" or f == false then
+        return nil
+    end
+    return f
+end
+
 function Icons:GetAnchor(unitID, defaultAnchor, noUIParent)
     if unitID == "player" and NS.db.unitFrames.player.usePersonalNameplate then
         return GetNamePlateForUnit("player")
@@ -333,7 +340,7 @@ do
         if frame.countdown then
             local name, height, flags = frame.countdown:GetFont()
             if flags ~= db.timerTextOutline or height ~= unitDB.timerTextSize then
-                frame.countdown:SetFont(name, unitDB.timerTextSize, db.timerTextOutline)
+                frame.countdown:SetFont(name, unitDB.timerTextSize, NormalizeFontFlags(db.timerTextOutline))
             end
         end
 
@@ -375,7 +382,7 @@ do
             frame.indicatorText:SetPoint("CENTER", indicatorBorder, 0, 0)
 
             frame.countdown = cooldown:GetRegions()
-            frame.countdown:SetFont(frame.countdown:GetFont(), unitDB.timerTextSize, db.timerTextOutline)
+            frame.countdown:SetFont(frame.countdown:GetFont(), unitDB.timerTextSize, NormalizeFontFlags(db.timerTextOutline))
 
             local borderWidth = db.border.edgeSize
             local border = frame:CreateTexture(nil, db.border.layer or "BORDER")
@@ -386,7 +393,7 @@ do
 
             -- label above an icon that displays category text
             local ctext = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-            ctext:SetFont(db.categoryFont.font or ctext:GetFont(), db.categoryFont.size, db.categoryFont.flags)
+            ctext:SetFont(db.categoryFont.font or ctext:GetFont(), db.categoryFont.size, NormalizeFontFlags(db.categoryFont.flags))
             --ctext:SetPoint("BOTTOMLEFT", db.categoryFont.x, size + 2)
             ctext:SetShown(db.showCategoryText)
             ctext:SetJustifyH("CENTER")
@@ -479,7 +486,7 @@ do
                 RefreshIcon(frame, db)
 
                 if frame.categoryTextSize and frame.categoryTextSize ~= db.categoryFont.size then
-                    frame.categoryText:SetFont(db.categoryFont.font or frame.categoryText:GetFont(), db.categoryFont.size, db.categoryFont.flags)
+                    frame.categoryText:SetFont(db.categoryFont.font or frame.categoryText:GetFont(), db.categoryFont.size, NormalizeFontFlags(db.categoryFont.flags))
                     frame.categoryText:SetShown(db.showCategoryText)
                     frame.categoryTextSize = db.categoryFont.size
                 end
@@ -498,7 +505,7 @@ do
 
                 local name, height, flags = frame.countdown:GetFont()
                 if flags ~= db.timerTextOutline or height ~= frame.unitSettingsRef.timerTextSize then
-                    frame.countdown:SetFont(name, frame.unitSettingsRef.timerTextSize, db.timerTextOutline)
+                    frame.countdown:SetFont(name, frame.unitSettingsRef.timerTextSize, NormalizeFontFlags(db.timerTextOutline))
                 end
 
                 if frame.unitSettingsRef.anchorUIParent then
