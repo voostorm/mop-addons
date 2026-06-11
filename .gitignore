@@ -20,3 +20,7 @@
 !BigDebuffs/Options.lua
 !ClassicCastbars/Core/Frames.lua
 !ButtonForge/UILibCreateButton.lua
+!Diminish/core/icons.lua
+!Diminish/core/timers.lua
+!Diminish/Diminish.lua
+!GladiusEx/libs/LibCooldownTracker-1.0/library.lua
