@@ -25,6 +25,4 @@
 !Diminish/Diminish.lua
 !GladiusEx/libs/LibCooldownTracker-1.0/library.lua
 !GladiusEx/libs/LibRangeCheck-3.0/LibRangeCheck-3.0/LibRangeCheck-3.0.lua
-!BigDebuffs/Libs/AceConfig-3.0/AceConfigDialog-3.0/AceConfigDialog-3.0
-!BattleGroundEnemies/Libs/AceGUI-3.0
-!BattleGroundEnemies/Libs/AceGUI-3.0/widgets
+!BattleGroundEnemies/Main.lua
