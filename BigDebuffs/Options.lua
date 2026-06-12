@@ -24,8 +24,7 @@ if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
                 get = function(info) local key = info[#info-2] return BigDebuffs.db.profile[key].warningList[id] end,
                 set = function(info, value)
                     local key = info[#info-2]
-                    BigDebuffs.db.profile[key].warningList[id] = value
-                    BigDebuffs:Refresh()
+                    BigDebuffs.db.profile[key].warningList[id] = value BigDebuffs:Refresh()
                 end,
                 name = name,
                 desc = function()
