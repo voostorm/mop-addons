@@ -13,8 +13,6 @@
 !flyPlateBuffsFixed/options.lua
 !LoseControl/LoseControl.lua
 !GladiusEx/Data-Mists.lua
-!BattleGroundEnemies/Libs/LibRangeCheck-3.0/LibRangeCheck-3.0/LibRangeCheck-3.0.lua
-!BattleGroundEnemies/Data.lua
 !BigDebuffs/BigDebuffs.lua
 !BigDebuffs/BigDebuffs.xml
 !BigDebuffs/Options.lua
@@ -25,4 +23,3 @@
 !Diminish/Diminish.lua
 !GladiusEx/libs/LibCooldownTracker-1.0/library.lua
 !GladiusEx/libs/LibRangeCheck-3.0/LibRangeCheck-3.0/LibRangeCheck-3.0.lua
-!BattleGroundEnemies/Main.lua
