@@ -883,7 +883,7 @@ function events:ARENA_OPPONENT_UPDATE(event, unit, unitEvent)
 end
 
 function events:ARENA_COOLDOWNS_UPDATE(event, unit)
-  if string.sub(unit, 1, 5) ~= "arena" then return end
+  if not unit or string.sub(unit, 1, 5) ~= "arena" then return end
   --print("unit = " .. unit .. ", spellId = " .. (spellID or "nil") .. ", start = " .. (startTime or "nil") .. ", duration = " .. (duration or "nil"))
 
   local spellid, startTime, duration = C_PvP.GetArenaCrowdControlInfo(unit)
