@@ -292,19 +292,27 @@ do
         if not settings.watchFriendly and timer.isFriendly then return end
         if settings.disabledCategories[timer.category] then return end
 
-        -- BUGFIX 5.5.4: Prevent icons from appearing on incorrect frames
-        -- If this is a friendly unit and party frames are enabled, skip nameplate display
-        -- This prevents friendly party members' DR from appearing on their own nameplates
-        if timer.isFriendly and unitID == "nameplate" then
-            local unitFormatted = gsub(unitID, "%d", "")
-            if NS.db.unitFrames.party.enabled and NS.db.unitFrames.party.isEnabledForZone then
-                -- Check if this timer's unit is already displayed on a party frame
-                local unitGUID = timer.unitGUID
-                for _unit, guid in pairs(activeGUIDs) do
-                    if guid == unitGUID and _unit:match("^party%d$") then
-                        -- Unit is in party frames, skip nameplate display
-                        return
-                    end
+        -- BUGFIX 5.5.4: Prevent icon overlap between nameplate and party/raid frames
+        -- Prioritize party/raid frames over nameplates for friendly units
+        local preferredUnitID = nil
+        local unitGUID = timer.unitGUID
+
+        -- First pass: check if unit is represented on a preferred frame (player/party/raid)
+        if timer.isFriendly then
+            for _unit, guid in pairs(activeGUIDs) do
+                if guid == unitGUID and (_unit == "player" or _unit:match("^party%d$") or _unit:match("^raid%d$") or _unit == "player-party") then
+                    preferredUnitID = _unit
+                    break
+                end
+            end
+        end
+
+        -- If a preferred frame exists, ensure any already shown nameplate frames are hidden
+        if preferredUnitID then
+            for _unit, guid in pairs(activeGUIDs) do
+                if guid == unitGUID and _unit:match("^nameplate%d*$") then
+                    -- force removal of any existing nameplate icons for this guid
+                    StopTimers(timer, _unit, true)
                 end
             end
         end
@@ -388,17 +396,27 @@ do
             return Start(timer, isApplied, unit, isUpdate, isRefresh, onAuraEnd)
         end
 
-        -- BUGFIX 5.5.4: Prevent icon overlap between nameplate and party frames
+        -- BUGFIX 5.5.4: Prevent icon overlap between nameplate and party/raid frames
         -- Prioritize party/raid frames over nameplates for friendly units
-        local partyUnitID = nil
+        local preferredUnitID = nil
         local unitGUID = timer.unitGUID
-        
-        -- First pass: check if unit is in party frames (for friendly units)
+
+        -- First pass: check if unit is represented on a preferred frame (player/party/raid)
         if timer.isFriendly then
             for _unit, guid in pairs(activeGUIDs) do
-                if guid == unitGUID and (_unit == "player" or _unit:match("^party%d$")) then
-                    partyUnitID = _unit
+                if guid == unitGUID and (_unit == "player" or _unit:match("^party%d$") or _unit:match("^raid%d$") or _unit == "player-party") then
+                    preferredUnitID = _unit
                     break
+                end
+            end
+        end
+
+        -- If a preferred frame exists, ensure any already shown nameplate frames are hidden
+        if preferredUnitID then
+            for _unit, guid in pairs(activeGUIDs) do
+                if guid == unitGUID and _unit:match("^nameplate%d*$") then
+                    -- force removal of any existing nameplate icons for this guid
+                    StopTimers(timer, _unit, true)
                 end
             end
         end
@@ -406,9 +424,9 @@ do
         -- Start timer for EVERY unitID that matches timer unit guid
         for _unit, guid in pairs(activeGUIDs) do
             if guid == unitGUID then
-                -- Skip nameplate display if unit is already in party frames
-                if timer.isFriendly and partyUnitID and _unit:match("^nameplate%d*$") then
-                    -- Don't display on nameplate if already in party frames
+                -- Skip nameplate display if a preferred frame is present
+                if timer.isFriendly and preferredUnitID and _unit:match("^nameplate%d*$") then
+                    -- Don't display on nameplate if already displayed on a preferred frame
                 else
                     Start(timer, isApplied, _unit, isUpdate, isRefresh, onAuraEnd)
 

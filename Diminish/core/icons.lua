@@ -18,6 +18,11 @@ local GetNamePlateForUnit = _G.C_NamePlate.GetNamePlateForUnit
 local STANDARD_TEXT_FONT = _G.STANDARD_TEXT_FONT
 
 local anchorCache = {}
+local function TraceAnchor(fmt, ...)
+    if NS and NS.db and NS.db.debugAnchors then
+        print(("[Diminish] " .. fmt):format(...))
+    end
+end
 
 local function NormalizeFontFlags(f)
     if not f or f == "NONE" or f == false then
@@ -64,7 +69,27 @@ function Icons:GetAnchor(unitID, defaultAnchor, noUIParent)
     end
 
     if anchorCache[unitID] and not defaultAnchor then
-        return anchorCache[unitID]
+        local cached = anchorCache[unitID]
+        if cached == UIParent then
+            return cached
+        end
+        if cached then
+            -- Attempt to validate cached anchor by resolving its unit
+            local cachedUnit = cached.unit
+            if not cachedUnit and cached.GetAttribute then
+                cachedUnit = cached:GetAttribute("unit")
+            end
+
+            if cachedUnit then
+                local cachedGUID = UnitGUID(cachedUnit)
+                local expectedGUID = UnitGUID(unitID)
+                if cachedGUID and expectedGUID and cachedGUID == expectedGUID then
+                    return cached
+                end
+            end
+            -- Couldn't validate cached anchor; clear cache and fallthrough
+            anchorCache[unitID] = nil
+        end
     end
 
     if unit == "nameplate" then
@@ -126,8 +151,14 @@ function Icons:FindCompactRaidFrameByUnit(unitID)
             frame = _G["CompactRaidGroup1Member"..i]
         end
 
-        if frame and frame.unit and UnitGUID(frame.unit) == guid then
-            return frame
+        if frame then
+            local frameUnit = frame.unit
+            if not frameUnit and frame.GetAttribute then
+                frameUnit = frame:GetAttribute("unit")
+            end
+            if frameUnit and UnitGUID(frameUnit) == guid then
+                return frame
+            end
         end
     end
 end
@@ -144,8 +175,14 @@ function Icons:FindPartyFrameByUnit(unitID)
         local frame = Icons:GetAnchor("party"..i, true)
         --if not frame then return end
 
-        if frame and frame.unit and frame:IsVisible() and UnitGUID(frame.unit) == guid then
-            return frame
+        if frame and frame:IsVisible() then
+            local frameUnit = frame.unit
+            if not frameUnit and frame.GetAttribute then
+                frameUnit = frame:GetAttribute("unit")
+            end
+            if frameUnit and UnitGUID(frameUnit) == guid then
+                return frame
+            end
         end
     end
 
@@ -182,7 +219,7 @@ function Icons:AnchorPartyFrames(members)
             unit = "player-party"
         end
 
-        --anchorCache[unit] = parent or nil
+        anchorCache[unit] = parent or nil
 
         if parent then
             if frames[unit] then
@@ -314,6 +351,41 @@ do
     local function CreateIcon(unitID, category)
         local anchor = Icons:GetAnchor(unitID)
         if not anchor then return end
+
+        -- Validate anchor corresponds to unitID to avoid attaching icons to wrong frames
+        local function resolveExpectedUnit(u)
+            if u == "player-party" then return "player" end
+            if u == "nameplate" then return "target" end
+            return u
+        end
+        local expectedUnit = resolveExpectedUnit(unitID)
+        local expectedGUID = UnitGUID(expectedUnit)
+        if anchor ~= UIParent then
+            local anchorUnit = anchor.unit
+            if not anchorUnit and anchor.GetAttribute then
+                anchorUnit = anchor:GetAttribute("unit")
+            end
+            if anchorUnit then
+                local anchorGUID = UnitGUID(anchorUnit)
+                if anchorGUID and expectedGUID and anchorGUID ~= expectedGUID then
+                    TraceAnchor("anchor mismatch for %s: anchorUnit=%s expected=%s", unitID, tostring(anchorUnit), tostring(expectedUnit))
+                    local fallback = nil
+                    if unitID:match("^player%-party") or unitID:match("^party%d*$") or NS.useCompactPartyFrames then
+                        fallback = Icons:FindCompactRaidFrameByUnit(unitID) or Icons:FindPartyFrameByUnit(unitID)
+                    elseif unitID:match("^raid%d*$") then
+                        fallback = Icons:FindCompactRaidFrameByUnit(unitID)
+                    elseif unitID:match("^nameplate") then
+                        fallback = GetNamePlateForUnit(expectedUnit)
+                    end
+                    if fallback and fallback ~= anchor then
+                        TraceAnchor("falling back for %s -> %s", unitID, tostring(fallback:GetName() or "<frame>"))
+                        anchor = fallback
+                    else
+                        return
+                    end
+                end
+            end
+        end
 
         local origUnitID
         if unitID == "player-party" then
