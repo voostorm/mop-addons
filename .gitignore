@@ -13,8 +13,6 @@
 
 !LoseControl/LoseControl.lua
 
-!Diminish/libs/DRList-1.0/Spells.lua
-!Diminish/libs/DRList-1.0/DRList-1.0/Spells.lua
-!Diminish/core/icons.lua
-!Diminish/core/timers.lua
-!Diminish/Diminish.lua
+!Diminish
+
+!Diminish_Options
