@@ -7,12 +7,9 @@
 # Allow ONLY these files
 !BigDebuffs/Spells/Mists.lua
 
-!flyPlateBuffsFixed/flyPlateBuffsFixed.lua
-!flyPlateBuffsFixed/spellList.lua
-!flyPlateBuffsFixed/options.lua
-
 !LoseControl/LoseControl.lua
 
 # Allow everything inside these folders
 !Diminish/**
 !Diminish_Options/**
+!flyPlateBuffsFixed/**

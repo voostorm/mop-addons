@@ -1,0 +1,38 @@
+## Interface: 110207, 50503, 40402, 38000, 20505, 11508
+## Title: flyPlateBuffsFixed
+## Version: 11.2.7.1
+## Author: RBGDEV
+## Notes: Shows buffs/debuffs on nameplates
+## SavedVariables: flyPlateBuffsFixedDB
+## Category: RBGDEV
+## X-Category: Buffs
+## X-Credits: FlyNeko (Original Author), collinstevens (Last Co-Author), shamilla (Last Co-Author)
+## X-License: GNU GENERAL PUBLIC LICENSE
+## X-Website: https://www.curseforge.com/wow/addons/flyplatebuffsfixed
+## X-Curse-Project-ID: 1118163
+## X-Wago-ID: aNDmBA6o
+## X-WoWI-ID: 26867
+
+libs\LibStub\LibStub.lua
+libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+libs\AceDB-3.0\AceDB-3.0.xml
+libs\AceDBOptions-3.0\AceDBOptions-3.0.xml
+libs\AceGUI-3.0\AceGUI-3.0.xml
+libs\AceConfig-3.0\AceConfig-3.0.xml
+libs\LibSharedMedia-3.0\lib.xml
+libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
+
+localization.lua
+locales\ruRU.lua
+locales\deDE.lua
+locales\zhTW.lua
+locales\frFR.lua
+locales\koKR.lua
+locales\zhCN.lua
+
+utils\fixBlizzard.lua
+utils\spellID.lua
+
+spellList.lua
+flyPlateBuffsFixed.lua
+options.lua
