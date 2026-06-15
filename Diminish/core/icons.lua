@@ -455,6 +455,11 @@ do
             cooldown.parent = frame -- avoids calling :GetParent() later on
             frame.cooldown = cooldown
 
+            -- Ensure the cooldown/fontstring renders above party/raid resource bars
+            -- by using a higher frame strata and higher frame level than the parent frame.
+            cooldown:SetFrameStrata("FULLSCREEN_DIALOG")
+            cooldown:SetFrameLevel(frame:GetFrameLevel() + 200)
+
             local indicatorBorder = cooldown:CreateTexture(nil, "OVERLAY")
             indicatorBorder:SetTexture("Interface\\TalentFrame\\TalentFrame-RankBorder")
             indicatorBorder:SetSize(26, 26)
@@ -590,6 +595,19 @@ do
                 local name, height, flags = frame.countdown:GetFont()
                 if flags ~= db.timerTextOutline or height ~= frame.unitSettingsRef.timerTextSize then
                     frame.countdown:SetFont(name, frame.unitSettingsRef.timerTextSize, NormalizeFontFlags(db.timerTextOutline))
+                end
+
+                -- Keep cooldown/frame strata elevated so countdown text stays above resource bars
+                if frame.cooldown then
+                    frame.cooldown:SetFrameStrata("FULLSCREEN_DIALOG")
+                    frame.cooldown:SetFrameLevel(frame:GetFrameLevel() + 200)
+                    -- Ensure category text sits above other overlay elements
+                    if frame.categoryText and frame.categoryText.SetDrawLayer then
+                        frame.categoryText:SetDrawLayer("OVERLAY", 10)
+                    end
+                    if frame.indicatorText and frame.indicatorText.SetDrawLayer then
+                        frame.indicatorText:SetDrawLayer("OVERLAY", 10)
+                    end
                 end
 
                 if frame.unitSettingsRef.anchorUIParent then
