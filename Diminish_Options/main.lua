@@ -286,24 +286,46 @@ function Panel:refresh()
     Widgets:ToggleState(self.frames.timerColors, self.frames.timerText:GetChecked())
 end
 
-SLASH_DIMINISH1 = "/diminish"
-SlashCmdList.DIMINISH = function()
-    -- Prefer passing a numeric category ID to Settings.OpenToCategory
-    if Settings and type(Settings.GetCategory) == "function" then
-        local cat = Settings.GetCategory("Diminish")
-        if cat then
-            if type(cat.GetID) == "function" then
-                Settings.OpenToCategory(cat:GetID())
-                return
-            elseif type(cat) == "number" then
-                Settings.OpenToCategory(cat)
-                return
-            end
+local function OpenDiminishSettings()
+    if not NS.Panel then
+        return
+    end
+
+    if InterfaceOptionsFrame_OpenToCategory then
+        InterfaceOptionsFrame:Show()
+        InterfaceOptionsFrame_OpenToCategory(NS.Panel)
+        InterfaceOptionsFrame_OpenToCategory(NS.Panel)
+        return
+    end
+
+    if Settings and Settings.OpenToCategory then
+        local categoryID = NS.Panel.categoryID or (NS.Panel.category and NS.Panel.category:GetID())
+        if type(categoryID) == "number" then
+            Settings.OpenToCategory(categoryID)
+            return
         end
     end
 
-    -- Fallback for older clients or unexpected cases
     if InterfaceOptionsFrame_OpenToCategory then
-        pcall(InterfaceOptionsFrame_OpenToCategory, "Diminish")
+        InterfaceOptionsFrame:Show()
+        InterfaceOptionsFrame_OpenToCategory("Diminish")
     end
+end
+
+SLASH_DIMINISH1 = "/dim"
+SLASH_DIMINISH2 = "/diminish"
+SlashCmdList.DIMINISH = function()
+    if InCombatLockdown() then
+        local frame = CreateFrame("Frame")
+        frame:RegisterEvent("PLAYER_REGEN_ENABLED")
+        frame:SetScript("OnEvent", function(self, event, ...)
+            self:UnregisterEvent(event)
+            self:SetScript("OnEvent", nil)
+            OpenDiminishSettings()
+        end)
+        print("|cffff9900Diminish:|r Settings will open after combat.")
+        return
+    end
+
+    OpenDiminishSettings()
 end

@@ -78,9 +78,18 @@ function Widgets:CreateMainPanel(name)
     panel.CreateChildPanel = CreateChildPanel
     panel:Hide()
 
-    local category = Settings.RegisterCanvasLayoutCategory(panel, panel.name)
-    category.ID = panel.name
-    Settings.RegisterAddOnCategory(category)
+    local category
+    if InterfaceOptions_AddCategory then
+        InterfaceOptions_AddCategory(panel)
+    elseif Settings and Settings.RegisterCanvasLayoutCategory then
+        category = Settings.RegisterCanvasLayoutCategory(panel, panel.name)
+        category.ID = panel.name
+        Settings.RegisterAddOnCategory(category)
+    end
+
+    panel.category = category
+    panel.categoryID = category and category:GetID() or nil
+    _G.DIMINISH_OPTIONS_CATEGORY = category
 
     panel:RegisterEvent("PLAYER_LOGIN") -- panel:SetScript("OnShow", OnShow)
     panel:SetScript("OnEvent", OnShow)

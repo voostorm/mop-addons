@@ -434,7 +434,8 @@ do
             --@end-debug@]==]
 
             iconCount = iconCount + 1
-            frame:SetFrameStrata("HIGH")
+            frame:SetFrameStrata("FULLSCREEN_DIALOG")
+            frame:SetFrameLevel(frame:GetFrameLevel() + 5)
             frame:EnableMouse(false)
             frame:Hide()
 
@@ -481,9 +482,9 @@ do
             frame.border = border
 
             -- label above an icon that displays category text
-            local ctext = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+            local ctext = cooldown:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
             ctext:SetFont(db.categoryFont.font or ctext:GetFont(), db.categoryFont.size, NormalizeFontFlags(db.categoryFont.flags))
-            --ctext:SetPoint("BOTTOMLEFT", db.categoryFont.x, size + 2)
+            ctext:SetDrawLayer("OVERLAY", 10)
             ctext:SetShown(db.showCategoryText)
             ctext:SetJustifyH("CENTER")
             ctext:SetNonSpaceWrap(true)
