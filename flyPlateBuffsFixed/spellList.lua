@@ -276,7 +276,7 @@ local war_personal_stackable_debuffs = {
 	81326, -- Physical Invulnerability 1.3 -- 4% dmg increase to the target with this debuff
 	64382, -- Shattering Throw 1.3 -- target with this debuff has 20% less armor
 	114205, -- Demoralizing Banner 1.3 -- target with this debuff does 10% less damage
-	115798, -- Weakened Blows 1.3 -- target with this debuff does 10% less physical damage
+	115798, -- Weakened Blows 1.4 -- target with this debuff does 10% less physical damage
 	113746, -- Sunder Armor 1.3 -- 4% less armor per stack
 	73975, -- necrotic strike
 }
@@ -462,6 +462,7 @@ local spell_immunities = {
 
 -- size 1.5
 local mobility_buffs = {
+	124488, -- Zen Focus
 	96267, -- Inner Focus
 	79206, -- spiritwalker's grace
 	114239, -- Phantasm
