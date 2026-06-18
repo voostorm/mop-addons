@@ -482,6 +482,7 @@ local mobility_buffs = {
 	108212, -- Burst of Speed
 	114896, -- Windwalk
 	58875, -- Spirit Walk
+	111400, -- Burning Rush, felt like a freedom on a affliction warlock
 }
 
 -- size 1.5
