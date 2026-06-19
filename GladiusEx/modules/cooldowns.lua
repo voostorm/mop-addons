@@ -625,7 +625,7 @@ local function GetCooldownList(unit, group)
             if
                 (not spelldata.cooldown or spelldata.cooldown < 600) and
                     -- Do NOT show all covenant spells if HideTalentsUntilDetected is false
-                    (not (spelldata.talent or spelldata.item or spelldata.pvp_trinket or spelldata.pet) or detected or
+                    (not (spelldata.talent or spelldata.item or spelldata.pet) or spelldata.pvp_trinket or detected or
                         not db.cooldownsHideTalentsUntilDetected)
              then
                 -- check if the spell requires an aura (XXX unused atm?)
