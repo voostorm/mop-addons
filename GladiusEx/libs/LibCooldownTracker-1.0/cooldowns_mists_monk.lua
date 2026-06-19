@@ -46,6 +46,12 @@ LCT_SpellData[115078] = {
 	cc = true,
 	cooldown = 15,
 }
+-- Grapple Weapon
+LCT_SpellData[117368] = {
+	class = "MONK",
+	cc = true,
+	cooldown = 60,
+}
 -- Spear Hand Strike
 LCT_SpellData[116705] = {
 	class = "MONK",

@@ -666,6 +666,7 @@ function GladiusEx.Data.DefaultCooldowns()
 			[116680] = true, -- Monk/Thunder Focus Tea
 			[116841] = true, -- Monk/Tiger's Lust
 			[122470] = true, -- Monk/Touch of Karma
+			[117368] = true, -- Monk/Grapple Weapon
 
 			[115750] = true, -- Paladin/Blinding Light
 			[4987] = true, -- Paladin/Cleanse
