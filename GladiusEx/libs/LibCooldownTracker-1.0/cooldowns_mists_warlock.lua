@@ -152,6 +152,13 @@ LCT_SpellData[105174] = {
 	charges = 2,
 	cooldown = 15
 }
+-- Carrion Swarm
+LCT_SpellData[103967] = {
+	class = "WARLOCK",
+	specID = { 266 },
+	cc = true,
+	cooldown = 12
+}
 
 -- Warlock/267 - Destruction
 -- Havoc
