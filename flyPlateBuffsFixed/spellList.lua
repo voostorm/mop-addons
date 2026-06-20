@@ -479,7 +479,8 @@ local mobility_buffs = {
 	108212, -- Burst of Speed
 	114896, -- Windwalk
 	58875, -- Spirit Walk
-	111400, -- Burning Rush, felt like a freedom on a affliction warlock
+	111400, -- Burning Rush
+	79438, -- Soulburn: Demonic Circle
 }
 
 -- size 1.5
