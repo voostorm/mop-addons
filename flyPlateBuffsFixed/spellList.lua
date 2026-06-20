@@ -399,7 +399,7 @@ local major_offensive_buffs = {
 	105809, -- Holy Avenger
 	131078, -- Icy Veins -- no check spell id
 	51690, -- Killing Spree
-	54840, -- Metamorphosis
+	103958, -- Metamorphosis
 	16689, -- Nature's Grasp Buff
 	51271, -- Pillar of Frost 
 	10060, -- Power Infusion 
