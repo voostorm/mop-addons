@@ -266,6 +266,7 @@ local war_personal_nostack_debuffs = {
 	8921, -- Moonfire 1.3
 	146739, -- Corruption 1.3
 	30108, -- Unstable Affliction Dot
+	109466, -- Curse of Enfeeblement
 }
 
 -- default size is 1.3
