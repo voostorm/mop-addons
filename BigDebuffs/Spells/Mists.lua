@@ -311,7 +311,7 @@ addon.Spells = {
     [8680]  = { type = DEBUFF_OFFENSIVE }, -- Wound Poison Healing Debuff (Rogue Poison)
     [115804] = { type = DEBUFF_OFFENSIVE }, -- Mortal Wound (Warrior MS)
     [115625] = { type = DEBUFF_OFFENSIVE }, -- Demolock Wrathguard pet (6 sec 25% healing reduc debuff) Mortal Cleave
-    [30213] = { type = DEBUFF_OFFENSIVE }, -- Demolock Wrathguard pet (6 sec 10% healing reduc debuff) Mortal Cleave
+    [30213] = { type = DEBUFF_OFFENSIVE }, -- Demolock Felguard pet (6 sec 10% healing reduc debuff) Mortal Cleave
     -- constraints to see on raidframes
     [41425]  = { type = DEBUFF_OFFENSIVE }, -- Hypothermia
     [25771]  = { type = DEBUFF_OFFENSIVE }, -- Forbearance
