@@ -537,6 +537,9 @@ local stances_forms = {
 	119030, -- Spectral Guise -- No Check Spell ID, just the buff name
 	66, -- Invisibility
 	2645, -- Ghost Wolf
+	48266, -- Frost Presence (DK)
+	48265, -- Unholy Presence (DK)
+	48263, -- Blood Presence (DK)
 }
 
 -- size 1.5
