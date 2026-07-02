@@ -208,7 +208,7 @@ function GladiusEx.Data.DefaultClassicon()
         [GladiusEx:SafeGetSpellName(137460)] = 5, -- Ring of Peace (Silence effect)
         [GladiusEx:SafeGetSpellName(18498)] = 5, -- Silenced - Gag Order
         [GladiusEx:SafeGetSpellName(76577)] = 5, -- Smoke Bomb
-        [GladiusEx:SafeGetSpellName(78675)] = 5, -- Solar Beam
+        [GladiusEx:SafeGetSpellName(133899)] = 5, -- Solar Beam
         [GladiusEx:SafeGetSpellName(113286)] = 5, -- Solar Beam (Symbiosis)
         [GladiusEx:SafeGetSpellName(116709)] = 5, -- Spear Hand Strike
         [GladiusEx:SafeGetSpellName(24259)] = 5, -- Spell Lock

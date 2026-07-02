@@ -195,7 +195,7 @@ addon.Spells = {
     [80483]  = { type = CROWD_CONTROL }, -- Arcane Torrent (Racial, Focus)
     [31117]  = { type = CROWD_CONTROL }, -- Unstable Affliction (Silence)
     [43523]  = { type = CROWD_CONTROL }, -- Unstable Affliction (Silence)
-    [78675]  = { type = CROWD_CONTROL }, -- Solar Beam
+    [133899]  = { type = CROWD_CONTROL }, -- Solar Beam
     [113286]  = { type = CROWD_CONTROL }, -- Solar Beam (Symbiosis)
 
     [76577] = { type = CROWD_CONTROL }, -- Smoke Bomb
