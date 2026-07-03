@@ -127,8 +127,14 @@ local silences = {
 	25046, -- Arcane Torrent (Racial, Energy)
 	69179, -- Arcane Torrent (Racial, Rage)
 	80483, -- Arcane Torrent (Racial, Focus)
+	78675, -- Solar Beam
 	81261, -- Solar Beam
-	113286, -- Solar Beam (Symbiosis)
+	133901, -- Solar Beam
+    129888, -- Solar Beam
+    129889, -- Solar Beam
+    133899, -- Solar Beam
+    113286, -- Solar Beam (Symbiosis)
+    113287, -- Solar Beam (Symbiosis)
 	31117, -- Unstable Affliction (Silence)
 	43523, -- Unstable Affliction (Silence)
 }
