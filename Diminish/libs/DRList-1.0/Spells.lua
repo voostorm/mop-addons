@@ -935,13 +935,12 @@ elseif Lib.gameExpansion == "mop" then
         [132169] = "stun", -- Storm Bolt 2
         [20549]  = "stun", -- War Stomp (Racial)
 
-        -- *** Non-controlled Stun Effects *** -- was "random_stun". 
-        -- I get that the original author wants to separate it but having another category of dr is confusing for me or rather of an eye sore
-        [113953] = "stun", -- Paralysis
-        [118895] = "stun", -- Dragon Roar
-        [77505]  = "stun", -- Earthquake
-        -- [100]    = "stun", -- Charge
-        [118000] = "stun", -- Dragon Roar
+        -- *** Non-controlled Stun Effects ***
+        [113953] = "random_stun", -- Paralysis
+        [118895] = "random_stun", -- Dragon Roar
+        [77505]  = "random_stun", -- Earthquake
+        [100]    = "random_stun", -- Charge
+        [118000] = "random_stun", -- Dragon Roar
 
         -- *** Fear Effects ***
         [113004] = "fear", -- Intimidating Roar (Symbiosis)
@@ -968,7 +967,7 @@ elseif Lib.gameExpansion == "mop" then
         [113770] = "root", -- Entangling Roots (Treants)
         [102359] = "root", -- Mass Entanglement
         [19975]  = "root", -- Nature's Grasp
-        [136634] = "root", -- Narrow Escape
+        [128405] = "root", -- Narrow Escape
         --[53148]  = "root", -- Charge (Tenacity pet)
         [90327]  = "root", -- Lock Jaw (Dog)
         [54706]  = "root", -- Venom Web Spray (Silithid)
@@ -985,12 +984,11 @@ elseif Lib.gameExpansion == "mop" then
         [63685]  = "root", -- Freeze (Frost Shock)
         [107566] = "root", -- Staggering Shout
 
-        -- *** Non-controlled Root Effects *** -- was "random_root".
-        -- I get that the original author wants to separate it but having another category of dr is confusing for me or rather of an eye sore
-        [64803]  = "root", -- Entrapment
-        [111340] = "root", -- Ice Ward
-        [123407] = "root", -- Spinning Fire Blossom
-        [64695]  = "root", -- Earthgrab Totem
+        -- *** Non-controlled Root Effects ***
+        [64803]  = "random_root", -- Entrapment
+        [111340] = "random_root", -- Ice Ward
+        [123407] = "random_root", -- Spinning Fire Blossom
+        [64695]  = "random_root", -- Earthgrab Totem
 
         -- *** Disarm Weapon Effects ***
         [50541]  = "disarm", -- Clench (Scorpid)
@@ -1055,7 +1053,6 @@ elseif Lib.gameExpansion == "mop" then
         -- *** Spells that DRs with itself only ***
         [33786]  = "cyclone", -- Cyclone
         [113506] = "cyclone", -- Cyclone (Symbiosis)
-        -- [7922]  = "charge", -- Charge Stun
     }
 
 elseif Lib.gameExpansion == "classic" then

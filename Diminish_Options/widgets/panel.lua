@@ -55,9 +55,9 @@ local function CreateChildPanel(self, name, callback)
         panel.parent = self.name
         panel.frames = {}
 
-        local category = Settings.GetCategory(panel.parent)
+        local category = Settings.GetCategory(self.ID)
         local subcategory = Settings.RegisterCanvasLayoutSubcategory(category, panel, panel.name)
-        subcategory.ID = panel.name
+        subcategory.ID = subcategory.ID or panel.name
 
         self.lastCreatedChild = panel
 
@@ -78,20 +78,19 @@ function Widgets:CreateMainPanel(name)
     panel.CreateChildPanel = CreateChildPanel
     panel:Hide()
 
-    local category
-    if InterfaceOptions_AddCategory then
-        InterfaceOptions_AddCategory(panel)
-    elseif Settings and Settings.RegisterCanvasLayoutCategory then
-        category = Settings.RegisterCanvasLayoutCategory(panel, panel.name)
-        category.ID = panel.name
-        Settings.RegisterAddOnCategory(category)
-    end
-
-    panel.category = category
-    panel.categoryID = category and category:GetID() or nil
-    _G.DIMINISH_OPTIONS_CATEGORY = category
+    local category = Settings.RegisterCanvasLayoutCategory(panel, panel.name)
+    category.ID = category.ID or panel.name
+    category.subcategories = {}
+    panel.ID = category.ID
+    Settings.RegisterAddOnCategory(category)
 
     panel:RegisterEvent("PLAYER_LOGIN") -- panel:SetScript("OnShow", OnShow)
     panel:SetScript("OnEvent", OnShow)
+
+    SLASH_DIMINISH1 = "/diminish"
+    SlashCmdList.DIMINISH = function()
+        Settings.OpenToCategory(category.ID)
+    end
+
     return panel
 end

@@ -105,10 +105,10 @@ function Panel:Setup()
 
     do
         local fontOutlines = {
-            { value = "NONE", text = L.TEXTURE_NONE },
+            { value = "", text = L.TEXTURE_NONE },
             { value = "OUTLINE", text = "Outline"},
             { value = "MONOCHROME", text = "Monochrome" },
-            { value = "MONOCHROMEOUTLINE", text = "Monochrome Outline" },
+            { value = "MONOCHROME,OUTLINE", text = "Monochrome Outline" },
             { value = "THICKOUTLINE", text = "Thick Outline" },
         }
 
@@ -116,8 +116,8 @@ function Panel:Setup()
         frames.timerTextOutline:SetSize(90, 45)
         frames.timerTextOutline:SetPoint("LEFT", frames.timerColors, 0, -45)
         frames.timerTextOutline.OnValueChanged = function(_, value)
-            if not value or value == EMPTY then return end
-            db.timerTextOutline = value
+            if value == EMPTY then return end
+            db.timerTextOutline = value or ""
 
             DIMINISH_NS.Icons:OnFrameConfigChanged()
         end
@@ -262,7 +262,8 @@ function Panel:Setup()
 
     -- Test mode for timers
     local testBtn = Widgets:CreateButton(self, L.TEST, L.TEST_TOOLTIP, function(btn)
-        if InCombatLockdown() then
+        local InActiveBattlefield = _G.InActiveBattlefield or _G.C_PvP.IsActiveBattlefield
+        if InCombatLockdown() or InActiveBattlefield() or (IsActiveBattlefieldArena and IsActiveBattlefieldArena()) then
             return Widgets:ShowError(L.COMBATLOCKDOWN_ERROR)
         end
 
@@ -284,48 +285,4 @@ function Panel:refresh()
 
     -- Disable rest of timer options if timer countdown is not checked
     Widgets:ToggleState(self.frames.timerColors, self.frames.timerText:GetChecked())
-end
-
-local function OpenDiminishSettings()
-    if not NS.Panel then
-        return
-    end
-
-    if InterfaceOptionsFrame_OpenToCategory then
-        InterfaceOptionsFrame:Show()
-        InterfaceOptionsFrame_OpenToCategory(NS.Panel)
-        InterfaceOptionsFrame_OpenToCategory(NS.Panel)
-        return
-    end
-
-    if Settings and Settings.OpenToCategory then
-        local categoryID = NS.Panel.categoryID or (NS.Panel.category and NS.Panel.category:GetID())
-        if type(categoryID) == "number" then
-            Settings.OpenToCategory(categoryID)
-            return
-        end
-    end
-
-    if InterfaceOptionsFrame_OpenToCategory then
-        InterfaceOptionsFrame:Show()
-        InterfaceOptionsFrame_OpenToCategory("Diminish")
-    end
-end
-
-SLASH_DIMINISH1 = "/dim"
-SLASH_DIMINISH2 = "/diminish"
-SlashCmdList.DIMINISH = function()
-    if InCombatLockdown() then
-        local frame = CreateFrame("Frame")
-        frame:RegisterEvent("PLAYER_REGEN_ENABLED")
-        frame:SetScript("OnEvent", function(self, event, ...)
-            self:UnregisterEvent(event)
-            self:SetScript("OnEvent", nil)
-            OpenDiminishSettings()
-        end)
-        print("|cffff9900Diminish:|r Settings will open after combat.")
-        return
-    end
-
-    OpenDiminishSettings()
 end

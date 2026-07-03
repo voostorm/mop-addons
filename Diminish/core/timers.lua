@@ -139,18 +139,6 @@ function Timers:Refresh(unitID)
 
     if not unitGUID then return end
 
-    -- BUGFIX 5.5.4: Validate that this nameplate doesn't belong to a party member
-    -- If it does, skip refreshing to prevent duplicate icon displays
-    if unitID:match("^nameplate%d*$") and NS.db.unitFrames.party.enabled then
-        for i = 1, 5 do
-            local partyUnit = i == 0 and "player" or "party"..i
-            if UnitExists(partyUnit) and UnitGUID(partyUnit) == unitGUID then
-                -- This nameplate belongs to a party member, skip refresh
-                return
-            end
-        end
-    end
-
     -- Hide active timers belonging to previous guid
     -- Note, its probably faster to always just :Hide() frames but this
     -- will also delete any old timers
@@ -292,31 +280,6 @@ do
         if not settings.watchFriendly and timer.isFriendly then return end
         if settings.disabledCategories[timer.category] then return end
 
-        -- BUGFIX 5.5.4: Prevent icon overlap between nameplate and party/raid frames
-        -- Prioritize party/raid frames over nameplates for friendly units
-        local preferredUnitID = nil
-        local unitGUID = timer.unitGUID
-
-        -- First pass: check if unit is represented on a preferred frame (player/party/raid)
-        if timer.isFriendly then
-            for _unit, guid in pairs(activeGUIDs) do
-                if guid == unitGUID and (_unit == "player" or _unit:match("^party%d$") or _unit:match("^raid%d$") or _unit == "player-party") then
-                    preferredUnitID = _unit
-                    break
-                end
-            end
-        end
-
-        -- If a preferred frame exists, ensure any already shown nameplate frames are hidden
-        if preferredUnitID then
-            for _unit, guid in pairs(activeGUIDs) do
-                if guid == unitGUID and _unit:match("^nameplate%d*$") then
-                    -- force removal of any existing nameplate icons for this guid
-                    StopTimers(timer, _unit, true)
-                end
-            end
-        end
-
         -- Show root/taunt/incap/disorients DR only for special mobs
         --[[if NS.IS_RETAIL then
             if timer.isNotPetOrPlayer and (timer.category == CATEGORY_ROOT or timer.category == CATEGORY_TAUNT or timer.category == CATEGORY_INCAP or timer.category == CATEGORY_DISORIENT) then
@@ -359,54 +322,6 @@ do
 
                     -- Add aura duration to DR timer(18s) when using display mode on aura start
                     timer.expiration = expirationTime + DR_TIME
-                else
-                    -- Sometimes the unit aura data isn't available immediately on SPELL_AURA_APPLIED.
-                    -- Schedule a short delayed re-check to pick up the correct expiration and update the cooldown.
-                    if not timer._delayedCheck then
-                        timer._delayedCheck = true
-                        C_Timer.After(0.1, function()
-                            -- validate timer still active and hasn't been replaced
-                            if not (activeTimers[timer.unitGUID] and activeTimers[timer.unitGUID][timer.category] == timer) then
-                                return
-                            end
-
-                            local cur_dur, exp = GetAuraDuration(origUnitID or unitID, timer.spellID)
-                            if cur_dur and exp and exp > 0 then
-                                -- determine applied stage similar to above
-                                if NS.IS_NOT_RETAIL and timer.category ~= "taunt" and timer.category ~= "knockback" then
-                                    if not GetAuraDuration(origUnitID or unitID, 137562) then
-                                        local maxDuration = GetBaseMaxDuration(timer.spellID, timer.applied, cur_dur)
-                                        if not maxDuration then
-                                            if cur_dur > 4 and ((timer.applied or 0) >= 2) then
-                                                timer.applied = 1
-                                            end
-                                        else
-                                            local remaining = exp - GetTime()
-                                            local ratio = remaining / maxDuration
-                                            if math.abs(ratio - DRList:GetNextDR(2, timer.category)) <= 0.25 then
-                                                timer.applied = 3
-                                            elseif math.abs(ratio - DRList:GetNextDR(1, timer.category)) <= 0.5 then
-                                                timer.applied = 2
-                                            elseif math.abs(ratio - DRList:GetNextDR(3, timer.category)) <= 1.0 then
-                                                timer.applied = 1
-                                            end
-                                        end
-                                    end
-                                end
-
-                                timer.expiration = exp + DR_TIME
-
-                                -- If the frame is already shown, refresh the cooldown display
-                                -- Attempt to find any active frames and update them via Icons:StartCooldown
-                                for _unit, guid in pairs(activeGUIDs) do
-                                    if guid == timer.unitGUID then
-                                        Icons:StartCooldown(timer, (_unit == "player" and NS.db.unitFrames.party.isEnabledForZone) and "player-party" or _unit, onAuraEnd)
-                                    end
-                                end
-                            end
-                            timer._delayedCheck = nil
-                        end)
-                    end
                 end
             end
         end
@@ -444,44 +359,15 @@ do
             return Start(timer, isApplied, unit, isUpdate, isRefresh, onAuraEnd)
         end
 
-        -- BUGFIX 5.5.4: Prevent icon overlap between nameplate and party/raid frames
-        -- Prioritize party/raid frames over nameplates for friendly units
-        local preferredUnitID = nil
+        -- Start timer for EVERY unitID that matches timer unit guid.
         local unitGUID = timer.unitGUID
-
-        -- First pass: check if unit is represented on a preferred frame (player/party/raid)
-        if timer.isFriendly then
-            for _unit, guid in pairs(activeGUIDs) do
-                if guid == unitGUID and (_unit == "player" or _unit:match("^party%d$") or _unit:match("^raid%d$") or _unit == "player-party") then
-                    preferredUnitID = _unit
-                    break
-                end
-            end
-        end
-
-        -- If a preferred frame exists, ensure any already shown nameplate frames are hidden
-        if preferredUnitID then
-            for _unit, guid in pairs(activeGUIDs) do
-                if guid == unitGUID and _unit:match("^nameplate%d*$") then
-                    -- force removal of any existing nameplate icons for this guid
-                    StopTimers(timer, _unit, true)
-                end
-            end
-        end
-
-        -- Start timer for EVERY unitID that matches timer unit guid
         for _unit, guid in pairs(activeGUIDs) do
             if guid == unitGUID then
-                -- Skip nameplate display if a preferred frame is present
-                if timer.isFriendly and preferredUnitID and _unit:match("^nameplate%d*$") then
-                    -- Don't display on nameplate if already displayed on a preferred frame
-                else
-                    Start(timer, isApplied, _unit, isUpdate, isRefresh, onAuraEnd)
+                Start(timer, isApplied, _unit, isUpdate, isRefresh, onAuraEnd)
 
-                    if _unit == "player" then
-                        if NS.db.unitFrames.party.isEnabledForZone then
-                            Start(timer, isApplied, "player-party", isUpdate, isRefresh, onAuraEnd)
-                        end
+                if _unit == "player" then
+                    if NS.db.unitFrames.party.isEnabledForZone then
+                        Start(timer, isApplied, "player-party", isUpdate, isRefresh, onAuraEnd)
                     end
                 end
             end

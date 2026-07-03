@@ -1,7 +1,7 @@
-## Interface: 50503, 40402, 38000, 20505, 11508
+## Interface: 50504, 40402, 38001, 30405, 20505, 11508
 ## Title: Diminish Options
 ## Notes: Configuration for Diminish.
-## Version: v2.7.2
+## Version: v2.7.3
 ## Dependencies: Diminish
 
 libs\WardzConfigDropdown-1.0\WardzConfigDropdown-1.0.lua

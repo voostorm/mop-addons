@@ -18,18 +18,6 @@ local GetNamePlateForUnit = _G.C_NamePlate.GetNamePlateForUnit
 local STANDARD_TEXT_FONT = _G.STANDARD_TEXT_FONT
 
 local anchorCache = {}
-local function TraceAnchor(fmt, ...)
-    if NS and NS.db and NS.db.debugAnchors then
-        print(("[Diminish] " .. fmt):format(...))
-    end
-end
-
-local function NormalizeFontFlags(f)
-    if not f or f == "NONE" or f == false then
-        return nil
-    end
-    return f
-end
 
 function Icons:GetAnchor(unitID, defaultAnchor, noUIParent)
     if unitID == "player" and NS.db.unitFrames.player.usePersonalNameplate then
@@ -46,50 +34,18 @@ function Icons:GetAnchor(unitID, defaultAnchor, noUIParent)
         end
 
         if not NS.db.unitFrames.party.anchorUIParent then
-            -- BUGFIX 5.5.4: Validate the found frame is actually a party frame, not a nameplate
-            -- This prevents icons from appearing on wrong frames due to EditMode changes
-            local frame
             if NS.useCompactPartyFrames or IsInRaid(LE_PARTY_CATEGORY_HOME) then
-                frame = Icons:FindCompactRaidFrameByUnit(unitID) or Icons:FindPartyFrameByUnit(unitID)
-                -- Verify the frame actually exists and is visible
-                if frame and frame:IsVisible() then
-                    return frame
-                end
+                return Icons:FindCompactRaidFrameByUnit(unitID) or Icons:FindPartyFrameByUnit(unitID)
             else
-                frame = Icons:FindPartyFrameByUnit(unitID)
-                if frame and frame:IsVisible() then
-                    return frame
-                end
+                return Icons:FindPartyFrameByUnit(unitID)
             end
-            -- If no valid frame found, return nil to prevent using wrong frame
-            return nil
         else
             return UIParent
         end
     end
 
     if anchorCache[unitID] and not defaultAnchor then
-        local cached = anchorCache[unitID]
-        if cached == UIParent then
-            return cached
-        end
-        if cached then
-            -- Attempt to validate cached anchor by resolving its unit
-            local cachedUnit = cached.unit
-            if not cachedUnit and cached.GetAttribute then
-                cachedUnit = cached:GetAttribute("unit")
-            end
-
-            if cachedUnit then
-                local cachedGUID = UnitGUID(cachedUnit)
-                local expectedGUID = UnitGUID(unitID)
-                if cachedGUID and expectedGUID and cachedGUID == expectedGUID then
-                    return cached
-                end
-            end
-            -- Couldn't validate cached anchor; clear cache and fallthrough
-            anchorCache[unitID] = nil
-        end
+        return anchorCache[unitID]
     end
 
     if unit == "nameplate" then
@@ -151,14 +107,8 @@ function Icons:FindCompactRaidFrameByUnit(unitID)
             frame = _G["CompactRaidGroup1Member"..i]
         end
 
-        if frame then
-            local frameUnit = frame.unit
-            if not frameUnit and frame.GetAttribute then
-                frameUnit = frame:GetAttribute("unit")
-            end
-            if frameUnit and UnitGUID(frameUnit) == guid then
-                return frame
-            end
+        if frame and frame.unit and UnitGUID(frame.unit) == guid then
+            return frame
         end
     end
 end
@@ -175,14 +125,8 @@ function Icons:FindPartyFrameByUnit(unitID)
         local frame = Icons:GetAnchor("party"..i, true)
         --if not frame then return end
 
-        if frame and frame:IsVisible() then
-            local frameUnit = frame.unit
-            if not frameUnit and frame.GetAttribute then
-                frameUnit = frame:GetAttribute("unit")
-            end
-            if frameUnit and UnitGUID(frameUnit) == guid then
-                return frame
-            end
+        if frame and frame.unit and frame:IsVisible() and UnitGUID(frame.unit) == guid then
+            return frame
         end
     end
 
@@ -219,7 +163,7 @@ function Icons:AnchorPartyFrames(members)
             unit = "player-party"
         end
 
-        anchorCache[unit] = parent or nil
+        --anchorCache[unit] = parent or nil
 
         if parent then
             if frames[unit] then
@@ -352,41 +296,6 @@ do
         local anchor = Icons:GetAnchor(unitID)
         if not anchor then return end
 
-        -- Validate anchor corresponds to unitID to avoid attaching icons to wrong frames
-        local function resolveExpectedUnit(u)
-            if u == "player-party" then return "player" end
-            if u == "nameplate" then return "target" end
-            return u
-        end
-        local expectedUnit = resolveExpectedUnit(unitID)
-        local expectedGUID = UnitGUID(expectedUnit)
-        if anchor ~= UIParent then
-            local anchorUnit = anchor.unit
-            if not anchorUnit and anchor.GetAttribute then
-                anchorUnit = anchor:GetAttribute("unit")
-            end
-            if anchorUnit then
-                local anchorGUID = UnitGUID(anchorUnit)
-                if anchorGUID and expectedGUID and anchorGUID ~= expectedGUID then
-                    TraceAnchor("anchor mismatch for %s: anchorUnit=%s expected=%s", unitID, tostring(anchorUnit), tostring(expectedUnit))
-                    local fallback = nil
-                    if unitID:match("^player%-party") or unitID:match("^party%d*$") or NS.useCompactPartyFrames then
-                        fallback = Icons:FindCompactRaidFrameByUnit(unitID) or Icons:FindPartyFrameByUnit(unitID)
-                    elseif unitID:match("^raid%d*$") then
-                        fallback = Icons:FindCompactRaidFrameByUnit(unitID)
-                    elseif unitID:match("^nameplate") then
-                        fallback = GetNamePlateForUnit(expectedUnit)
-                    end
-                    if fallback and fallback ~= anchor then
-                        TraceAnchor("falling back for %s -> %s", unitID, tostring(fallback:GetName() or "<frame>"))
-                        anchor = fallback
-                    else
-                        return
-                    end
-                end
-            end
-        end
-
         local origUnitID
         if unitID == "player-party" then
             unitID = "party" -- use for party db settings below
@@ -424,7 +333,7 @@ do
         if frame.countdown then
             local name, height, flags = frame.countdown:GetFont()
             if flags ~= db.timerTextOutline or height ~= unitDB.timerTextSize then
-                frame.countdown:SetFont(name, unitDB.timerTextSize, NormalizeFontFlags(db.timerTextOutline))
+                frame.countdown:SetFont(name, unitDB.timerTextSize, db.timerTextOutline)
             end
         end
 
@@ -472,7 +381,7 @@ do
             frame.indicatorText:SetPoint("CENTER", indicatorBorder, 0, 0)
 
             frame.countdown = cooldown:GetRegions()
-            frame.countdown:SetFont(frame.countdown:GetFont(), unitDB.timerTextSize, NormalizeFontFlags(db.timerTextOutline))
+            frame.countdown:SetFont(frame.countdown:GetFont(), unitDB.timerTextSize, db.timerTextOutline)
 
             local borderWidth = db.border.edgeSize
             local border = frame:CreateTexture(nil, db.border.layer or "BORDER")
@@ -483,7 +392,7 @@ do
 
             -- label above an icon that displays category text
             local ctext = cooldown:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-            ctext:SetFont(db.categoryFont.font or ctext:GetFont(), db.categoryFont.size, NormalizeFontFlags(db.categoryFont.flags))
+            ctext:SetFont(db.categoryFont.font or ctext:GetFont(), db.categoryFont.size, db.categoryFont.flags)
             ctext:SetDrawLayer("OVERLAY", 10)
             ctext:SetShown(db.showCategoryText)
             ctext:SetJustifyH("CENTER")
@@ -576,7 +485,7 @@ do
                 RefreshIcon(frame, db)
 
                 if frame.categoryTextSize and frame.categoryTextSize ~= db.categoryFont.size then
-                    frame.categoryText:SetFont(db.categoryFont.font or frame.categoryText:GetFont(), db.categoryFont.size, NormalizeFontFlags(db.categoryFont.flags))
+                    frame.categoryText:SetFont(db.categoryFont.font or frame.categoryText:GetFont(), db.categoryFont.size, db.categoryFont.flags)
                     frame.categoryText:SetShown(db.showCategoryText)
                     frame.categoryTextSize = db.categoryFont.size
                 end
@@ -595,7 +504,7 @@ do
 
                 local name, height, flags = frame.countdown:GetFont()
                 if flags ~= db.timerTextOutline or height ~= frame.unitSettingsRef.timerTextSize then
-                    frame.countdown:SetFont(name, frame.unitSettingsRef.timerTextSize, NormalizeFontFlags(db.timerTextOutline))
+                    frame.countdown:SetFont(name, frame.unitSettingsRef.timerTextSize, db.timerTextOutline)
                 end
 
                 -- Keep cooldown/frame strata elevated so countdown text stays above resource bars
@@ -764,21 +673,6 @@ do
             end
         end
 
-        -- BUGFIX 5.5.4: Validate parent frame before displaying
-        -- Ensure the frame is parented to the correct unit's frame
-        if unitID:match("^nameplate%d*$") then
-            local parent = Icons:GetAnchor(unitID)
-            if not parent or parent == UIParent then
-                -- Parent not found or set to UIParent, don't display
-                return
-            end
-            -- Ensure the parent matches this specific nameplate
-            if frame:GetParent() ~= parent then
-                frame:ClearAllPoints()
-                frame:SetParent(parent)
-            end
-        end
-
         local now = GetTime()
         local expiration = timer.expiration - now
         frame.timerRef = timer
@@ -793,12 +687,15 @@ do
                 -- frame.cooldown:SetCooldownDuration(expiration)
                 frame.cooldown:SetCooldown(now, expiration)
             else
-                -- On aura end refresh: reset to a fresh DR duration starting now.
-                -- Previous implementation attempted to preserve the visual swipe
-                -- by recalculating start/duration which could drift by a few
-                -- seconds. Resetting here avoids that inaccuracy.
+                -- Refresh cooldown without resetting timer swipe (only on aura broke/end for mode timerStartAuraEnd=false)
+                -- Thanks to sArena for this
+                local startTime, startDuration = frame.cooldown:GetCooldownTimes()
+                startTime, startDuration = startTime/1000, startDuration/1000
+
                 local drTime = --[[timer.isNotPetOrPlayer and 20 or]] DR_TIME
-                frame.cooldown:SetCooldown(now, drTime)
+                local newDuration = drTime / (1 - ((now - startTime) / startDuration))
+                local newStartTime = drTime + now - newDuration
+                frame.cooldown:SetCooldown(newStartTime, newDuration)
             end
         else
             frame.shown = true

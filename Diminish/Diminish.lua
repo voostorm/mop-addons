@@ -217,6 +217,12 @@ function Diminish:InitDB()
     NS.db.version = NS.DEFAULT_SETTINGS.version
     NS.activeProfile = profile
 
+    if NS.db.timerTextOutline == "NONE" then
+        NS.db.timerTextOutline = ""
+    elseif NS.db.timerTextOutline == "MONOCHROMEOUTLINE" then
+        NS.db.timerTextOutline = "MONOCHROME,OUTLINE"
+    end
+
     if NS.IS_NOT_RETAIL and NS.db.unitFrames.player.usePersonalNameplate then
         NS.db.unitFrames.player.usePersonalNameplate = false
     end
@@ -304,20 +310,6 @@ end
 function Diminish:NAME_PLATE_UNIT_ADDED(namePlateUnitToken)
     if UnitIsUnit("player", namePlateUnitToken) then
         if not NS.db.unitFrames.player.usePersonalNameplate then return end
-    end
-
-    -- BUGFIX 5.5.4: Check if this nameplate unit is also tracked in party frames
-    -- If so, skip refreshing timers to prevent duplicate/overlapping icons
-    local unitGUID = UnitGUID(namePlateUnitToken)
-    if unitGUID and NS.db.unitFrames.party.enabled and NS.db.unitFrames.party.isEnabledForZone then
-        for i = 1, 5 do
-            local partyUnit = i == 0 and "player" or "party"..i
-            if UnitExists(partyUnit) and UnitGUID(partyUnit) == unitGUID then
-                -- This nameplate is also a party member, don't display timers on it
-                -- The timer should display on the party frame instead
-                return
-            end
-        end
     end
 
     Timers:Refresh(namePlateUnitToken)
