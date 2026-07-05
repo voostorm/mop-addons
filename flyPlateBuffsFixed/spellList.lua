@@ -148,6 +148,8 @@ local disarms = {
 	51722, -- Dismantle
 	118093, -- Disarm (Voidwalker/Voidlord)
 	676, -- Disarm
+	126458, -- Grapple Weapon (Symbiosis)
+	117368, -- Grapple Weapon
 }
 
 -- size 2.0 -- dispellable and undispellable cc

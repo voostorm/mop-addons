@@ -173,6 +173,8 @@ addon.Spells = {
     [51722]  = { type = CROWD_CONTROL }, -- Dismantle
     [118093] = { type = CROWD_CONTROL }, -- Disarm (Voidwalker/Voidlord)
     [676]    = { type = CROWD_CONTROL }, -- Disarm
+    [126458] = { type = CROWD_CONTROL }, -- Grapple Weapon (Symbiosis)
+	[117368] = { type = CROWD_CONTROL }, -- Grapple Weapon
 
     -- *** Silence Effects ***
     [47476]  = { type = CROWD_CONTROL }, -- Strangulate

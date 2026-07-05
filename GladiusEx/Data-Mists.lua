@@ -186,6 +186,8 @@ function GladiusEx.Data.DefaultClassicon()
 		[GladiusEx:SafeGetSpellName(122)]   	= 5,	-- Frost Nova
 		[GladiusEx:SafeGetSpellName(33395)]  	= 5,	-- Freeze (Water Elemental)
 		[GladiusEx:SafeGetSpellName(676)]   	= 5,	-- Disarm
+        [GladiusEx:SafeGetSpellName(126458)]   	= 5,	-- Grapple Weapon (Symbiosis)
+        [GladiusEx:SafeGetSpellName(117368)]   	= 5,	-- Grapple Weapon
         [GladiusEx:SafeGetSpellName(50541)] = 5, -- Clench (Scorpid)
         [GladiusEx:SafeGetSpellName(118093)] = 5, -- Disarm (Voidwalker/Voidlord)
         [GladiusEx:SafeGetSpellName(51722)] = 5, -- Dismantle
