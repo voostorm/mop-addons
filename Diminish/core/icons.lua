@@ -693,9 +693,14 @@ do
                 startTime, startDuration = startTime/1000, startDuration/1000
 
                 local drTime = --[[timer.isNotPetOrPlayer and 20 or]] DR_TIME
-                local newDuration = drTime / (1 - ((now - startTime) / startDuration))
-                local newStartTime = drTime + now - newDuration
-                frame.cooldown:SetCooldown(newStartTime, newDuration)
+                local elapsed = now - startTime
+                if startDuration > 0 and elapsed > 0 and elapsed < startDuration then
+                    local newDuration = drTime / (1 - (elapsed / startDuration))
+                    local newStartTime = drTime + now - newDuration
+                    frame.cooldown:SetCooldown(newStartTime, newDuration)
+                else
+                    frame.cooldown:SetCooldown(now, drTime)
+                end
             end
         else
             frame.shown = true

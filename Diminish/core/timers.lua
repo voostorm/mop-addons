@@ -40,8 +40,13 @@ function Timers:Insert(unitGUID, srcGUID, category, spellID, isFriendly, isNotPe
 
     local timers = activeTimers[unitGUID]
     if timers and timers[category] then
-        -- Timer already active, update everything
-        return self:Update(unitGUID, srcGUID, category, spellID, isFriendly, isNotPetOrPlayer, true)
+        local timer = timers[category]
+        if TimerIsFinished(timer) then
+            self:Remove(unitGUID, category, true)
+        else
+            -- Timer already active, update everything
+            return self:Update(unitGUID, srcGUID, category, spellID, isFriendly, isNotPetOrPlayer, true)
+        end
     end
 
     if not timers then
@@ -69,6 +74,11 @@ end
 
 function Timers:Update(unitGUID, srcGUID, category, spellID, isFriendly, isNotPetOrPlayer, updateApplied, isApplied, onAuraEnd)
     local timer = activeTimers[unitGUID] and activeTimers[unitGUID][category]
+    if timer and TimerIsFinished(timer) then
+        self:Remove(unitGUID, category, true)
+        timer = nil
+    end
+
     if not timer then
         if isApplied or updateApplied then
             -- SPELL_AURA_APPLIED/BROKEN didn't detect DR, but REFRESH did
