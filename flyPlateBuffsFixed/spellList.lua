@@ -422,13 +422,13 @@ local major_offensive_buffs = {
 	5217, -- Tiger's Fury
 	49016, -- Unholy Frenzy
 	108288, -- Heart of the Wild
+	114206, -- Skull Banner -- 20% Crit Damage
 }
 
 -- size 1.5
 local  minor_offensive_buffs = {
-	114206, -- Skull Banner -- 20% Crit Damage
 	-- 93435, -- Roar of Courage
-	-- 126700, -- Surge of Victory
+	126700, -- Surge of Victory
 	-- 104423, -- Windsong
 	-- 12880, -- Enrage
 	-- 120032, -- Dancing Steel
