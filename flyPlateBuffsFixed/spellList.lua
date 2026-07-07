@@ -396,6 +396,7 @@ local major_offensive_buffs = {
 	126690, -- Call of Conquest 
 	126683, -- Call of Dominance 
 	126679, -- Call of Victory 
+	126700, -- Surge of Victory
 	112071, -- Celestial Alignment
 	113858, -- Dark Soul: Instability
 	113861, -- Dark Soul: Knowledge
@@ -422,16 +423,16 @@ local major_offensive_buffs = {
 	5217, -- Tiger's Fury
 	49016, -- Unholy Frenzy
 	108288, -- Heart of the Wild
-	114206, -- Skull Banner -- 20% Crit Damage
 }
 
 -- size 1.5
 local  minor_offensive_buffs = {
+	114206, -- Skull Banner -- 20% Crit Damage
 	-- 93435, -- Roar of Courage
-	126700, -- Surge of Victory
 	-- 104423, -- Windsong
 	-- 12880, -- Enrage
 	-- 120032, -- Dancing Steel
+	-- 125489, -- Swordguard Embroidery
 	-- 104993, -- Jade Spirit
 	-- 126734, -- Synapse Springs
 	-- 115989, -- Unholy Blight
