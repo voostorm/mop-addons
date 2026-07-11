@@ -97,7 +97,6 @@ LCT_SpellData[108843] = {
 -- Presence of Mind
 LCT_SpellData[12043] = {
 	class = "MAGE",
-	specID = { 62 },
 	offensive = true,
 	cooldown_starts_on_aura_fade = true,
 	cooldown = 90

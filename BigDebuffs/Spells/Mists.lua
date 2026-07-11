@@ -315,6 +315,7 @@ addon.Spells = {
     [124280] = { type = DEBUFF_OFFENSIVE }, -- Touch of Karma debuff that goes on enemy of the monk
     -- stealth constraint debuffs to see on raidframes
     [770]   = { type = DEBUFF_OFFENSIVE }, -- Faerie Fire
+    [44457] = { type = DEBUFF_OFFENSIVE }, -- living bomb
     [31615] = { type = DEBUFF_OFFENSIVE }, -- Hunter's Mark
     -- healing reduction debuffs to see on raidframes
     [8680]  = { type = DEBUFF_OFFENSIVE }, -- Wound Poison Healing Debuff (Rogue Poison)
