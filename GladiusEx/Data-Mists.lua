@@ -237,7 +237,9 @@ function GladiusEx.Data.DefaultClassicon()
 
 		[GladiusEx:SafeGetSpellName(29166)]  	= 4,	-- Innervate
 		[GladiusEx:SafeGetSpellName(31842)]  	= 4,	-- Divine Illumination
-		[GladiusEx:SafeGetSpellName(16188)]  	= 4,	-- Nature's Swiftness (Shaman)
+		[GladiusEx:SafeGetSpellName(16188)]  	= 4,	-- Ancestral Swiftness (Shaman)
+        [GladiusEx:SafeGetSpellName(132158)]  	= 4,	-- Nature's Swiftness (Druid)
+        [GladiusEx:SafeGetSpellName(29274)]  	= 4,	-- Nature's Swiftness (Druid)
 		[GladiusEx:SafeGetSpellName(16166)]  	= 4,	-- Elemental Mastery
 		[GladiusEx:SafeGetSpellName(1044)]		= 4,	-- Blessing of Freedom
 		[GladiusEx:SafeGetSpellName(34709)]  	= 4,	-- Shadow Sight (eye in arena)

@@ -543,7 +543,7 @@ local stances_forms = {
 	51755, -- Camouflage
 	90954, -- Camouflage
 	119450, -- Camouflage
-	119030, -- Spectral Guise -- No Check Spell ID, just the buff name
+	119030, -- Spectral Guise -- No Check Spell ID, just the buff name 1.6
 	66, -- Invisibility
 	2645, -- Ghost Wolf
 	48266, -- Frost Presence (DK)

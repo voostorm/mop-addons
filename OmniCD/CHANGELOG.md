@@ -1,4 +1,2 @@
-### v2.8.32
--   TBCA: Fix specialization specific spells not showing (e.g. Chastise)
--   TBCA: Fix cooldowns longer than 10m not showing in arena (e.g. Preparation)
--   TBCA/MoP: Fix tooltip error
+### v2.8.34
+-   TBCA: Fix Camouflage (Rank 4) incorrectly reducing the cooldown of Vanish
