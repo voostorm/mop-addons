@@ -167,6 +167,8 @@ addonTable.CDs = {
 		[102342] = 120, -- https://www.wowhead.com/mop/ru/spell=102342
 		[108294] = 360, -- https://www.wowhead.com/mop/ru/spell=108294
 		[132158] = 60, -- https://www.wowhead.com/mop-classic/spell=132158/natures-swiftness
+		[99] = 30, -- disor roar
+		[113004] = 90, -- intimi roar
 	},
 	["PALADIN"] = {
 		-- // reviewed 2024/05/25
