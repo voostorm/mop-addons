@@ -69,11 +69,12 @@ function E:ProcessSpellDB()
 		for i = n, 1, -1 do
 			local t = v[i]
 			local id, itemID, stype = t.spellID, t.item, t.type
-			if C_Spell.DoesSpellExist(id) then
+			local isItemBasedTrinket = (k == "TRINKET" or k == "PVPTRINKET") and itemID and itemID > 0
+			if C_Spell.DoesSpellExist(id) or isItemBasedTrinket then
 				t.class = t.class or k
 
 				local name
-				if k == "TRINKET" and itemID and itemID > 0 then
+				if isItemBasedTrinket then
 					name = C_Item.GetItemNameByID(itemID) or C_Spell.GetSpellName(id)
 				else
 					name = C_Spell.GetSpellName(id)
