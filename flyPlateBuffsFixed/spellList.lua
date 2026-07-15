@@ -561,6 +561,7 @@ local constraint_debuffs = {
 	31615, -- Hunter's Mark, No Check Spell ID, just the debuff name
 	1543, -- Flare -- don't check id, not sure exact debuff id
 	34709, -- Shadow Sight -- Stealth Detection. -- Invisibility Detection. -- Increases damage taken by 5%.
+	44457, -- Living Bomb, the contraint is sheep will break on targets that have living bomb, therefore, added.
 }
 
 
