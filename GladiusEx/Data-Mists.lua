@@ -281,6 +281,7 @@ function GladiusEx.Data.DefaultClassicon()
 		[GladiusEx:SafeGetSpellName(12043)]  	= 2,	-- Presence of Mind
 		[GladiusEx:SafeGetSpellName(10060)]  	= 2,	-- Power Infusion
 		[GladiusEx:SafeGetSpellName(12328)]  	= 2,	-- Sweeping Strikes
+        [GladiusEx:SafeGetSpellName(44544)]     = 2, -- Fingers of Frost
 
 		-- Misc (1)
 
