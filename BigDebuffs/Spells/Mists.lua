@@ -313,6 +313,7 @@ addon.Spells = {
     [79140]  = { type = DEBUFF_OFFENSIVE }, -- Vendetta
     [12292]  = { type = DEBUFF_OFFENSIVE }, -- Bloodbath Melee special attacks cause an additional 30% bleed damage.
     [124280] = { type = DEBUFF_OFFENSIVE }, -- Touch of Karma debuff that goes on enemy of the monk
+    [135299] = { type = DEBUFF_OFFENSIVE }, -- ice trap debuff only a 50% snare but gives them dmg procs
     -- stealth constraint debuffs to see on raidframes
     [770]   = { type = DEBUFF_OFFENSIVE }, -- Faerie Fire
     [44457] = { type = DEBUFF_OFFENSIVE }, -- living bomb

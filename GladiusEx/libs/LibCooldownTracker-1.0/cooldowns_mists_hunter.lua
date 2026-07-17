@@ -40,8 +40,8 @@ LCT_SpellData[1543] = {
 -- Ice Trap
 LCT_SpellData[13809] = {
 	class = "HUNTER",
-	cc = true,
-	cooldown = 30
+	offensive = true,
+	cooldown = 24
 }
 -- Snake Trap
 LCT_SpellData[34600] = {
