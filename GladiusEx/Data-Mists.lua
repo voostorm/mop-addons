@@ -1,4 +1,4 @@
-GladiusEx.Data = {}
+﻿GladiusEx.Data = {}
 
 function GladiusEx.Data.DefaultAlertSpells()
     return {}
@@ -13,289 +13,295 @@ end
 function GladiusEx.Data.DefaultClassicon()
 	return {
 		-- Higher Number is More Priority
-		-- Priority List by Bibimapi
-		-- Immunes I and Stealth (10)
 
-		[GladiusEx:SafeGetSpellName(33786)]	= 10,	-- Cyclone
+		-- CCs
+        [GladiusEx:SafeGetSpellName(33786)]	= 10, -- Cyclone
         [GladiusEx:SafeGetSpellName(113506)] = 10, -- Cyclone (Symbiosis)
-		[GladiusEx:SafeGetSpellName(605)]	  = 10,	-- Mind Control
-		[GladiusEx:SafeGetSpellName(45438)]	= 10,	-- Ice Block 
-		[GladiusEx:SafeGetSpellName(642)]	  = 10,	-- Divine Shield
-		[GladiusEx:SafeGetSpellName(27827)]	= 10,	-- Spirit of Redemption
-		[GladiusEx:SafeGetSpellName(34692)] = 10, -- The Beast Within
+		[GladiusEx:SafeGetSpellName(605)] = 10,	-- Mind Control
+		[GladiusEx:SafeGetSpellName(2637)] = 10, -- Hibernate 
+		[GladiusEx:SafeGetSpellName(3355)] = 10, -- Freezing Trap 
+		[GladiusEx:SafeGetSpellName(19503)] = 10, -- Scatter Shot
+		[GladiusEx:SafeGetSpellName(118)] = 10, -- Polymorph
+		[GladiusEx:SafeGetSpellName(28272)] = 10, -- Polymorph (pig)
+		[GladiusEx:SafeGetSpellName(28271)] = 10, -- Polymorph (turtle)
+        [GladiusEx:SafeGetSpellName(61305)] = 10, -- Polymorph: Black Cat
+        [GladiusEx:SafeGetSpellName(61721)] = 10, -- Polymorph: Rabbit
+        [GladiusEx:SafeGetSpellName(61025)] = 10, -- Polymorph: Serpent
+        [GladiusEx:SafeGetSpellName(61780)] = 10, -- Polymorph: Turkey
+		[GladiusEx:SafeGetSpellName(20066)] = 10, -- Repentance
+		[GladiusEx:SafeGetSpellName(1776)] = 10, -- Gouge
+		[GladiusEx:SafeGetSpellName(6770)] = 10, -- Sap
+		[GladiusEx:SafeGetSpellName(1513)] = 10, -- Scare Beast
+		[GladiusEx:SafeGetSpellName(31661)] = 10, -- Dragon's Breath 
+		[GladiusEx:SafeGetSpellName(8122)] = 10, -- Psychic Scream 
+		[GladiusEx:SafeGetSpellName(2094)] = 10, -- Blind 
+		[GladiusEx:SafeGetSpellName(5782)] = 10, -- Fear
+        [GladiusEx:SafeGetSpellName(51514)] = 10, -- Hex
+		[GladiusEx:SafeGetSpellName(5484)] = 10, -- Howl of Terror
+		[GladiusEx:SafeGetSpellName(6358)] = 10, -- Seduction
+		[GladiusEx:SafeGetSpellName(5246)] = 10, -- Intimidating Shout 
+		[GladiusEx:SafeGetSpellName(22570)] = 10, -- Maim
+		[GladiusEx:SafeGetSpellName(19386)] = 10, -- Wyvern Sting
+		[GladiusEx:SafeGetSpellName(90337)] = 10, -- Bad Manner
+        [GladiusEx:SafeGetSpellName(710)] = 10, -- Banish
+        [GladiusEx:SafeGetSpellName(76780)] = 10, -- Bind Elemental
+        [GladiusEx:SafeGetSpellName(115078)] = 10, -- Paralysis
+        [GladiusEx:SafeGetSpellName(107079)] = 10, -- Quaking Palm (Racial)
+        [GladiusEx:SafeGetSpellName(82691)] = 10, -- Ring of Frost
+        [GladiusEx:SafeGetSpellName(9484)] = 10, -- Shackle Undead
+        [GladiusEx:SafeGetSpellName(105421)] = 10, -- Blinding Light
+        [GladiusEx:SafeGetSpellName(99)] = 10, -- Disorienting Roar
+        [GladiusEx:SafeGetSpellName(123393)] = 10, -- Glyph of Breath of Fire
+        [GladiusEx:SafeGetSpellName(88625)] = 10, -- Holy Word: Chastise
+        [GladiusEx:SafeGetSpellName(118699)] = 10, -- Fear 2
+        [GladiusEx:SafeGetSpellName(113056)] = 10, -- Intimidating Roar (Symbiosis 2)
+        [GladiusEx:SafeGetSpellName(113004)] = 10, -- Intimidating Roar (Symbiosis)
+        [GladiusEx:SafeGetSpellName(20511)] = 10, -- Intimidating Shout (secondary targets)
+        [GladiusEx:SafeGetSpellName(115268)] = 10, -- Mesmerize (Shivarra)
+        [GladiusEx:SafeGetSpellName(113792)] = 10, -- Psychic Terror (Psyfiend)
+        [GladiusEx:SafeGetSpellName(104045)] = 10, -- Sleep (Metamorphosis)
+        [GladiusEx:SafeGetSpellName(10326)] = 10, -- Turn Evil
+        [GladiusEx:SafeGetSpellName(145067)] = 10, -- Turn Evil (Evil is a Point of View)
+        [GladiusEx:SafeGetSpellName(137143)] = 10, -- Blood Horror
+		[GladiusEx:SafeGetSpellName(6789)] = 10, -- Death Coil
+        [GladiusEx:SafeGetSpellName(64044)] = 10, -- Psychic Horror
+		[GladiusEx:SafeGetSpellName(5211)] = 10, -- Bash 
+		[GladiusEx:SafeGetSpellName(24394)] = 10, -- Intimidation 
+		[GladiusEx:SafeGetSpellName(853)] = 10, -- Hammer of Justice
+		[GladiusEx:SafeGetSpellName(1833)] = 10, -- Cheap Shot 
+		[GladiusEx:SafeGetSpellName(408)] = 10, -- Kidney Shot 
+		[GladiusEx:SafeGetSpellName(30283)] = 10, -- Shadowfury 
+		[GladiusEx:SafeGetSpellName(20549)] = 10, -- War Stomp
+		[GladiusEx:SafeGetSpellName(835)] = 10, -- Tidal Charm (magic dispellable), (probably does not exist in the game and not usable in arena)
+        [GladiusEx:SafeGetSpellName(108194)] = 10, -- Asphyxiate
+        [GladiusEx:SafeGetSpellName(89766)] = 10, -- Axe Toss (Felguard)
+        [GladiusEx:SafeGetSpellName(113801)] = 10, -- Bash (Treants)
+        [GladiusEx:SafeGetSpellName(102795)] = 10, -- Bear Hug
+        [GladiusEx:SafeGetSpellName(117526)] = 10, -- Binding Shot
+        [GladiusEx:SafeGetSpellName(115752)] = 10, -- Blinding Light (Glyphed)
+        [GladiusEx:SafeGetSpellName(119392)] = 10, -- Charging Ox Wave
+        [GladiusEx:SafeGetSpellName(122242)] = 10, -- Clash
+        [GladiusEx:SafeGetSpellName(118271)] = 10, -- Combustion
+        [GladiusEx:SafeGetSpellName(44572)] = 10, -- Deep Freeze
+        [GladiusEx:SafeGetSpellName(105593)] = 10, -- Fist of Justice
+        [GladiusEx:SafeGetSpellName(120086)] = 10, -- Fists of Fury
+        [GladiusEx:SafeGetSpellName(91800)] = 10, -- Gnaw (Ghoul)
+        [GladiusEx:SafeGetSpellName(110698)] = 10, -- Hammer of Justice (Symbiosis)
+        [GladiusEx:SafeGetSpellName(119072)] = 10, -- Holy Wrath
+        [GladiusEx:SafeGetSpellName(22703)] = 10, -- Inferno Effect
+        [GladiusEx:SafeGetSpellName(119381)] = 10, -- Leg Sweep
+        [GladiusEx:SafeGetSpellName(126246)] = 10, -- Lullaby (Crane pet)
+        [GladiusEx:SafeGetSpellName(91797)] = 10, -- Monstrous Blow (Dark Transformation Ghoul)
+        [GladiusEx:SafeGetSpellName(126423)] = 10, -- Petrifying Gaze (Basilisk pet)
+        [GladiusEx:SafeGetSpellName(9005)] = 10, -- Pounce
+        [GladiusEx:SafeGetSpellName(118345)] = 10, -- Pulverize (Primal Earth Elemental)
+        [GladiusEx:SafeGetSpellName(126355)] = 10, -- Quill (Porcupine pet)
+        [GladiusEx:SafeGetSpellName(115001)] = 10, -- Remorseless Winter
+        [GladiusEx:SafeGetSpellName(132168)] = 10, -- Shockwave
+        [GladiusEx:SafeGetSpellName(50519)] = 10, -- Sonic Blast
+        [GladiusEx:SafeGetSpellName(118905)] = 10, -- Static Charge (Capacitor Totem)
+        [GladiusEx:SafeGetSpellName(56626)] = 10, -- Sting (Wasp)
+        [GladiusEx:SafeGetSpellName(107570)] = 10, -- Storm Bolt
+        [GladiusEx:SafeGetSpellName(132169)] = 10, -- Storm Bolt 2
+        [GladiusEx:SafeGetSpellName(7922)] = 10, -- Charge Stun
+        [GladiusEx:SafeGetSpellName(118000)] = 10, -- Dragon Roar
+        [GladiusEx:SafeGetSpellName(118895)] = 10, -- Dragon Roar
+        [GladiusEx:SafeGetSpellName(77505)] = 10, -- Earthquake
+        [GladiusEx:SafeGetSpellName(113953)] = 10, -- Paralysis
+    
+        -- Silences
+        [GladiusEx:SafeGetSpellName(25046)]	= 9, -- Arcane Torrent (Racial, Energy)
+        [GladiusEx:SafeGetSpellName(80483)]	= 9, -- Arcane Torrent (Racial, Focus)
+        [GladiusEx:SafeGetSpellName(28730)]	= 9, -- Arcane Torrent (Racial, Mana)
+        [GladiusEx:SafeGetSpellName(69179)]	= 9, -- Arcane Torrent (Racial, Rage)
+        [GladiusEx:SafeGetSpellName(50613)]	= 9, -- Arcane Torrent (Racial, Runic Power)
+        [GladiusEx:SafeGetSpellName(31935)]	= 9, -- Avenger's Shield
+        [GladiusEx:SafeGetSpellName(55021)]	= 9, -- Counterspell
+        [GladiusEx:SafeGetSpellName(102051)] = 9, -- Frostjaw
+        [GladiusEx:SafeGetSpellName(114238)] = 9, -- Glyph of Fae Silence
+        [GladiusEx:SafeGetSpellName(115782)] = 9, -- Optical Blast (Observer)
+        [GladiusEx:SafeGetSpellName(137460)] = 9, -- Ring of Peace (Silence effect)
+        [GladiusEx:SafeGetSpellName(18498)]	= 9, -- Silenced - Gag Order
+        [GladiusEx:SafeGetSpellName(78675)]	= 9, -- Solar Beam
+        [GladiusEx:SafeGetSpellName(81261)]	= 9, -- Solar Beam
+        [GladiusEx:SafeGetSpellName(133901)] = 9, -- Solar Beam
+        [GladiusEx:SafeGetSpellName(129888)] = 9, -- Solar Beam
+        [GladiusEx:SafeGetSpellName(129889)] = 9, -- Solar Beam
+        [GladiusEx:SafeGetSpellName(133899)] = 9, -- Solar Beam
+        [GladiusEx:SafeGetSpellName(113286)] = 9, -- Solar Beam (Symbiosis)
+        [GladiusEx:SafeGetSpellName(113287)] = 9, -- Solar Beam (Symbiosis)
+        [GladiusEx:SafeGetSpellName(116709)] = 9, -- Spear Hand Strike
+        [GladiusEx:SafeGetSpellName(24259)]	= 9, -- Spell Lock
+        [GladiusEx:SafeGetSpellName(47476)]	= 9, -- Strangulate
+        [GladiusEx:SafeGetSpellName(31117)]	= 9, -- Unstable Affliction (Silence)
+        [GladiusEx:SafeGetSpellName(43523)]	= 9, -- Unstable Affliction (Silence)
+        [GladiusEx:SafeGetSpellName(15487)]	= 9, -- Silence
+		[GladiusEx:SafeGetSpellName(34490)]	= 9, -- Silencing shot (3 second silence)
+		[GladiusEx:SafeGetSpellName(1330)]	= 9, -- Garrote
 
-		[GladiusEx:SafeGetSpellName(5215)]	= 10,	-- Prowl
-		[GladiusEx:SafeGetSpellName(32612)]	= 10,	-- Invisibility (main)
-		[GladiusEx:SafeGetSpellName(1784)]	= 10,	-- Stealth 
-		[GladiusEx:SafeGetSpellName(11327)]	= 10,	-- Vanish
-		[GladiusEx:SafeGetSpellName(5384)]	= 10,	-- Feign Death
+        -- Instant Casts
+        [GladiusEx:SafeGetSpellName(16188)]	= 9, -- Ancestral Swiftness (Shaman)
+        [GladiusEx:SafeGetSpellName(132158)] = 9, -- Nature's Swiftness (Druid)
+        [GladiusEx:SafeGetSpellName(29274)]	= 9, -- Nature's Swiftness (Druid)
+        [GladiusEx:SafeGetSpellName(12043)]	= 9, -- Presence of Mind
+        [GladiusEx:SafeGetSpellName(69369)]	= 9, -- Predator's Swiftness (Feral Druid)
 
-		[GladiusEx:SafeGetSpellName(44166)]	= 10,	-- Refreshment
-		[GladiusEx:SafeGetSpellName(27089)]	= 10,	-- Drink1
-		[GladiusEx:SafeGetSpellName(46755)]	= 10,	-- Drink2
-		[GladiusEx:SafeGetSpellName(23920)] = 10,	-- Spell Reflection
-		[GladiusEx:SafeGetSpellName(31224)]	= 10,	-- Cloak of Shadows
+        -- Immunity
+        [GladiusEx:SafeGetSpellName(122465)] = 9, -- Dematerialize
+        [GladiusEx:SafeGetSpellName(65871)]	= 9, -- Deterrence
+        [GladiusEx:SafeGetSpellName(110617)] = 9, -- Deterrence
+        [GladiusEx:SafeGetSpellName(19263)]	= 9, -- Deterrence
+        [GladiusEx:SafeGetSpellName(148467)] = 9, -- Deterrence
+        [GladiusEx:SafeGetSpellName(67801)]	= 9, -- Deterrence
+        [GladiusEx:SafeGetSpellName(110618)] = 9, -- Deterrence
+        [GladiusEx:SafeGetSpellName(642)] = 9, -- Divine Shield
+        [GladiusEx:SafeGetSpellName(110700)] = 9, -- Divine Shield
+        [GladiusEx:SafeGetSpellName(110696)] = 9, -- Ice Block
+        [GladiusEx:SafeGetSpellName(45438)]	= 9, -- Ice Block
+        [GladiusEx:SafeGetSpellName(58984)]	= 9, -- Shadowmeld
+        [GladiusEx:SafeGetSpellName(11327)]	= 9, -- Vanish
+        [GladiusEx:SafeGetSpellName(27827)]	= 9, -- Spirit of Redemption
+
+        -- Offensive - Spell Caster Burst Damage CD + Proc (CD > Proc) (they can still use this while rooted if in range or disarmed)
+        -- [GladiusEx:SafeGetSpellName(12472)]	= 8.5, -- Icy Veins
+        [GladiusEx:SafeGetSpellName(44544)]	= 8.5, -- Fingers of Frost
+        [GladiusEx:SafeGetSpellName(12042)]	= 8.5, -- Arcane Power
+        [GladiusEx:SafeGetSpellName(114050)] = 8.5, -- Ascendance (Elemental Shaman)
+        [GladiusEx:SafeGetSpellName(112071)] = 8.5, -- Celestial Alignment
+        [GladiusEx:SafeGetSpellName(113858)] = 8.5, -- Dark Soul: Instability
+        [GladiusEx:SafeGetSpellName(113861)] = 8.5, -- Dark Soul: Knowledge
+        [GladiusEx:SafeGetSpellName(113860)] = 8.5, -- Dark Soul: Misery
+        -- [GladiusEx:SafeGetSpellName(16166)] = 8.5, -- Elemental Mastery
+        
+        -- Roots
+        [GladiusEx:SafeGetSpellName(96294)]	= 8, -- Chains of Ice (Chilblains)
+        [GladiusEx:SafeGetSpellName(25999)]	= 8, -- Charge
+        [GladiusEx:SafeGetSpellName(116706)] = 8, -- Disable (Root)
+        [GladiusEx:SafeGetSpellName(64695)]	= 8, -- Earthgrab (Earthgrab Totem)
+        [GladiusEx:SafeGetSpellName(113770)] = 8, -- Entangling Roots (Force of Nature - Balance Treants)
+        [GladiusEx:SafeGetSpellName(19975)]	= 8, -- Entangling Roots (Nature's Grasp)
+        [GladiusEx:SafeGetSpellName(113275)] = 8, -- Entangling Roots (Symbiosis) [Monk]
+        [GladiusEx:SafeGetSpellName(115197)] = 8, -- Partial Paralysis
+        [GladiusEx:SafeGetSpellName(50245)]	= 8, -- Pin (Crab)
+        [GladiusEx:SafeGetSpellName(64803)]	= 8, -- Entrapment
+        [GladiusEx:SafeGetSpellName(63685)]	= 8, -- Freeze (Frozen Power)
+        [GladiusEx:SafeGetSpellName(39965)]	= 8, -- Frost Grenade
+        [GladiusEx:SafeGetSpellName(115757)] = 8, -- Frost Nova (Glyph of Ice Block)
+        [GladiusEx:SafeGetSpellName(110693)] = 8, -- Frost Nova (Mage) [Symbiosis]
+        [GladiusEx:SafeGetSpellName(55536)]	= 8, -- Frostweave Net
+        [GladiusEx:SafeGetSpellName(87194)]	= 8, -- Glyph of Mind Blast
+        [GladiusEx:SafeGetSpellName(111340)] = 8, -- Ice Ward
+        [GladiusEx:SafeGetSpellName(102359)] = 8, -- Mass Entanglement
+        [GladiusEx:SafeGetSpellName(136634)] = 8, -- Narrow Escape
+        [GladiusEx:SafeGetSpellName(31367)]	= 8, -- Netherweave Net (Item) (Does not wo
+        [GladiusEx:SafeGetSpellName(115000)] = 8, -- Remorseless Winter
+        [GladiusEx:SafeGetSpellName(91807)]	= 8, -- Shambling Rush (Dark Transformation)
+        [GladiusEx:SafeGetSpellName(123407)] = 8, -- Spinning Fire Blossom
+        [GladiusEx:SafeGetSpellName(107566)] = 8, -- Staggering Shout
+        [GladiusEx:SafeGetSpellName(54706)]	= 8, -- Venom Web Spray (Silithid)
+        [GladiusEx:SafeGetSpellName(114404)] = 8, -- Void Tendril's Grasp
+        [GladiusEx:SafeGetSpellName(105771)] = 8, -- Warbringer
+        [GladiusEx:SafeGetSpellName(4167)] = 8, -- Web (Spider)
+        [GladiusEx:SafeGetSpellName(96201)] = 8, -- Web Wrap (Shale Spider)
+		[GladiusEx:SafeGetSpellName(339)] = 8, -- Entangling Roots
+		[GladiusEx:SafeGetSpellName(122)] = 8, -- Frost Nova
+		[GladiusEx:SafeGetSpellName(33395)]	= 8, -- Freeze (Water Elemental)
+		[GladiusEx:SafeGetSpellName(45334)]	= 8, -- Immobilized
+		[GladiusEx:SafeGetSpellName(90327)]	= 8, -- Lock Jaw
+
+        -- Offensive - Melee Burst CD disarm not effective can be stopped with roots
+        [GladiusEx:SafeGetSpellName(114051)] = 7.5, -- Ascendance (Enhancement Shaman)
+        [GladiusEx:SafeGetSpellName(50334)]	= 7.5, -- Berserk
+        [GladiusEx:SafeGetSpellName(115288)] = 7.5, -- Energizing Brew
+
+        -- Disarms
+        [GladiusEx:SafeGetSpellName(676)] = 7, -- Disarm
+        [GladiusEx:SafeGetSpellName(126458)] = 7, -- Grapple Weapon (Symbiosis)
+        [GladiusEx:SafeGetSpellName(117368)] = 7, -- Grapple Weapon
+        [GladiusEx:SafeGetSpellName(50541)]	= 7, -- Clench (Scorpid)
+        [GladiusEx:SafeGetSpellName(118093)] = 7, -- Disarm (Voidwalker/Voidlord)
+        [GladiusEx:SafeGetSpellName(51722)]	= 7, -- Dismantle
+        [GladiusEx:SafeGetSpellName(64058)]	= 7, -- Psychic Horror (Disarm Effect)
+        [GladiusEx:SafeGetSpellName(137461)] = 7, -- Ring of Peace (Disarm effect)
+        [GladiusEx:SafeGetSpellName(91644)]	= 7, -- Snatch (Bird of Prey)
+
+        -- Offensive - Melee Burst CD (can be stopped with roots 8 and disarms 7)
+        [GladiusEx:SafeGetSpellName(1719)] = 6,	-- Recklessness
+        [GladiusEx:SafeGetSpellName(13750)] = 6, -- Adrenaline Rush
+        [GladiusEx:SafeGetSpellName(13877)] = 6, -- Blade Flurry
+        [GladiusEx:SafeGetSpellName(3045)] = 6, -- Rapid Fire
+        [GladiusEx:SafeGetSpellName(51713)] = 6, -- Shadow Dance
+        [GladiusEx:SafeGetSpellName(49016)] = 6, -- Unholy Frenzy
+        [GladiusEx:SafeGetSpellName(51271)] = 6, -- Pillar of Frost
+        [GladiusEx:SafeGetSpellName(31884)] = 6, -- Avenging Wrath
+
+        -- bit of misc from here
+        -- Drinks for Mana Restoring
+        [GladiusEx:SafeGetSpellName(44166)]	= 5,	-- Refreshment
+		[GladiusEx:SafeGetSpellName(27089)]	= 5,	-- Drink1
+		[GladiusEx:SafeGetSpellName(46755)]	= 5,	-- Drink2
+        -- Invisibility
+        [GladiusEx:SafeGetSpellName(5215)]	= 5,	-- Prowl
+		[GladiusEx:SafeGetSpellName(32612)]	= 5,	-- Invisibility (main)
+		[GladiusEx:SafeGetSpellName(1784)]	= 5,	-- Stealth 
+        -- Deselect Target
+		[GladiusEx:SafeGetSpellName(5384)]	= 5,	-- Feign Death
+
+        -- commenting out all below for now. Adding stuff as I go.
+        -- most of them are covered by nameplates but aura on arena portait is extra emphasis
+        -- to preemptively react by being alerted
+
+		-- [GladiusEx:SafeGetSpellName(1022)]  	= 7,	-- Blessing of Protection
+		-- [GladiusEx:SafeGetSpellName(33206)]   = 7, -- Pain Suppression
+		-- [GladiusEx:SafeGetSpellName(5277)]  	= 7,	-- Evasion
 
 
-		-- Breakable CC (9)
-
-		[GladiusEx:SafeGetSpellName(2637)]  	= 9,	-- Hibernate 
-		[GladiusEx:SafeGetSpellName(3355)]  	= 9,	-- Freezing Trap 
-		[GladiusEx:SafeGetSpellName(19503)]  	= 9,	-- Scatter Shot
-		[GladiusEx:SafeGetSpellName(118)]  	  = 9.1,	-- Polymorph
-		[GladiusEx:SafeGetSpellName(28272)]  	= 9.1,	-- Polymorph (pig)
-		[GladiusEx:SafeGetSpellName(28271)]  	= 9.1,	-- Polymorph (turtle)
-        [GladiusEx:SafeGetSpellName(61305)] = 9.1, -- Polymorph: Black Cat
-        [GladiusEx:SafeGetSpellName(61721)] = 9.1, -- Polymorph: Rabbit
-        [GladiusEx:SafeGetSpellName(61025)] = 9.1, -- Polymorph: Serpent
-        [GladiusEx:SafeGetSpellName(61780)] = 9.1, -- Polymorph: Turkey
-		[GladiusEx:SafeGetSpellName(20066)]  	= 9,	-- Repentance
-		[GladiusEx:SafeGetSpellName(1776)]  	= 9,	-- Gouge
-		[GladiusEx:SafeGetSpellName(6770)]  	= 9.1,	-- Sap
-		[GladiusEx:SafeGetSpellName(1513)]  	= 9,	-- Scare Beast
-		[GladiusEx:SafeGetSpellName(31661)]  	= 9,	-- Dragon's Breath 
-		[GladiusEx:SafeGetSpellName(8122)]  	= 9,	-- Psychic Scream 
-		[GladiusEx:SafeGetSpellName(2094)]  	= 9,	-- Blind 
-		[GladiusEx:SafeGetSpellName(5782)]  	= 9,	-- Fear
-        [GladiusEx:SafeGetSpellName(51514)]  	= 9,	-- Hex
-		[GladiusEx:SafeGetSpellName(5484)]  	= 9,	-- Howl of Terror
-		[GladiusEx:SafeGetSpellName(6358)]  	= 9,	-- Seduction
-		[GladiusEx:SafeGetSpellName(5246)]  	= 9,	-- Intimidating Shout 
-		[GladiusEx:SafeGetSpellName(22570)]  	= 9,	-- Maim
-		[GladiusEx:SafeGetSpellName(19386)]   = 9,  -- Wyvern Sting
-		[GladiusEx:SafeGetSpellName(90337)]   = 9,  -- Bad Manner
-        [GladiusEx:SafeGetSpellName(710)] = 9, -- Banish
-        [GladiusEx:SafeGetSpellName(76780)] = 9, -- Bind Elemental
-        [GladiusEx:SafeGetSpellName(115078)] = 9, -- Paralysis
-        [GladiusEx:SafeGetSpellName(107079)] = 9, -- Quaking Palm (Racial)
-        [GladiusEx:SafeGetSpellName(82691)] = 9, -- Ring of Frost
-        [GladiusEx:SafeGetSpellName(9484)] = 9, -- Shackle Undead
-        [GladiusEx:SafeGetSpellName(105421)] = 9, -- Blinding Light
-        [GladiusEx:SafeGetSpellName(99)] = 9, -- Disorienting Roar
-        [GladiusEx:SafeGetSpellName(123393)] = 9, -- Glyph of Breath of Fire
-        [GladiusEx:SafeGetSpellName(88625)] = 9, -- Holy Word: Chastise
-        [GladiusEx:SafeGetSpellName(118699)] = 9, -- Fear 2
-        [GladiusEx:SafeGetSpellName(113056)] = 9, -- Intimidating Roar (Symbiosis 2)
-        [GladiusEx:SafeGetSpellName(113004)] = 9, -- Intimidating Roar (Symbiosis)
-        [GladiusEx:SafeGetSpellName(20511)] = 9, -- Intimidating Shout (secondary targets)
-        [GladiusEx:SafeGetSpellName(115268)] = 9, -- Mesmerize (Shivarra)
-        [GladiusEx:SafeGetSpellName(113792)] = 9, -- Psychic Terror (Psyfiend)
-        [GladiusEx:SafeGetSpellName(104045)] = 9, -- Sleep (Metamorphosis)
-        [GladiusEx:SafeGetSpellName(10326)] = 9, -- Turn Evil
-        [GladiusEx:SafeGetSpellName(145067)] = 9, -- Turn Evil (Evil is a Point of View)
-
-		-- Stuns (8)
-
-		[GladiusEx:SafeGetSpellName(5211)]  = 8,	-- Bash 
-		[GladiusEx:SafeGetSpellName(24394)] = 8,	-- Intimidation 
-		[GladiusEx:SafeGetSpellName(853)]  	= 8,	-- Hammer of Justice
-		[GladiusEx:SafeGetSpellName(1833)] 	= 8,	-- Cheap Shot 
-		[GladiusEx:SafeGetSpellName(408)]  	= 8,	-- Kidney Shot 
-		[GladiusEx:SafeGetSpellName(30283)] = 8,	-- Shadowfury 
-		[GladiusEx:SafeGetSpellName(20549)] = 8,	-- War Stomp
-		[GladiusEx:SafeGetSpellName(835)]   = 8,     -- Tidal Charm (magic dispellable), (probably does not exist in the game and not usable in arena)
-        [GladiusEx:SafeGetSpellName(108194)] = 8, -- Asphyxiate
-        [GladiusEx:SafeGetSpellName(89766)] = 8, -- Axe Toss (Felguard)
-        [GladiusEx:SafeGetSpellName(113801)] = 8, -- Bash (Treants)
-        [GladiusEx:SafeGetSpellName(102795)] = 8, -- Bear Hug
-        [GladiusEx:SafeGetSpellName(117526)] = 8, -- Binding Shot
-        [GladiusEx:SafeGetSpellName(115752)] = 8, -- Blinding Light (Glyphed)
-        [GladiusEx:SafeGetSpellName(119392)] = 8, -- Charging Ox Wave
-        [GladiusEx:SafeGetSpellName(122242)] = 8, -- Clash
-        [GladiusEx:SafeGetSpellName(118271)] = 8, -- Combustion
-        [GladiusEx:SafeGetSpellName(44572)] = 8, -- Deep Freeze
-        [GladiusEx:SafeGetSpellName(105593)] = 8, -- Fist of Justice
-        [GladiusEx:SafeGetSpellName(120086)] = 8, -- Fists of Fury
-        [GladiusEx:SafeGetSpellName(91800)] = 8, -- Gnaw (Ghoul)
-        [GladiusEx:SafeGetSpellName(110698)] = 8, -- Hammer of Justice (Symbiosis)
-        [GladiusEx:SafeGetSpellName(119072)] = 8, -- Holy Wrath
-        [GladiusEx:SafeGetSpellName(22703)] = 8, -- Inferno Effect
-        [GladiusEx:SafeGetSpellName(119381)] = 8, -- Leg Sweep
-        [GladiusEx:SafeGetSpellName(126246)] = 8, -- Lullaby (Crane pet)
-        [GladiusEx:SafeGetSpellName(91797)] = 8, -- Monstrous Blow (Dark Transformation Ghoul)
-        [GladiusEx:SafeGetSpellName(126423)] = 8, -- Petrifying Gaze (Basilisk pet)
-        [GladiusEx:SafeGetSpellName(9005)] = 8, -- Pounce
-        [GladiusEx:SafeGetSpellName(118345)] = 8, -- Pulverize (Primal Earth Elemental)
-        [GladiusEx:SafeGetSpellName(126355)] = 8, -- Quill (Porcupine pet)
-        [GladiusEx:SafeGetSpellName(115001)] = 8, -- Remorseless Winter
-        [GladiusEx:SafeGetSpellName(132168)] = 8, -- Shockwave
-        [GladiusEx:SafeGetSpellName(50519)] = 8, -- Sonic Blast
-        [GladiusEx:SafeGetSpellName(118905)] = 8, -- Static Charge (Capacitor Totem)
-        [GladiusEx:SafeGetSpellName(56626)] = 8, -- Sting (Wasp)
-        [GladiusEx:SafeGetSpellName(107570)] = 8, -- Storm Bolt
-        [GladiusEx:SafeGetSpellName(132169)] = 8, -- Storm Bolt 2
-        [GladiusEx:SafeGetSpellName(7922)]   = 7,   -- Charge Stun
-        [GladiusEx:SafeGetSpellName(118000)] = 7, -- Dragon Roar
-        [GladiusEx:SafeGetSpellName(118895)] = 7, -- Dragon Roar
-        [GladiusEx:SafeGetSpellName(77505)] = 7, -- Earthquake
-        [GladiusEx:SafeGetSpellName(113953)] = 7, -- Paralysis
-
-		-- Immunes II (7)
-
-		[GladiusEx:SafeGetSpellName(1022)]  	= 7,	-- Blessing of Protection
-		[GladiusEx:SafeGetSpellName(33206)]   = 7, -- Pain Suppression
-		[GladiusEx:SafeGetSpellName(5277)]  	= 7,	-- Evasion
-
-
-		-- Defensives I (6.5)
-		[GladiusEx:SafeGetSpellName(3411)]    = 6.5,   -- Intervene
-		[GladiusEx:SafeGetSpellName(45182)]	 	= 6.5,	 -- Cheat Death
-		[GladiusEx:SafeGetSpellName(19263)]   = 6.5,   -- Deterrence
-
-		-- Immunes III (6)
-
-		[GladiusEx:SafeGetSpellName(18499)]  	= 6,	-- Berserker Rage
-
-		-- Unbreakable CC and Roots (5)
-        [GladiusEx:SafeGetSpellName(96294)] = 5, -- Chains of Ice (Chilblains)
-        [GladiusEx:SafeGetSpellName(25999)] = 5, -- Charge
-        [GladiusEx:SafeGetSpellName(116706)] = 5, -- Disable (Root)
-        [GladiusEx:SafeGetSpellName(64695)] = 5, -- Earthgrab (Earthgrab Totem)
-        [GladiusEx:SafeGetSpellName(113770)] = 5, -- Entangling Roots (Force of Nature - Balance Treants)
-        [GladiusEx:SafeGetSpellName(19975)] = 5, -- Entangling Roots (Nature's Grasp)
-        [GladiusEx:SafeGetSpellName(113275)] = 5, -- Entangling Roots (Symbiosis) [Monk]
-        [GladiusEx:SafeGetSpellName(19185)] = 5, -- Entrapment
-        [GladiusEx:SafeGetSpellName(64803)] = 5, -- Entrapment
-        [GladiusEx:SafeGetSpellName(63685)] = 5, -- Freeze (Frozen Power)
-        [GladiusEx:SafeGetSpellName(39965)] = 5, -- Frost Grenade
-        [GladiusEx:SafeGetSpellName(115757)] = 5, -- Frost Nova (Glyph of Ice Block)
-        [GladiusEx:SafeGetSpellName(110693)] = 5, -- Frost Nova (Mage) [Symbiosis]
-        [GladiusEx:SafeGetSpellName(55536)] = 5, -- Frostweave Net
-        [GladiusEx:SafeGetSpellName(87194)] = 5, -- Glyph of Mind Blast
-        [GladiusEx:SafeGetSpellName(111340)] = 5, -- Ice Ward
-        [GladiusEx:SafeGetSpellName(102359)] = 5, -- Mass Entanglement
-        [GladiusEx:SafeGetSpellName(136634)] = 5, -- Narrow Escape
-        [GladiusEx:SafeGetSpellName(31367)] = 5, -- Netherweave Net (Item) (Does not work in Arena)
-        [GladiusEx:SafeGetSpellName(115197)] = 5, -- Partial Paralysis
-        [GladiusEx:SafeGetSpellName(50245)] = 5, -- Pin (Crab)
-        [GladiusEx:SafeGetSpellName(115000)] = 5, -- Remorseless Winter
-        [GladiusEx:SafeGetSpellName(91807)] = 5, -- Shambling Rush (Dark Transformation)
-        [GladiusEx:SafeGetSpellName(123407)] = 5, -- Spinning Fire Blossom
-        [GladiusEx:SafeGetSpellName(107566)] = 5, -- Staggering Shout
-        [GladiusEx:SafeGetSpellName(54706)] = 5, -- Venom Web Spray (Silithid)
-        [GladiusEx:SafeGetSpellName(114404)] = 5, -- Void Tendril's Grasp
-        [GladiusEx:SafeGetSpellName(105771)] = 5, -- Warbringer
-        [GladiusEx:SafeGetSpellName(4167)] = 5, -- Web (Spider)
-        [GladiusEx:SafeGetSpellName(96201)] = 5, -- Web Wrap (Shale Spider)
-        [GladiusEx:SafeGetSpellName(137143)]  	= 5,	-- Blood Horror
-		[GladiusEx:SafeGetSpellName(6789)]  	= 5,	-- Death Coil 
-		[GladiusEx:SafeGetSpellName(15487)]  	= 5,	-- Silence
-		[GladiusEx:SafeGetSpellName(34490)]  	= 3,	-- Silencing shot (3 second silence)
-		[GladiusEx:SafeGetSpellName(1330)]  	= 5,	-- Garrote
-		[GladiusEx:SafeGetSpellName(339)]		= 5,	-- Entangling Roots
-		[GladiusEx:SafeGetSpellName(122)]   	= 5,	-- Frost Nova
-		[GladiusEx:SafeGetSpellName(33395)]  	= 5,	-- Freeze (Water Elemental)
-		[GladiusEx:SafeGetSpellName(676)]   	= 5,	-- Disarm
-        [GladiusEx:SafeGetSpellName(126458)]   	= 5,	-- Grapple Weapon (Symbiosis)
-        [GladiusEx:SafeGetSpellName(117368)]   	= 5,	-- Grapple Weapon
-        [GladiusEx:SafeGetSpellName(50541)] = 5, -- Clench (Scorpid)
-        [GladiusEx:SafeGetSpellName(118093)] = 5, -- Disarm (Voidwalker/Voidlord)
-        [GladiusEx:SafeGetSpellName(51722)] = 5, -- Dismantle
-        [GladiusEx:SafeGetSpellName(64058)] = 5, -- Psychic Horror (Disarm Effect)
-        [GladiusEx:SafeGetSpellName(137461)] = 5, -- Ring of Peace (Disarm effect)
-        [GladiusEx:SafeGetSpellName(91644)] = 5, -- Snatch (Bird of Prey)
-		[GladiusEx:SafeGetSpellName(45334)]  	= 5,	-- Immobilized
-		[GladiusEx:SafeGetSpellName(90327)]		= 5,	-- Lock Jaw
-        [GladiusEx:SafeGetSpellName(64044)] = 5, -- Psychic Horror
-        [GladiusEx:SafeGetSpellName(25046)] = 5, -- Arcane Torrent (Racial, Energy)
-        [GladiusEx:SafeGetSpellName(80483)] = 5, -- Arcane Torrent (Racial, Focus)
-        [GladiusEx:SafeGetSpellName(28730)] = 5, -- Arcane Torrent (Racial, Mana)
-        [GladiusEx:SafeGetSpellName(69179)] = 5, -- Arcane Torrent (Racial, Rage)
-        [GladiusEx:SafeGetSpellName(50613)] = 5, -- Arcane Torrent (Racial, Runic Power)
-        [GladiusEx:SafeGetSpellName(31935)] = 5, -- Avenger's Shield
-        [GladiusEx:SafeGetSpellName(55021)] = 5, -- Counterspell
-        [GladiusEx:SafeGetSpellName(102051)] = 5, -- Frostjaw
-        [GladiusEx:SafeGetSpellName(114238)] = 5, -- Glyph of Fae Silence
-        [GladiusEx:SafeGetSpellName(115782)] = 5, -- Optical Blast (Observer)
-        [GladiusEx:SafeGetSpellName(137460)] = 5, -- Ring of Peace (Silence effect)
-        [GladiusEx:SafeGetSpellName(18498)] = 5, -- Silenced - Gag Order
-        [GladiusEx:SafeGetSpellName(76577)] = 5, -- Smoke Bomb
-
-        [GladiusEx:SafeGetSpellName(78675)] = 5, -- Solar Beam
-        [GladiusEx:SafeGetSpellName(81261)] = 5, -- Solar Beam
-        [GladiusEx:SafeGetSpellName(133901)] = 5, -- Solar Beam
-        [GladiusEx:SafeGetSpellName(129888)] = 5, -- Solar Beam
-        [GladiusEx:SafeGetSpellName(129889)] = 5, -- Solar Beam
-        [GladiusEx:SafeGetSpellName(133899)] = 5, -- Solar Beam
-        [GladiusEx:SafeGetSpellName(81261)] = 5, -- Solar Beam
-        [GladiusEx:SafeGetSpellName(113286)] = 5, -- Solar Beam (Symbiosis)
-        [GladiusEx:SafeGetSpellName(113287)] = 5, -- Solar Beam (Symbiosis)
-        [GladiusEx:SafeGetSpellName(116709)] = 5, -- Spear Hand Strike
-        [GladiusEx:SafeGetSpellName(24259)] = 5, -- Spell Lock
-        [GladiusEx:SafeGetSpellName(47476)] = 5, -- Strangulate
-        [GladiusEx:SafeGetSpellName(31117)] = 5, -- Unstable Affliction (Silence)
-        [GladiusEx:SafeGetSpellName(43523)] = 5, -- Unstable Affliction (Silence)
+		-- -- Defensives
+		-- [GladiusEx:SafeGetSpellName(3411)]    = 6.5,   -- Intervene
+		-- [GladiusEx:SafeGetSpellName(45182)]	 	= 6.5,	 -- Cheat Death
 		
-		-- Defensives II (4.5)
+        -- [GladiusEx:SafeGetSpellName(23920)] = 10,	-- Spell Reflection
+		-- [GladiusEx:SafeGetSpellName(31224)]	= 10,	-- Cloak of Shadows
+	
 
-		[GladiusEx:SafeGetSpellName(6940)] 	= 4.5,	-- Blessing of Sacrifice
-		[GladiusEx:SafeGetSpellName(871)]  	= 4.5,	-- Shield Wall
+		-- [GladiusEx:SafeGetSpellName(18499)]  	= 6,	-- Berserker Rage
 
+		
+		-- [GladiusEx:SafeGetSpellName(29166)]  	= 4,	-- Innervate
+		-- [GladiusEx:SafeGetSpellName(31842)]  	= 4,	-- Divine Illumination
+		-- [GladiusEx:SafeGetSpellName(1044)]		= 4,	-- Blessing of Freedom
+		-- [GladiusEx:SafeGetSpellName(34709)]  	= 4,	-- Shadow Sight (eye in arena)
 
+		
+        -- [GladiusEx:SafeGetSpellName(6940)] 	= 2.5,	-- Blessing of Sacrifice
+		-- [GladiusEx:SafeGetSpellName(871)]  	= 2.5,	-- Shield Wall
+		-- [GladiusEx:SafeGetSpellName(22812)]  	= 2.5,	-- Barkskin
+		-- [GladiusEx:SafeGetSpellName(16689)]   = 2.5,   -- Nature's Grasp
+		-- [GladiusEx:SafeGetSpellName(22842)]  	= 2.5,	-- Frenzied Regen
+		-- [GladiusEx:SafeGetSpellName(498)]  	  = 2.5,	-- Divine Protection
+		-- [GladiusEx:SafeGetSpellName(12975)]  	= 2.5,	-- Last Stand
+		-- [GladiusEx:SafeGetSpellName(38031)]  	= 2.5,	-- Shield Block
+		-- [GladiusEx:SafeGetSpellName(66)]	   	= 2.5,	-- Invisibility (initial)
+		-- [GladiusEx:SafeGetSpellName(20578)]  	= 2.5,	-- Cannibalize
+		-- [GladiusEx:SafeGetSpellName(8178)]  	= 2.5,	-- Grounding Totem Effect
+		-- [GladiusEx:SafeGetSpellName(8145)]    = 2.5,   -- Tremor Totem Passive
+	
+		-- [GladiusEx:SafeGetSpellName(30823)]   = 2.5,   -- Shamanistic Rage
+		-- [GladiusEx:SafeGetSpellName(7812)]   = 2.5,     -- Sacrifice
 
-		-- Important II (4)
-
-		[GladiusEx:SafeGetSpellName(29166)]  	= 4,	-- Innervate
-		[GladiusEx:SafeGetSpellName(31842)]  	= 4,	-- Divine Illumination
-		[GladiusEx:SafeGetSpellName(16188)]  	= 4,	-- Ancestral Swiftness (Shaman)
-        [GladiusEx:SafeGetSpellName(132158)]  	= 4,	-- Nature's Swiftness (Druid)
-        [GladiusEx:SafeGetSpellName(29274)]  	= 4,	-- Nature's Swiftness (Druid)
-		[GladiusEx:SafeGetSpellName(16166)]  	= 4,	-- Elemental Mastery
-		[GladiusEx:SafeGetSpellName(1044)]		= 4,	-- Blessing of Freedom
-		[GladiusEx:SafeGetSpellName(34709)]  	= 4,	-- Shadow Sight (eye in arena)
-
-		-- Offensives I (3)
-
-		[GladiusEx:SafeGetSpellName(19574)]  	= 3,	-- Bestial Wrath
-		[GladiusEx:SafeGetSpellName(12042)]  	= 3,	-- Arcane Power
-		[GladiusEx:SafeGetSpellName(12472)]  	= 3,	-- Icy Veins 
-		[GladiusEx:SafeGetSpellName(29977)]  	= 3,	-- Combustion
-		[GladiusEx:SafeGetSpellName(31884)]  	= 3,	-- Avenging Wrath
-		[GladiusEx:SafeGetSpellName(13750)]  	= 3,	-- Adrenaline Rush 
-		[GladiusEx:SafeGetSpellName(32182)]  	= 3,	-- Heroism  
-		[GladiusEx:SafeGetSpellName(2825)]  	= 3,	-- Bloodlust
-		[GladiusEx:SafeGetSpellName(13877)]  	= 3,	-- Blade Flurry 
-		[GladiusEx:SafeGetSpellName(1719)]  	= 3,	-- Recklessness
-		[GladiusEx:SafeGetSpellName(12292)]  	= 3,	-- Death Wish
-		[GladiusEx:SafeGetSpellName(3045)]  	= 3,	-- Rapid Fire
-
-		-- Defensives III (2.5)
-
-		[GladiusEx:SafeGetSpellName(22812)]  	= 2.5,	-- Barkskin
-		[GladiusEx:SafeGetSpellName(16689)]   = 2.5,   -- Nature's Grasp
-		[GladiusEx:SafeGetSpellName(22842)]  	= 2.5,	-- Frenzied Regen
-		[GladiusEx:SafeGetSpellName(498)]  	  = 2.5,	-- Divine Protection
-		[GladiusEx:SafeGetSpellName(12975)]  	= 2.5,	-- Last Stand
-		[GladiusEx:SafeGetSpellName(38031)]  	= 2.5,	-- Shield Block
-		[GladiusEx:SafeGetSpellName(66)]	   	= 2.5,	-- Invisibility (initial)
-		[GladiusEx:SafeGetSpellName(20578)]  	= 2.5,	-- Cannibalize
-		[GladiusEx:SafeGetSpellName(8178)]  	= 2.5,	-- Grounding Totem Effect
-		[GladiusEx:SafeGetSpellName(8145)]    = 2.5,   -- Tremor Totem Passive
-		[GladiusEx:SafeGetSpellName(6346)]    = 2.5,   -- Fear Ward
-		[GladiusEx:SafeGetSpellName(30823)]   = 2.5,   -- Shamanistic Rage
-		[GladiusEx:SafeGetSpellName(7812)]   = 2.5,     -- Sacrifice
-
-		-- Offensives II (2)
-
-		[GladiusEx:SafeGetSpellName(5217)]  	= 2,	-- Tiger's Fury
-		[GladiusEx:SafeGetSpellName(12043)]  	= 2,	-- Presence of Mind
-		[GladiusEx:SafeGetSpellName(10060)]  	= 2,	-- Power Infusion
-		[GladiusEx:SafeGetSpellName(12328)]  	= 2,	-- Sweeping Strikes
-        [GladiusEx:SafeGetSpellName(44544)]     = 2, -- Fingers of Frost
-
-		-- Misc (1)
-
-		[GladiusEx:SafeGetSpellName(2645)]		= 1,	-- Ghost Wolf
-		[GladiusEx:SafeGetSpellName(12051)]   = 1,  -- Evocation
-		[GladiusEx:SafeGetSpellName(16190)]  	= 1,	-- Mana Tide Totem
-		[GladiusEx:SafeGetSpellName(1850)]  	= 1,	-- Dash
-		[GladiusEx:SafeGetSpellName(5118)]  	= 1,	-- Aspect of the Cheetah
-		[GladiusEx:SafeGetSpellName(2983)]  	= 1,	-- Sprint
-		[GladiusEx:SafeGetSpellName(36554)]  	= 1,	-- Shadowstep
-		[GladiusEx:SafeGetSpellName(41425)]  	= 1,	-- Hypothermia
-		[GladiusEx:SafeGetSpellName(25771)]  	= 1,	-- Forbearance
-		[GladiusEx:SafeGetSpellName(11426)]   = 1,  -- Ice Barrier
-		[GladiusEx:SafeGetSpellName(1543)]    = 1,  -- Flare
+		-- [GladiusEx:SafeGetSpellName(10060)]  	= 2,	-- Power Infusion
+		
+        -- [GladiusEx:SafeGetSpellName(76577)] = 5, -- Smoke Bomb
+		-- [GladiusEx:SafeGetSpellName(2645)]		= 1,	-- Ghost Wolf
+		-- [GladiusEx:SafeGetSpellName(16190)]  	= 1,	-- Mana Tide Totem
+		-- [GladiusEx:SafeGetSpellName(1850)]  	= 1,	-- Dash
+		-- [GladiusEx:SafeGetSpellName(5118)]  	= 1,	-- Aspect of the Cheetah
+		-- [GladiusEx:SafeGetSpellName(2983)]  	= 1,	-- Sprint
+		-- [GladiusEx:SafeGetSpellName(36554)]  	= 1,	-- Shadowstep
+		-- [GladiusEx:SafeGetSpellName(41425)]  	= 1,	-- Hypothermia
+		-- [GladiusEx:SafeGetSpellName(25771)]  	= 1,	-- Forbearance
+		-- [GladiusEx:SafeGetSpellName(11426)]   = 1,  -- Ice Barrier
+		-- [GladiusEx:SafeGetSpellName(1543)]    = 1,  -- Flare
   }
 end
 
@@ -538,3 +544,12 @@ end
 function GladiusEx.Data.GetNumArenaOpponentSpecs()
     return GetNumArenaOpponentSpecs()
 end
+
+
+
+
+
+
+
+
+

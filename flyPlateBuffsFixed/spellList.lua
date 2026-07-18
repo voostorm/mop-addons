@@ -401,7 +401,6 @@ local major_offensive_buffs = {
 	113858, -- Dark Soul: Instability
 	113861, -- Dark Soul: Knowledge
 	113860, -- Dark Soul: Misery
-	120679, -- Dire Beast
 	16166, -- Elemental Mastery
 	115288, -- Energizing Brew
 	82726, -- Fervor
@@ -428,6 +427,7 @@ local major_offensive_buffs = {
 -- size 1.5
 local  minor_offensive_buffs = {
 	114206, -- Skull Banner -- 20% Crit Damage
+	11366, -- Free Pyro Buff
 	-- 93435, -- Roar of Courage
 	-- 104423, -- Windsong
 	-- 12880, -- Enrage

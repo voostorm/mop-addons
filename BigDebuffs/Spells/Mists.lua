@@ -286,6 +286,7 @@ addon.Spells = {
     [110696] = { type = IMMUNITY }, -- Ice Block (Mage)
     [45438]  = { type = IMMUNITY }, -- Ice Block
     [122465] = { type = IMMUNITY }, -- Dematerialize
+    [11327]	= { type = IMMUNITY }, -- Vanish
 
     -- DEBUFF_OFFENSIVE -- for raid frames to see who they going what big damage is incoming
     [46392]  = { type = DEBUFF_OFFENSIVE }, -- Focused Assault
@@ -421,39 +422,39 @@ addon.Spells = {
     -- BUFF_OFFENSIVE
     [13750]  = { type = BUFF_OFFENSIVE }, -- Adrenaline Rush
     [12042]  = { type = BUFF_OFFENSIVE }, -- Arcane Power
-    [114049] = { type = BUFF_OFFENSIVE }, -- Ascendance
+    [114050] = { type = BUFF_OFFENSIVE }, -- Ascendance (Elemental Shaman)
+    [114051] = { type = BUFF_OFFENSIVE }, -- Ascendance (Enhancement Shaman)
     [107574] = { type = BUFF_OFFENSIVE }, -- Avatar
     [31884]  = { type = BUFF_OFFENSIVE }, -- Avenging Wrath
     [50334]  = { type = BUFF_OFFENSIVE }, -- Berserk
-    [23505]  = { type = BUFF_OFFENSIVE }, -- Berserking (BG DMG BUFF)
+    -- [23505]  = { type = BUFF_OFFENSIVE }, -- Berserking (BG DMG BUFF)
     [13877]  = { type = BUFF_OFFENSIVE }, -- Blade Flurry
-    [20572]  = { type = BUFF_OFFENSIVE }, -- Blood Fury (Racial)
-    [2825]   = { type = BUFF_OFFENSIVE }, -- Bloodlust
-    [126690] = { type = BUFF_OFFENSIVE }, -- Call of Conquest
-    [126683] = { type = BUFF_OFFENSIVE }, -- Call of Dominance
-    [126679] = { type = BUFF_OFFENSIVE }, -- Call of Victory
+    -- [20572]  = { type = BUFF_OFFENSIVE }, -- Blood Fury (Racial)
+    -- [2825]   = { type = BUFF_OFFENSIVE }, -- Bloodlust
+    -- [126690] = { type = BUFF_OFFENSIVE }, -- Call of Conquest
+    -- [126683] = { type = BUFF_OFFENSIVE }, -- Call of Dominance
+    -- [126679] = { type = BUFF_OFFENSIVE }, -- Call of Victory
     [112071] = { type = BUFF_OFFENSIVE }, -- Celestial Alignment
     [113858] = { type = BUFF_OFFENSIVE }, -- Dark Soul: Instability
     [113861] = { type = BUFF_OFFENSIVE }, -- Dark Soul: Knowledge
     [113860] = { type = BUFF_OFFENSIVE }, -- Dark Soul: Misery
-    [120679] = { type = BUFF_OFFENSIVE }, -- Dire Beast
+
     [16166]  = { type = BUFF_OFFENSIVE }, -- Elemental Mastery
     [115288] = { type = BUFF_OFFENSIVE }, -- Energizing Brew
     [82726]  = { type = BUFF_OFFENSIVE }, -- Fervor
-    [44544]  = { type = BUFF_OFFENSIVE }, -- Fingers of Frost
-    [108288] = { type = BUFF_OFFENSIVE }, -- Heart of the Wild
-    [32182]  = { type = BUFF_OFFENSIVE }, -- Heroism
+    [44544]  = { type = BUFF_OFFENSIVE }, -- Fingers of Frost -- -1 priority, overlaps with icy veins
+    -- [108288] = { type = BUFF_OFFENSIVE }, -- Heart of the Wild
+    -- [32182]  = { type = BUFF_OFFENSIVE }, -- Heroism
     [105809] = { type = BUFF_OFFENSIVE }, -- Holy Avenger
     [131078]  = { type = BUFF_OFFENSIVE }, -- Icy Veins (no check spell id)
     [19577]  = { type = BUFF_OFFENSIVE }, -- Intimidation (Buff)
     [51690]  = { type = BUFF_OFFENSIVE }, -- Killing Spree
     [51271]  = { type = BUFF_OFFENSIVE }, -- Pillar of Frost
     [10060]  = { type = BUFF_OFFENSIVE }, -- Power Infusion
-    [69369]  = { type = BUFF_OFFENSIVE }, -- Predator's Swiftness
+    -- [69369]  = { type = BUFF_OFFENSIVE }, -- Predator's Swiftness
     [3045]   = { type = BUFF_OFFENSIVE }, -- Rapid Fire
     [1719]   = { type = BUFF_OFFENSIVE }, -- Recklessness
     [51713]  = { type = BUFF_OFFENSIVE }, -- Shadow Dance
-    [121818] = { type = BUFF_OFFENSIVE }, -- Stampede
     [34471]  = { type = BUFF_OFFENSIVE }, -- The Beast Within
     [5217]   = { type = BUFF_OFFENSIVE }, -- Tiger's Fury
     [49016]  = { type = BUFF_OFFENSIVE }, -- Unholy Frenzy
