@@ -300,7 +300,6 @@ local major_defensive_buffs = {
 	31850, -- Ardent Defender
 	22812, -- Barkskin 
 	6940, -- Blessing of Sacrifice
-	111397, -- Blood Horror
 	45182, -- Cheating Death
 	74001, -- Combat Readiness
 	1742, -- Cower (Pet)
@@ -311,8 +310,7 @@ local major_defensive_buffs = {
     47585, -- Dispersion
 	31842, -- Divine Favor
 	64843, -- Divine Hymn 
-	498, -- Divine Protection 
-	55694, -- Enraged Regeneration 
+	498, -- Divine Protection
 	5277, -- Evasion 
 	110791, -- Evasion (Druid) (Symbiosis)
 	5384, -- Feign Death
@@ -323,8 +321,6 @@ local major_defensive_buffs = {
 	1022, -- Hand of Protection
 	48792, -- Icebound Fortitude 
 	110575, -- Icebound Fortitude (Druid) (Symbiosis)
-	1463, -- Incanter's Ward
-	102342, -- Ironbark 
 	12975, -- Last Stand
 	116849, -- Life Cocoon
 	132158, -- Nature's Swiftness
@@ -332,12 +328,10 @@ local major_defensive_buffs = {
 	33206, -- Pain Suppression 
 	81782, -- Power Word: Barrier
 	12043, -- Presence of Mind, No Check Spell ID, just the buff name, can either be defensive or offensive but want size to be big so added here
-	116844, -- Ring of Peace
 	53480, -- Roar of Sacrifice (Hunter Pet Skill)
 	30823, -- Shamanistic Rage 
 	871, -- Shield Wall 
 	98007, -- Spirit Link Totem
-	20711, -- Spirit of Redemption
 	61336, -- Survival Instincts 
 	115610, -- Temporal Shield 
 	122470, -- Touch of Karma
@@ -345,11 +339,17 @@ local major_defensive_buffs = {
 	122291, -- Unending Resolve (Druid) (Symbiosis)
 	114030, -- Vigilance
 	131523, -- Zen Meditation
+	69369, -- Predator's Swiftness 
+	102342, -- Ironbark
+	111397, -- Blood Horror
 }
 
 -- size 1.7
 -- only shown on nameplates & not on bigdebuffs addon 
 local minor_defensive_buffs = {
+	1463, -- Incanter's Ward
+	116844, -- Ring of Peace
+	55694, -- Enraged Regeneration
 	122278, -- Dampen Harm
 	81256, -- Dancing Rune Weapon -- 20% Parry
 	1966, -- Feint -- don't check spell id, too many
@@ -377,6 +377,8 @@ local minor_defensive_buffs = {
 	16491, -- Second Wind
 	114893, -- Stone Bulwark
 	114168, -- Dark Apotheosis
+	16689, -- Nature's Grasp Buff
+	114039, -- Hand of Purity
 }
 
 -- size 1.6
@@ -386,7 +388,7 @@ local major_offensive_buffs = {
 	114049, -- Ascendance 
 	107574, -- Avatar
 	31884, -- Avenging Wrath 
-	23505, -- Battleground Damage buff 
+	23505, -- Battleground Damage buff
 	23451, -- Battleground Speed buff 
 	50334, -- Berserk
 	23505, -- Berserking (BG DMG BUFF)
@@ -410,10 +412,8 @@ local major_offensive_buffs = {
 	131078, -- Icy Veins -- no check spell id
 	51690, -- Killing Spree
 	103958, -- Metamorphosis
-	16689, -- Nature's Grasp Buff
 	51271, -- Pillar of Frost 
 	10060, -- Power Infusion 
-	69369, -- Predator's Swiftness 
 	3045, -- Rapid Fire 
 	1719, -- Recklessness
 	51713, -- Shadow Dance
@@ -422,6 +422,7 @@ local major_offensive_buffs = {
 	5217, -- Tiger's Fury
 	49016, -- Unholy Frenzy
 	108288, -- Heart of the Wild
+	122783, -- Diffuse Magic
 }
 
 -- size 1.5
@@ -447,8 +448,8 @@ local cc_immunities = {
 	115018, -- Desecrated Ground
 	137562, -- Nimble Brew
 	49039, -- Lichborne
-	18499, -- Berserker Rage
-	7744, -- Will of the Forsaken 
+	18499, -- Berserker Rage 
+	6346, -- Fear Ward
 }
 
 -- size 1.8
@@ -464,9 +465,6 @@ local spell_immunities = {
 	33961, -- Spell Reflection
 	23920, -- Spell Reflection (Warrior)
 	113002, -- Spell Reflection (Druid) (symbiosis)
-	122783, -- Diffuse Magic
-	6346, -- Fear Ward
-	114039, -- Hand of Purity
 }
 
 -- size 1.5
@@ -476,7 +474,7 @@ local mobility_buffs = {
 	79206, -- spiritwalker's grace
 	114239, -- Phantasm
 	1044, -- Hand of Freedom
-	-- 53271, -- Master's Call
+	54216, -- Master's Call (Magic, Dispellable)
 	62305, -- Master's Call -- no check id because there are multiple ids which this might not be the correct one
 	116841, -- Tiger's Lust
 	118922, -- Posthaste
@@ -518,16 +516,18 @@ local drinkflags = {
 	301089, -- Horde Flag (Twin Peaks Flag)
 	23333, -- Warsong Flag (horde WSG flag)
 	23335, -- Silverwing Flag (alliance WSG flag)
-	22734, -- Drink
-	46755, -- Drink
-	27089, -- Drink
-	43183, -- Drink
-	57073, -- Drink
 	34976, -- Nether Flag (Eye of the Storm flag)
 	141210, -- Horde Mine (Silvershard Mines flag)
 	140876, -- Alliance Mine (Silvershard Mines flag)
 	46393, -- Brutal Assault
 	46392, -- Focused Assault
+	22734, -- Drink
+	46755, -- Drink
+	27089, -- Drink
+	43183, -- Drink
+	57073, -- Drink
+	46755, -- Drink
+	44166, -- Refreshment
 }
 
 -- size 1.4
@@ -538,17 +538,20 @@ local stances_forms = {
 	24858, -- Moonkin Form
 	33891, -- Incarnation: Tree of Life
 	115191, -- Stealth
+	1784, -- Stealth with speed (probably a glyph)
 	115834, -- Shroud of Concealment
 	80325, -- Camouflage
 	51755, -- Camouflage
 	90954, -- Camouflage
 	119450, -- Camouflage
 	119030, -- Spectral Guise -- No Check Spell ID, just the buff name 1.6
-	66, -- Invisibility
+	66, -- Invisibility (initial)
+	32612, -- Invisibility (main)
 	2645, -- Ghost Wolf
 	48266, -- Frost Presence (DK)
 	48265, -- Unholy Presence (DK)
 	48263, -- Blood Presence (DK)
+	5215, -- Prowl
 }
 
 -- size 1.5

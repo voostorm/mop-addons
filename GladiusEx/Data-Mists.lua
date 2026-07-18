@@ -13,6 +13,14 @@ end
 function GladiusEx.Data.DefaultClassicon()
 	return {
 		-- Higher Number is More Priority
+        -- Drinks
+        [GladiusEx:SafeGetSpellName(22734)] = 10, -- Drink
+        [GladiusEx:SafeGetSpellName(46755)] = 10, -- Drink
+        [GladiusEx:SafeGetSpellName(27089)] = 10, -- Drink
+        [GladiusEx:SafeGetSpellName(43183)] = 10, -- Drink
+        [GladiusEx:SafeGetSpellName(57073)] = 10, -- Drink
+        [GladiusEx:SafeGetSpellName(46755)] = 10, -- Drink
+        [GladiusEx:SafeGetSpellName(44166)] = 10, -- Refreshment
 
 		-- CCs
         [GladiusEx:SafeGetSpellName(33786)]	= 10, -- Cyclone
@@ -103,7 +111,7 @@ function GladiusEx.Data.DefaultClassicon()
         [GladiusEx:SafeGetSpellName(56626)] = 10, -- Sting (Wasp)
         [GladiusEx:SafeGetSpellName(107570)] = 10, -- Storm Bolt
         [GladiusEx:SafeGetSpellName(132169)] = 10, -- Storm Bolt 2
-        [GladiusEx:SafeGetSpellName(7922)] = 10, -- Charge Stun
+        [GladiusEx:SafeGetSpellName(7922)] = 9.9, -- Charge Stun
         [GladiusEx:SafeGetSpellName(118000)] = 10, -- Dragon Roar
         [GladiusEx:SafeGetSpellName(118895)] = 10, -- Dragon Roar
         [GladiusEx:SafeGetSpellName(77505)] = 10, -- Earthquake
@@ -167,6 +175,7 @@ function GladiusEx.Data.DefaultClassicon()
         [GladiusEx:SafeGetSpellName(44544)]	= 8.5, -- Fingers of Frost
         [GladiusEx:SafeGetSpellName(12042)]	= 8.5, -- Arcane Power
         [GladiusEx:SafeGetSpellName(114050)] = 8.5, -- Ascendance (Elemental Shaman)
+        [GladiusEx:SafeGetSpellName(114051)] = 8.5, -- Ascendance (Enhancement Shaman)
         [GladiusEx:SafeGetSpellName(112071)] = 8.5, -- Celestial Alignment
         [GladiusEx:SafeGetSpellName(113858)] = 8.5, -- Dark Soul: Instability
         [GladiusEx:SafeGetSpellName(113861)] = 8.5, -- Dark Soul: Knowledge
@@ -188,12 +197,10 @@ function GladiusEx.Data.DefaultClassicon()
         [GladiusEx:SafeGetSpellName(39965)]	= 8, -- Frost Grenade
         [GladiusEx:SafeGetSpellName(115757)] = 8, -- Frost Nova (Glyph of Ice Block)
         [GladiusEx:SafeGetSpellName(110693)] = 8, -- Frost Nova (Mage) [Symbiosis]
-        [GladiusEx:SafeGetSpellName(55536)]	= 8, -- Frostweave Net
         [GladiusEx:SafeGetSpellName(87194)]	= 8, -- Glyph of Mind Blast
         [GladiusEx:SafeGetSpellName(111340)] = 8, -- Ice Ward
         [GladiusEx:SafeGetSpellName(102359)] = 8, -- Mass Entanglement
         [GladiusEx:SafeGetSpellName(136634)] = 8, -- Narrow Escape
-        [GladiusEx:SafeGetSpellName(31367)]	= 8, -- Netherweave Net (Item) (Does not wo
         [GladiusEx:SafeGetSpellName(115000)] = 8, -- Remorseless Winter
         [GladiusEx:SafeGetSpellName(91807)]	= 8, -- Shambling Rush (Dark Transformation)
         [GladiusEx:SafeGetSpellName(123407)] = 8, -- Spinning Fire Blossom
@@ -210,7 +217,6 @@ function GladiusEx.Data.DefaultClassicon()
 		[GladiusEx:SafeGetSpellName(90327)]	= 8, -- Lock Jaw
 
         -- Offensive - Melee Burst CD disarm not effective can be stopped with roots
-        [GladiusEx:SafeGetSpellName(114051)] = 7.5, -- Ascendance (Enhancement Shaman)
         [GladiusEx:SafeGetSpellName(50334)]	= 7.5, -- Berserk
         [GladiusEx:SafeGetSpellName(115288)] = 7.5, -- Energizing Brew
 
@@ -225,6 +231,25 @@ function GladiusEx.Data.DefaultClassicon()
         [GladiusEx:SafeGetSpellName(137461)] = 7, -- Ring of Peace (Disarm effect)
         [GladiusEx:SafeGetSpellName(91644)]	= 7, -- Snatch (Bird of Prey)
 
+        -- cc immunities
+        [GladiusEx:SafeGetSpellName(46924)] = 8, -- Bladestorm
+        [GladiusEx:SafeGetSpellName(115018)] = 7, -- Desecrated Ground
+        [GladiusEx:SafeGetSpellName(137562)] = 8.9, -- Nimble Brew
+        [GladiusEx:SafeGetSpellName(49039)] = 9.5, -- Lichborne
+        [GladiusEx:SafeGetSpellName(18499)] = 9.5, -- Berserker Rage
+        [GladiusEx:SafeGetSpellName(6346)] = 8.4, -- Fear Ward
+        -- immune to magic cc
+        [GladiusEx:SafeGetSpellName(48707)] = 8.1, -- Anti-Magic Shell (Death Knight)
+        [GladiusEx:SafeGetSpellName(110570)] = 8.1, -- Anti-Magic Shell (Druid) (symbiosis)
+        [GladiusEx:SafeGetSpellName(31224)] = 8.1, -- Cloak of Shadows (Rogue)
+        [GladiusEx:SafeGetSpellName(110788)] = 8.1, -- Cloak of Shadows (Druid) (symbiosis)
+        [GladiusEx:SafeGetSpellName(8178)] = 8.1, -- Grounding Totem Effect
+        [GladiusEx:SafeGetSpellName(114028)] = 8.1, -- Mass Spell Reflection
+        [GladiusEx:SafeGetSpellName(89523)] = 8.1, -- Grounding Totem (reflect)
+        [GladiusEx:SafeGetSpellName(33961)] = 8.1, -- Spell Reflection
+        [GladiusEx:SafeGetSpellName(23920)] = 8.1, -- Spell Reflection (Warrior)
+        [GladiusEx:SafeGetSpellName(113002)] = 8.1, -- Spell Reflection (Druid) (symbiosis)
+        
         -- Offensive - Melee Burst CD (can be stopped with roots 8 and disarms 7)
         [GladiusEx:SafeGetSpellName(1719)] = 6,	-- Recklessness
         [GladiusEx:SafeGetSpellName(13750)] = 6, -- Adrenaline Rush
@@ -235,73 +260,128 @@ function GladiusEx.Data.DefaultClassicon()
         [GladiusEx:SafeGetSpellName(51271)] = 6, -- Pillar of Frost
         [GladiusEx:SafeGetSpellName(31884)] = 6, -- Avenging Wrath
 
-        -- bit of misc from here
-        -- Drinks for Mana Restoring
-        [GladiusEx:SafeGetSpellName(44166)]	= 5,	-- Refreshment
-		[GladiusEx:SafeGetSpellName(27089)]	= 5,	-- Drink1
-		[GladiusEx:SafeGetSpellName(46755)]	= 5,	-- Drink2
-        -- Invisibility
-        [GladiusEx:SafeGetSpellName(5215)]	= 5,	-- Prowl
-		[GladiusEx:SafeGetSpellName(32612)]	= 5,	-- Invisibility (main)
-		[GladiusEx:SafeGetSpellName(1784)]	= 5,	-- Stealth 
-        -- Deselect Target
-		[GladiusEx:SafeGetSpellName(5384)]	= 5,	-- Feign Death
+        -- Defensive Cooldowns
+        [GladiusEx:SafeGetSpellName(110909)] = 5, -- Alter Time
+        [GladiusEx:SafeGetSpellName(114214)] = 5, -- Angelic Bulwark
+        [GladiusEx:SafeGetSpellName(50461)]  = 5, -- Anti-Magic Zone
+        [GladiusEx:SafeGetSpellName(31850)]  = 5, -- Ardent Defender
+        [GladiusEx:SafeGetSpellName(22812)]  = 5, -- Barkskin
+        [GladiusEx:SafeGetSpellName(6940)]   = 5, -- Blessing of Sacrifice
+        [GladiusEx:SafeGetSpellName(45182)]  = 5, -- Cheating Death
+        [GladiusEx:SafeGetSpellName(74001)]  = 5, -- Combat Readiness
+        [GladiusEx:SafeGetSpellName(1742)]   = 5, -- Cower (Pet)
+        [GladiusEx:SafeGetSpellName(110913)] = 5, -- Dark Bargain
+        [GladiusEx:SafeGetSpellName(31821)]  = 5, -- Devotion Aura
+        [GladiusEx:SafeGetSpellName(118038)] = 5, -- Die by the Sword
+        [GladiusEx:SafeGetSpellName(110715)] = 5, -- Dispersion (Priest)
+        [GladiusEx:SafeGetSpellName(47585)]  = 5, -- Dispersion
+        [GladiusEx:SafeGetSpellName(31842)]  = 5, -- Divine Favor
+        [GladiusEx:SafeGetSpellName(64843)]  = 5, -- Divine Hymn
+        [GladiusEx:SafeGetSpellName(498)]    = 5, -- Divine Protection
+        [GladiusEx:SafeGetSpellName(122783)] = 5, -- Diffuse Magic
+        [GladiusEx:SafeGetSpellName(5277)]   = 5, -- Evasion
+        [GladiusEx:SafeGetSpellName(110791)] = 5, -- Evasion (Druid) (Symbiosis)
+        [GladiusEx:SafeGetSpellName(5384)]   = 5, -- Feign Death
+        [GladiusEx:SafeGetSpellName(126456)] = 5, -- Fortifying Brew
+        [GladiusEx:SafeGetSpellName(22842)]  = 5, -- Frenzied Regeneration
+        [GladiusEx:SafeGetSpellName(86659)]  = 5, -- Guardian of Ancient Kings
+        [GladiusEx:SafeGetSpellName(47788)]  = 5, -- Guardian Spirit
+        [GladiusEx:SafeGetSpellName(1022)]   = 5, -- Hand of Protection
+        [GladiusEx:SafeGetSpellName(48792)]  = 5, -- Icebound Fortitude
+        [GladiusEx:SafeGetSpellName(110575)] = 5, -- Icebound Fortitude (Druid) (Symbiosis)
+        [GladiusEx:SafeGetSpellName(12975)]  = 5, -- Last Stand
+        [GladiusEx:SafeGetSpellName(116849)] = 5, -- Life Cocoon
+        [GladiusEx:SafeGetSpellName(33206)]  = 5, -- Pain Suppression
+        [GladiusEx:SafeGetSpellName(81782)]  = 5, -- Power Word: Barrier
+        [GladiusEx:SafeGetSpellName(53480)]  = 5, -- Roar of Sacrifice (Hunter Pet Skill)
+        [GladiusEx:SafeGetSpellName(30823)]  = 5, -- Shamanistic Rage
+        [GladiusEx:SafeGetSpellName(871)]    = 5, -- Shield Wall
+        [GladiusEx:SafeGetSpellName(98007)]  = 5, -- Spirit Link Totem
+        [GladiusEx:SafeGetSpellName(61336)]  = 5, -- Survival Instincts
+        [GladiusEx:SafeGetSpellName(115610)] = 5, -- Temporal Shield
+        [GladiusEx:SafeGetSpellName(122470)] = 5, -- Touch of Karma
+        [GladiusEx:SafeGetSpellName(104773)] = 5, -- Unending Resolve
+        [GladiusEx:SafeGetSpellName(122291)] = 5, -- Unending Resolve (Druid) (Symbiosis)
+        [GladiusEx:SafeGetSpellName(114030)] = 5, -- Vigilance
+        [GladiusEx:SafeGetSpellName(131523)] = 5, -- Zen Meditation
+        
+        -- Higher Constraint Debuffs
+        [GladiusEx:SafeGetSpellName(41425)] = 4.5, -- Hypothermia
+        [GladiusEx:SafeGetSpellName(25771)] = 4.5, -- Forbearance
 
-        -- commenting out all below for now. Adding stuff as I go.
-        -- most of them are covered by nameplates but aura on arena portait is extra emphasis
-        -- to preemptively react by being alerted
+        -- Minor Defensive Cooldowns
+        [GladiusEx:SafeGetSpellName(55694)] = 4, -- Enraged Regeneration
+        [GladiusEx:SafeGetSpellName(111397)] = 4, -- Blood Horror
+        [GladiusEx:SafeGetSpellName(16689)] = 4, -- Nature's Grasp
+        [GladiusEx:SafeGetSpellName(102342)] = 4, -- Ironbark
 
-		-- [GladiusEx:SafeGetSpellName(1022)]  	= 7,	-- Blessing of Protection
-		-- [GladiusEx:SafeGetSpellName(33206)]   = 7, -- Pain Suppression
-		-- [GladiusEx:SafeGetSpellName(5277)]  	= 7,	-- Evasion
+		-- 3 Movement Freedom
+		[GladiusEx:SafeGetSpellName(124488)] = 3, -- Zen Focus
+        [GladiusEx:SafeGetSpellName(96267)] = 3, -- Inner Focus
+        [GladiusEx:SafeGetSpellName(79206)] = 3, -- spiritwalker's grace
+        [GladiusEx:SafeGetSpellName(114239)] = 3, -- Phantasm
+        [GladiusEx:SafeGetSpellName(1044)] = 3, -- Hand of Freedom
+        [GladiusEx:SafeGetSpellName(54216)] = 3, -- Master's Call (Magic, Dispellable)
+        [GladiusEx:SafeGetSpellName(62305)] = 3, -- Master's Call -- no check id because there are multiple ids which this might not be the correct one
+        [GladiusEx:SafeGetSpellName(116841)] = 3, -- Tiger's Lust
+        [GladiusEx:SafeGetSpellName(118922)] = 3, -- Posthaste
+        [GladiusEx:SafeGetSpellName(108843)] = 3, -- Blazing Speed
+        [GladiusEx:SafeGetSpellName(73325)] = 3, -- Leap of Faith
+        [GladiusEx:SafeGetSpellName(121557)] = 3, -- Angelic Feather
+        [GladiusEx:SafeGetSpellName(36554)] = 3, -- Shadowstep
+        [GladiusEx:SafeGetSpellName(77761)] = 3, -- Stampeding Roar
+        [GladiusEx:SafeGetSpellName(96268)] = 3, -- Death's Advance
+        [GladiusEx:SafeGetSpellName(137573)] = 3, -- Burst of Speed
+        [GladiusEx:SafeGetSpellName(108212)] = 3, -- Burst of Speed
+        [GladiusEx:SafeGetSpellName(114896)] = 3, -- Windwalk
+        [GladiusEx:SafeGetSpellName(58875)] = 3, -- Spirit Walk
+        [GladiusEx:SafeGetSpellName(111400)] = 3, -- Burning Rush
+        [GladiusEx:SafeGetSpellName(79438)] = 3, -- Soulburn: Demonic Circle
 
-
-		-- -- Defensives
-		-- [GladiusEx:SafeGetSpellName(3411)]    = 6.5,   -- Intervene
-		-- [GladiusEx:SafeGetSpellName(45182)]	 	= 6.5,	 -- Cheat Death
+        -- Abilities for Mana Restoring (Healer Based)
+        [GladiusEx:SafeGetSpellName(29166)] = 2.7, -- Innervate
+        [GladiusEx:SafeGetSpellName(16191)] = 2.7, -- Mana Tide Totem
+        [GladiusEx:SafeGetSpellName(54428)] = 2.7, -- Divine Plea
+	    [GladiusEx:SafeGetSpellName(12051)] = 2.7, -- Evocation
 		
-        -- [GladiusEx:SafeGetSpellName(23920)] = 10,	-- Spell Reflection
-		-- [GladiusEx:SafeGetSpellName(31224)]	= 10,	-- Cloak of Shadows
-	
+		-- 2.5 Speed Boosts
+        [GladiusEx:SafeGetSpellName(2983)] = 2.5, -- Sprint
+        [GladiusEx:SafeGetSpellName(1850)] = 2.5, -- Dash
+        [GladiusEx:SafeGetSpellName(54861)] = 2.5, -- Nitro Boosts
+        [GladiusEx:SafeGetSpellName(65081)] = 2.5, -- Body and Soul
+        [GladiusEx:SafeGetSpellName(133278)] = 2.5,  -- warrior heroic leap PVP set bonus speed buff
+        [GladiusEx:SafeGetSpellName(85499)] = 2.5, -- Speed of Light
 
-		-- [GladiusEx:SafeGetSpellName(18499)]  	= 6,	-- Berserker Rage
+        -- Constraint Debuffs
+        [GladiusEx:SafeGetSpellName(87023)] = 2, -- Cauterize
+        [GladiusEx:SafeGetSpellName(113942)] = 2, -- Demonic Gateway Cooldown
+        [GladiusEx:SafeGetSpellName(770)] = 2, -- Faerie Fire, No Check Spell ID, just the debuff name
+        [GladiusEx:SafeGetSpellName(31615)] = 2, -- Hunter's Mark, No Check Spell ID, just the debuff name
+        [GladiusEx:SafeGetSpellName(1543)] = 2, -- Flare -- don't check id, not sure exact debuff id
+        [GladiusEx:SafeGetSpellName(34709)] = 2, -- Shadow Sight -- Stealth Detection. -- Invisibility Detection. -- Increases damage taken by 5%.
+        [GladiusEx:SafeGetSpellName(44457)] = 2, -- Living Bomb, the contraint is sheep will break on targets that have living bomb, therefore, added.
 
-		
-		-- [GladiusEx:SafeGetSpellName(29166)]  	= 4,	-- Innervate
-		-- [GladiusEx:SafeGetSpellName(31842)]  	= 4,	-- Divine Illumination
-		-- [GladiusEx:SafeGetSpellName(1044)]		= 4,	-- Blessing of Freedom
-		-- [GladiusEx:SafeGetSpellName(34709)]  	= 4,	-- Shadow Sight (eye in arena)
-
-		
-        -- [GladiusEx:SafeGetSpellName(6940)] 	= 2.5,	-- Blessing of Sacrifice
-		-- [GladiusEx:SafeGetSpellName(871)]  	= 2.5,	-- Shield Wall
-		-- [GladiusEx:SafeGetSpellName(22812)]  	= 2.5,	-- Barkskin
-		-- [GladiusEx:SafeGetSpellName(16689)]   = 2.5,   -- Nature's Grasp
-		-- [GladiusEx:SafeGetSpellName(22842)]  	= 2.5,	-- Frenzied Regen
-		-- [GladiusEx:SafeGetSpellName(498)]  	  = 2.5,	-- Divine Protection
-		-- [GladiusEx:SafeGetSpellName(12975)]  	= 2.5,	-- Last Stand
-		-- [GladiusEx:SafeGetSpellName(38031)]  	= 2.5,	-- Shield Block
-		-- [GladiusEx:SafeGetSpellName(66)]	   	= 2.5,	-- Invisibility (initial)
-		-- [GladiusEx:SafeGetSpellName(20578)]  	= 2.5,	-- Cannibalize
-		-- [GladiusEx:SafeGetSpellName(8178)]  	= 2.5,	-- Grounding Totem Effect
-		-- [GladiusEx:SafeGetSpellName(8145)]    = 2.5,   -- Tremor Totem Passive
-	
-		-- [GladiusEx:SafeGetSpellName(30823)]   = 2.5,   -- Shamanistic Rage
-		-- [GladiusEx:SafeGetSpellName(7812)]   = 2.5,     -- Sacrifice
-
-		-- [GladiusEx:SafeGetSpellName(10060)]  	= 2,	-- Power Infusion
-		
-        -- [GladiusEx:SafeGetSpellName(76577)] = 5, -- Smoke Bomb
-		-- [GladiusEx:SafeGetSpellName(2645)]		= 1,	-- Ghost Wolf
-		-- [GladiusEx:SafeGetSpellName(16190)]  	= 1,	-- Mana Tide Totem
-		-- [GladiusEx:SafeGetSpellName(1850)]  	= 1,	-- Dash
-		-- [GladiusEx:SafeGetSpellName(5118)]  	= 1,	-- Aspect of the Cheetah
-		-- [GladiusEx:SafeGetSpellName(2983)]  	= 1,	-- Sprint
-		-- [GladiusEx:SafeGetSpellName(36554)]  	= 1,	-- Shadowstep
-		-- [GladiusEx:SafeGetSpellName(41425)]  	= 1,	-- Hypothermia
-		-- [GladiusEx:SafeGetSpellName(25771)]  	= 1,	-- Forbearance
-		-- [GladiusEx:SafeGetSpellName(11426)]   = 1,  -- Ice Barrier
-		-- [GladiusEx:SafeGetSpellName(1543)]    = 1,  -- Flare
+        -- Stance/Forms
+        [GladiusEx:SafeGetSpellName(5487)] = 1, -- Bear Form
+        [GladiusEx:SafeGetSpellName(768)] = 1, -- Cat Form
+        [GladiusEx:SafeGetSpellName(783)] = 1, -- Travel Form
+        [GladiusEx:SafeGetSpellName(24858)] = 1, -- Moonkin Form
+        [GladiusEx:SafeGetSpellName(33891)] = 1, -- Incarnation: Tree of Life
+        [GladiusEx:SafeGetSpellName(115191)] = 1, -- Stealth
+        [GladiusEx:SafeGetSpellName(1784)] = 1, -- Stealth with speed (probably a glyph)
+        [GladiusEx:SafeGetSpellName(115834)] = 1, -- Shroud of Concealment
+        [GladiusEx:SafeGetSpellName(80325)] = 1, -- Camouflage
+        [GladiusEx:SafeGetSpellName(51755)] = 1, -- Camouflage
+        [GladiusEx:SafeGetSpellName(90954)] = 1, -- Camouflage
+        [GladiusEx:SafeGetSpellName(119450)] = 1, -- Camouflage
+        [GladiusEx:SafeGetSpellName(119030)] = 1, -- Spectral Guise -- No Check Spell ID, just the buff name 1.6
+        [GladiusEx:SafeGetSpellName(66)] = 1, -- Invisibility (initial)
+        [GladiusEx:SafeGetSpellName(32612)] = 1, -- Invisibility (main)
+        [GladiusEx:SafeGetSpellName(2645)] = 1, -- Ghost Wolf
+        [GladiusEx:SafeGetSpellName(48266)] = 1, -- Frost Presence (DK)
+        [GladiusEx:SafeGetSpellName(48265)] = 1, -- Unholy Presence (DK)
+        [GladiusEx:SafeGetSpellName(48263)] = 1, -- Blood Presence (DK)
+        [GladiusEx:SafeGetSpellName(5215)] = 1, -- Prowl
   }
 end
 
@@ -316,7 +396,7 @@ function GladiusEx.Data.DefaultCooldowns()
             [5211] = true, -- Druid/Bash
             [16979] = true, -- Druid/Feral Charge
             [17116] = true, -- Druid/Nature's Swiftness
-            [29166] = true, -- Druid/Nature's Swiftness
+            [29166] = true, -- Druid/Innervate
             [19574] = true, -- Hunter/Bestial Wrath
             [19263] = true, -- Hunter/Deterrence
             [781] = true, -- Hunter/Disengage
