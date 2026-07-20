@@ -157,33 +157,6 @@ LCT_SpellData[116841] = {
 	duration = 6,
 	cooldown = 30,
 }
--- Serenity
-LCT_SpellData[152173] = {
-	class = "MONK",
-	talent = true,
-	specID = { 268, 269 },
-	defensive = true,
-	duration = 10,
-	cooldown = 90
-}
--- Breath of the serpent
-LCT_SpellData[157535] = {
-	class = "MONK",
-	talent = true,
-	specID = { 270 },
-	defensive = true,
-	duration = 10,
-	cooldown = 90,
-}
--- Hurricane strike
-LCT_SpellData[152175] = {
-	class = "MONK",
-	talent = true,
-	specID = { 269 },
-	offensive = true,
-	duration = 2,
-	cooldown = 45,
-}
 -- Monk/Brewmaster
 -- Elusive Brew
 LCT_SpellData[115308] = {
@@ -214,7 +187,6 @@ LCT_SpellData[115315] = {
 	specID = { 268 },
 	cooldown = 10
 }
-
 -- Monk/Windwalker
 -- Zen Meditation
 LCT_SpellData[115176] = {

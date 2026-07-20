@@ -140,7 +140,7 @@ addonTable.CDs = {
 	["DRUID"] = {
 		-- // reviewed 2024/05/23
 		[29166]	= 132,	-- https://www.wowhead.com/cata/ru/spell=29166
-		[22812]	= 60,		-- https://www.wowhead.com/cata/ru/spell=22812
+		[22812]	= 45,		-- barkskin baseline 1 min cd but Malfurion's Gift 45
 		[16689]	= 60,		-- https://www.wowhead.com/cata/ru/spell=16689
 		[77764]	= 120,	-- https://www.wowhead.com/cata/ru/spell=77764
 		[16979]	= 14,		-- https://www.wowhead.com/cata/ru/spell=16979

@@ -210,16 +210,12 @@ addon.Spells = {
     [76577] = { type = CROWD_CONTROL }, -- Smoke Bomb
 
     -- INTERRUPTS
-    [72]    = { type = INTERRUPT, duration = 6 }, -- Shield Bash (Warrior)
     [1766]  = { type = INTERRUPT, duration = 5 }, -- Kick (Rogue)
     [2139]  = { type = INTERRUPT, duration = 8 }, -- Counterspell (Mage)
     [6552]  = { type = INTERRUPT, duration = 4 }, -- Pummel
-    [13491] = { type = INTERRUPT, duration = 5 }, -- Iron Knuckles
-    [16979] = { type = INTERRUPT, duration = 4 }, -- Feral Charge (Druid)
     [19647] = { type = INTERRUPT, duration = 6 }, -- Spell Lock - Rank 1 (Warlock)
     [26090] = { type = INTERRUPT, duration = 2, }, -- Pummel (Pet)
     [26679] = { type = INTERRUPT, duration = 3 }, -- Deadly Throw
-    [29443] = { type = INTERRUPT, duration = 10 }, -- Clutch of Foresight
     [47528] = { type = INTERRUPT, duration = 4, },  -- Mind Freeze
     [50318] = { type = INTERRUPT, duration = 4 }, -- Serenity Dust (Moth - Hunter Pet)
     [50479] = { type = INTERRUPT, duration = 2},  -- Nether Shock (Nether Ray - Hunter Pet)
@@ -228,12 +224,16 @@ addon.Spells = {
     [97547] = { type = INTERRUPT, duration = 5 }, -- Solar Beam Interrupt
     [80964] = { type = INTERRUPT, duration = 4 }, -- Skull Bash (Bear)
     [80965] = { type = INTERRUPT, duration = 4 }, -- Skull Bash (Cat)
+    [93985] = { type = INTERRUPT, duration = 4 }, -- Skull Bash (Druid)
     [91802] = { type = INTERRUPT, duration = 2 },  -- Shambling Rush (pet dk kick)
     [96231] = { type = INTERRUPT, duration = 4 }, -- Rebuke
     [115781] = { type = INTERRUPT, duration = 6 }, -- Optical Blast (Interrupt)
     [119911] = { type = INTERRUPT, duration = 6 }, -- Optical Blast (Interrupt)
-    [147362] = { type = INTERRUPT, duration = 3}, -- Counter Shot (Hunter)
-    [386071] = { type = INTERRUPT, duration = 6 }, -- Disrupting Shout (Warrior)
+    [147362] = { type = INTERRUPT, duration = 3 }, -- Counter Shot (Hunter)
+    [102060] = { type = INTERRUPT, duration = 4 }, -- Disrupting Shout (Warrior)
+
+    [13491] = { type = INTERRUPT, duration = 5 }, -- Iron Knuckles (ITEM, NOT IN ARENA)
+    [29443] = { type = INTERRUPT, duration = 10 }, -- Clutch of Foresight (ITEM, NOT IN ARENA)
 
     -- ROOTS
     [31367] = { type = ROOT }, -- Netherweave Net (Item) (Does not work in Arena)
@@ -300,6 +300,7 @@ addon.Spells = {
     [141210]  = { type = DEBUFF_OFFENSIVE }, -- Horde Mine (Silvershard Mines flag)
     [140876]  = { type = DEBUFF_OFFENSIVE }, -- Alliance Mine (Silvershard Mines flag)
     [83853] = { type = DEBUFF_OFFENSIVE }, -- Combustion
+    [11366] = { type = DEBUFF_OFFENSIVE }, -- Pyroblast (magic debuff tick)
     [49206]  = { type = DEBUFF_OFFENSIVE }, -- Summon Gargoyle
     [108200] = { type = DEBUFF_OFFENSIVE }, -- Remorseless Winter (Indicator to see the stacks)
     [130735] = { type = DEBUFF_OFFENSIVE }, -- Soul Reaper (Frost)

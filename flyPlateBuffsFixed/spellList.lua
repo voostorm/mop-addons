@@ -428,7 +428,6 @@ local major_offensive_buffs = {
 -- size 1.5
 local  minor_offensive_buffs = {
 	114206, -- Skull Banner -- 20% Crit Damage
-	11366, -- Free Pyro Buff
 	-- 93435, -- Roar of Courage
 	-- 104423, -- Windsong
 	-- 12880, -- Enrage

@@ -237,7 +237,7 @@ function GladiusEx.Data.DefaultClassicon()
         [GladiusEx:SafeGetSpellName(137562)] = 8.9, -- Nimble Brew
         [GladiusEx:SafeGetSpellName(49039)] = 9.5, -- Lichborne
         [GladiusEx:SafeGetSpellName(18499)] = 9.5, -- Berserker Rage
-        [GladiusEx:SafeGetSpellName(6346)] = 8.4, -- Fear Ward
+        
         -- immune to magic cc
         [GladiusEx:SafeGetSpellName(48707)] = 8.1, -- Anti-Magic Shell (Death Knight)
         [GladiusEx:SafeGetSpellName(110570)] = 8.1, -- Anti-Magic Shell (Druid) (symbiosis)
@@ -362,6 +362,11 @@ function GladiusEx.Data.DefaultClassicon()
         [GladiusEx:SafeGetSpellName(44457)] = 2, -- Living Bomb, the contraint is sheep will break on targets that have living bomb, therefore, added.
 
         -- Stance/Forms
+        [GladiusEx:SafeGetSpellName(119030)] = 1.2, -- Spectral Guise
+        [GladiusEx:SafeGetSpellName(112833)] = 1.2, -- Spectral Guise
+        [GladiusEx:SafeGetSpellName(119032)] = 1.2, -- Spectral Guise
+        [GladiusEx:SafeGetSpellName(119012)] = 1.2, -- Spectral Guise
+        [GladiusEx:SafeGetSpellName(6346)] = 1, -- Fear Ward
         [GladiusEx:SafeGetSpellName(5487)] = 1, -- Bear Form
         [GladiusEx:SafeGetSpellName(768)] = 1, -- Cat Form
         [GladiusEx:SafeGetSpellName(783)] = 1, -- Travel Form
@@ -374,7 +379,6 @@ function GladiusEx.Data.DefaultClassicon()
         [GladiusEx:SafeGetSpellName(51755)] = 1, -- Camouflage
         [GladiusEx:SafeGetSpellName(90954)] = 1, -- Camouflage
         [GladiusEx:SafeGetSpellName(119450)] = 1, -- Camouflage
-        [GladiusEx:SafeGetSpellName(119030)] = 1, -- Spectral Guise -- No Check Spell ID, just the buff name 1.6
         [GladiusEx:SafeGetSpellName(66)] = 1, -- Invisibility (initial)
         [GladiusEx:SafeGetSpellName(32612)] = 1, -- Invisibility (main)
         [GladiusEx:SafeGetSpellName(2645)] = 1, -- Ghost Wolf
@@ -495,11 +499,9 @@ end
 
 function GladiusEx.Data.Interrupts()
     return {
-        [19675] = { duration = 4 }, -- Feral Charge Effect (Druid)
-        [2139]  = { duration = 7 }, -- Counterspell (Mage)
+        [2139]  = { duration = 8 }, -- Counterspell (Mage)
         [1766]  = { duration = 5 }, -- Kick (Rogue)
         [6552]  = { duration = 4 }, -- Pummel (Warrior)
-        [72]    = { duration = 6 }, -- Shield Bash (Warrior)
         [57994] = { duration = 2 }, -- Wind Shear (Shaman)
         [19647] = { duration = 5 }, -- Spell Lock (Warlock)
         [47528] = { duration = 5 }, -- Mind Freeze (Death Knight)
@@ -507,6 +509,17 @@ function GladiusEx.Data.Interrupts()
         [96231] = { duration = 4 }, -- Rebuke (Paladin)
         [50318] = { duration = 4 }, -- Serenity Dust (Moth - Hunter Pet)
         [50479] = { duration = 2 }, -- Nether Shock (Nether Ray - Hunter Pet)
+        [26090] = { duration = 2 }, -- Pummel (Pet)
+        [26679] = { duration = 3 }, -- Deadly Throw
+        [113288] = { duration = 4 }, -- Solar Beam (Symbiosis) Interrupt
+        [97547] = { duration = 5 }, -- Solar Beam Interrupt
+        [80964] = { duration = 4 }, -- Skull Bash (Bear)
+        [80965] = { duration = 4 }, -- Skull Bash (Cat)
+        [91802] = { duration = 2 }, -- Shambling Rush (pet dk kick)
+        [115781] = { duration = 6 }, -- Optical Blast (Interrupt)
+        [119911] = { duration = 6 }, -- Optical Blast (Interrupt)
+        [147362] = { duration = 3 }, -- Counter Shot (Hunter)
+        [102060] = { duration = 4 }, -- Disrupting Shout (Warrior)
     }
 end
 

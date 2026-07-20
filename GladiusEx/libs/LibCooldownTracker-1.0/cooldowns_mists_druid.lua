@@ -147,7 +147,7 @@ LCT_SpellData[22812] = {
 	specID = { 102, 104, 105 },
 	defensive = true,
 	duration = 12,
-	cooldown = 60
+	cooldown = 45
 }
 -- Celestial Alignment
 LCT_SpellData[112071] = {
