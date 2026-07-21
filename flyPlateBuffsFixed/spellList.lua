@@ -379,6 +379,7 @@ local minor_defensive_buffs = {
 	114168, -- Dark Apotheosis
 	16689, -- Nature's Grasp Buff
 	114039, -- Hand of Purity
+	111264, -- Ice Ward
 }
 
 -- size 1.6

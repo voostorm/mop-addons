@@ -314,6 +314,7 @@ function GladiusEx.Data.DefaultClassicon()
         [GladiusEx:SafeGetSpellName(111397)] = 4, -- Blood Horror
         [GladiusEx:SafeGetSpellName(16689)] = 4, -- Nature's Grasp
         [GladiusEx:SafeGetSpellName(102342)] = 4, -- Ironbark
+        [GladiusEx:SafeGetSpellName(111264)] = 4, -- Ice Ward
 
 		-- 3 Movement Freedom
 		[GladiusEx:SafeGetSpellName(124488)] = 3, -- Zen Focus
