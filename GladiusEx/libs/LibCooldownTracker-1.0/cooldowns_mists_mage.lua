@@ -115,6 +115,10 @@ LCT_SpellData[11958] = {
 	resets = { 45438, 157913, 31661, 122, 120, 157980 },
 	cooldown = 180
 }
+LCT_SpellData[11958] = {
+	class = "MAGE",
+	cooldown = 180
+}
 -- Frostjaw
 LCT_SpellData[102051] = {
 	class = "MAGE",
