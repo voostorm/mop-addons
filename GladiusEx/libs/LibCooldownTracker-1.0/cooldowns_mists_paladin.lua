@@ -12,8 +12,8 @@ LCT_SpellData[498] = {
 	class = "PALADIN",
 	defensive = true,
 	duration = 8,
-	cooldown = 60
-}
+	cooldown = 30 -- unbreakable spirit
+} 
 -- Divine Shield
 LCT_SpellData[642] = {
 	class = "PALADIN",
@@ -220,11 +220,27 @@ LCT_SpellData[26573] = {
 	cooldown = 9
 }
 -- Guardian of Ancient Kings
+LCT_SpellData[86669] = {
+	class = "PALADIN",
+	specID = { 65 }, -- HOLY
+	duration = 15,
+	defensive = true,
+	cooldown = 180
+}
+-- Guardian of Ancient Kings
 LCT_SpellData[86659] = {
 	class = "PALADIN",
-	specID = { 66 },
+	specID = { 66 }, -- PROT
 	duration = 12,
 	defensive = true,
+	cooldown = 180
+}
+-- Guardian of Ancient Kings
+LCT_SpellData[86698] = {
+	class = "PALADIN",
+	specID = { 70 }, -- RET
+	duration = 30,
+	offensive = true,
 	cooldown = 180
 }
 -- Holy Wrath

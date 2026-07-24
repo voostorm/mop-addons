@@ -139,7 +139,7 @@ LCT_SpellData[108281] = {
 LCT_SpellData[16188] = {
 	class = "SHAMAN",
 	talent = true,
-	cooldown_starts_on_aura_fade = true,
+	cc = true,
 	cooldown = 90
 }
 -- Astral Shift

@@ -96,8 +96,9 @@ addonTable.CDs = {
 		[82731] = 60, -- https://www.wowhead.com/cata/ru/spell=82731
 		[82676] = 120, -- https://www.wowhead.com/cata/ru/spell=82676
 		[45438] = 200, -- https://www.wowhead.com/cata/ru/spell=45438
-		[122] = 20, -- https://www.wowhead.com/cata/ru/spell=122
-		[120] = 8, -- https://www.wowhead.com/cata/ru/spell=120
+		[122] = 25, -- https://www.wowhead.com/cata/ru/spell=122
+		[120] = 10, -- https://www.wowhead.com/mop-classic/spell=120/cone-of-cold
+		[33395] = 25, -- https://www.wowhead.com/mop-classic/spell=33395/freeze
 		[12042] = 90, -- https://www.wowhead.com/cata/ru/spell=12042
 		[12043] = 90, -- https://www.wowhead.com/cata/ru/spell=12043
 		[11129] = 120, -- https://www.wowhead.com/cata/ru/spell=11129
@@ -178,7 +179,7 @@ addonTable.CDs = {
 		[26573] = 30, -- https://www.wowhead.com/cata/ru/spell=26573
 		[633] = 180, -- https://www.wowhead.com/cata/ru/spell=633
 		[86150] = 180, -- https://www.wowhead.com/cata/ru/spell=86150
-		[498] = 30, -- https://www.wowhead.com/cata/ru/spell=498
+		[498] = 30, -- https://www.wowhead.com/mop-classic/spell=498/divine-protection?spellModifier=114154
 		[6940] = 66, -- https://www.wowhead.com/cata/ru/spell=6940
 		[642] = 300, -- https://www.wowhead.com/cata/ru/spell=642
 		[1022] = 180, -- https://www.wowhead.com/cata/ru/spell=1022
@@ -267,7 +268,7 @@ addonTable.CDs = {
 		[51533] = 120, -- https://www.wowhead.com/cata/ru/spell=51533
 		[98008] = 180, -- https://www.wowhead.com/cata/ru/spell=98008
 		[16190] = 180, -- https://www.wowhead.com/cata/ru/spell=16190
-		[16188] = 96, -- https://www.wowhead.com/cata/ru/spell=16188
+		[16188] = 90, -- https://www.wowhead.com/mop-classic/spell=16188/ancestral-swiftness
 	},
 	["WARRIOR"] = {
 		-- // reviewed 2024/05/29
@@ -434,7 +435,11 @@ do
 		-- },
 		[11958] = { -- Cold Snap https://www.wowhead.com/cata/ru/spell=11958
 			["reduction"] = BIG_REDUCTION,
-			["spells"] = allMageSpells,
+			["spells"] = {
+				45438,
+				122,
+				120,
+			},
 		},
 		[14185] = { -- Preparation https://www.wowhead.com/cata/ru/spell=14185
 			["reduction"] = BIG_REDUCTION,

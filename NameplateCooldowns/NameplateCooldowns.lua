@@ -2421,7 +2421,12 @@ do
 	EventFrame.COMBAT_LOG_EVENT_UNFILTERED = function()
 		local cTime = GetTime();
 		local _, eventType, _, srcGUID, _, srcFlags, _, _, _, _, _, spellID = CombatLogGetCurrentEventInfo();
-		if (bit_band(srcFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0 or (db.ShowCDOnAllies == true and srcGUID ~= LocalPlayerGUID)) then
+		local isHostile = bit_band(srcFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0;
+		local isTrackedSource = srcGUID == LocalPlayerGUID
+			or isHostile
+			or (db.ShowCDOnAllies == true and srcGUID ~= LocalPlayerGUID)
+			or (srcGUID ~= nil and srcGUID ~= "" and srcGUID ~= LocalPlayerGUID and spellID ~= nil and (eventType == "SPELL_CAST_SUCCESS" or eventType == "SPELL_AURA_APPLIED" or eventType == "SPELL_MISSED" or eventType == "SPELL_SUMMON"));
+		if (isTrackedSource) then
 			local entry = db.SpellCDs[spellID];
 			local cooldown = AllCooldowns[spellID];
 			if (cooldown ~= nil and entry and entry.enabled) then

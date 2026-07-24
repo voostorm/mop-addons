@@ -2333,13 +2333,19 @@ function Cooldowns:MakeGroupOptions(unit, group)
                     table.insert(extradesc, L["Cooldown starts on dispel"])
                 end
                 if spelldata.resets then
-                    table.insert(
-                        extradesc,
-                        string.format(
-                            L["Resets: %s"],
-                            table.concat(fn.sort(fn.map(spelldata.resets, C_Spell and C_Spell.GetSpellName or GetSpellInfo)), ", ")
-                        )
-                    )
+                    local reset_names = {}
+                    for i = 1, #spelldata.resets do
+                        local reset_spellid = spelldata.resets[i]
+                        local reset_name = C_Spell and C_Spell.GetSpellName(reset_spellid) or GetSpellInfo(reset_spellid)
+                        if reset_name then
+                            table.insert(reset_names, reset_name)
+                        else
+                            table.insert(reset_names, tostring(reset_spellid))
+                        end
+                    end
+                    if #reset_names > 0 then
+                        table.insert(extradesc, string.format(L["Resets: %s"], table.concat(fn.sort(reset_names), ", ")))
+                    end
                 end
                 if spelldata.charges then
                     table.insert(extradesc, string.format(L["Charges: %i"], spelldata.charges))
