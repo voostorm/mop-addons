@@ -440,6 +440,11 @@ function GroupInfoMixin:SetupBar(isUpdateBarsOrGRU)
 						isValidSpell = IsIconOrderTestSpecEligible(spec, specID)
 					elseif cat == "PVPTRINKET" then
 						isValidSpell = true
+					elseif cat == "TRINKET" and (spellID == 113942 or spellID == 6262) then
+						-- Gateway and Healthstone are warlock-provided, party-composition
+						-- possibilities for every class/spec. Always include them in the
+						-- ordering superset; live mode remains detected-on-use only.
+						isValidSpell = true
 					end
 				elseif specID then
 					if cat == class then

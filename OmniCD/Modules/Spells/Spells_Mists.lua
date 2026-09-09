@@ -524,6 +524,10 @@ E.spellDefaults = {
 	20549,
 	7744,
 
+	-- Warlock-provided cooldowns usable by any party member.
+	113942, -- Demonic Gateway reuse debuff (detected on use)
+	6262,   -- Healthstone (detected on use)
+
 	47528,
 	108194,
 	108200,
