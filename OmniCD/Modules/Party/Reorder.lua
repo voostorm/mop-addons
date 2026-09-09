@@ -40,12 +40,34 @@ local function GetSpecOrder(info, create)
 	end
 
 	local specKey = tostring(info.spec)
-	local order = classOrder[specKey]
+	local specOrder = classOrder[specKey]
+	if not specOrder then
+		if not create then
+			return
+		end
+		specOrder = {}
+		classOrder[specKey] = specOrder
+	end
+
+	-- MoP order is saved per race as well as class/spec so racials have a
+	-- deterministic position. Existing flat class/spec orders remain a fallback.
+	local raceKey = info.raceID and tostring(info.raceID)
+	if not E.isMoP or not raceKey then
+		return specOrder
+	end
+
+	local raceOrders = specOrder.__races
+	if not raceOrders and create then
+		raceOrders = {}
+		specOrder.__races = raceOrders
+	end
+
+	local order = raceOrders and raceOrders[raceKey]
 	if not order and create then
 		order = {}
-		classOrder[specKey] = order
+		raceOrders[raceKey] = order
 	end
-	return order
+	return order or specOrder
 end
 
 local function GetManualRank(icon)
@@ -125,7 +147,10 @@ local function UpdateMatchingBars(sourceBar)
 	local sourceInfo = sourceBar.info
 	for bar in P.BarPool:EnumerateActive() do
 		local info = bar.info
-		if info and info.class == sourceInfo.class and info.spec == sourceInfo.spec then
+		if info
+			and info.class == sourceInfo.class
+			and info.spec == sourceInfo.spec
+			and info.raceID == sourceInfo.raceID then
 			bar:UpdateLayout(true)
 		end
 	end
@@ -173,13 +198,16 @@ local function GetDropTarget(icon, bar, x, y)
 	return targetIndex
 end
 
-local function OmniCDIcon_OnDragStart(self)
-	if P.inLockdown then
-		return
-	end
+local function CanReorderBar(bar)
+	return not P.inLockdown
+		and bar
+		and bar.info
+		and (not E.isMoP or (P.isInTestMode and bar.info.isIconOrderTestInfo))
+end
 
+local function OmniCDIcon_OnDragStart(self)
 	local bar = GetMainBar(self)
-	if not bar or not bar.info.spec or bar.numIcons < 2 then
+	if not CanReorderBar(bar) or not bar.info.spec or bar.numIcons < 2 then
 		return
 	end
 
@@ -273,13 +301,10 @@ function IconMixin:SetTooltip()
 	ConfigureIcon(self)
 	SetTooltip(self)
 
-	if not GetMainBar(self) then
-		return
-	end
-
-	if P.inLockdown then
-		-- Do not intercept unit-frame clicks in combat.
-		self:EnableMouse(false)
+	local bar = GetMainBar(self)
+	if not CanReorderBar(bar) then
+		-- Live MoP bars keep OmniCD's original mouse behavior. Reordering is
+		-- intentionally available only inside the icon-order test preview.
 		return
 	end
 
@@ -298,11 +323,8 @@ local function CancelMainBarDrags()
 	for bar in P.BarPool:EnumerateActive() do
 		for i = 1, bar.numIcons do
 			local icon = bar.icons[i]
-			if GetMainBar(icon) then
-				if icon.isReorderDragging then
-					RestoreDraggedIcon(icon, bar)
-				end
-				icon:EnableMouse(false)
+			if GetMainBar(icon) and icon.isReorderDragging then
+				RestoreDraggedIcon(icon, bar)
 			end
 		end
 	end

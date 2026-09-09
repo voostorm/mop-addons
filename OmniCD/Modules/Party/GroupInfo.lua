@@ -342,9 +342,36 @@ local twwHeroTalents = {
 	[444995] = true,
 }
 
+local mopIconOrderSpecIDs = E.isMoP and {
+	[62]=true, [63]=true, [64]=true, [65]=true, [66]=true, [70]=true, [71]=true, [72]=true, [73]=true,
+	[102]=true, [103]=true, [104]=true, [105]=true, [250]=true, [251]=true, [252]=true, [253]=true, [254]=true, [255]=true,
+	[256]=true, [257]=true, [258]=true, [259]=true, [260]=true, [261]=true, [262]=true, [263]=true, [264]=true,
+	[265]=true, [266]=true, [267]=true, [268]=true, [269]=true, [270]=true,
+}
+
+local function IsIconOrderTestSpecEligible(spec, specID)
+	if not spec or spec == true then
+		return true
+	end
+	if type(spec) == "table" then
+		local hasSpecRestriction
+		for _, id in ipairs(spec) do
+			if mopIconOrderSpecIDs[id] then
+				hasSpecRestriction = true
+				if id == specID then
+					return true
+				end
+			end
+		end
+		return not hasSpecRestriction
+	end
+	return not mopIconOrderSpecIDs[spec] or spec == specID
+end
+
 function GroupInfoMixin:SetupBar(isUpdateBarsOrGRU)
 	local guid, index, unit, raceID, specID, class, name, lvl = self.guid, self.index, self.unit, self.raceID, self.spec, self.class, self.name, self.level
-	local isUser = guid == E.userGUID
+	local isIconOrderTest = E.isMoP and P.isInTestMode and self.isIconOrderTestInfo
+	local isUser = guid == E.userGUID and not isIconOrderTest
 
 	wipe(self.spellIcons)
 
@@ -362,10 +389,12 @@ function GroupInfoMixin:SetupBar(isUpdateBarsOrGRU)
 		return
 	end
 
-	local sessionData = loginsessionData[guid]
-	self:SetSessionTalentData(sessionData)
-	self:SetUnitAuraItemData()
-	self:SetClassVariables()
+	local sessionData = not isIconOrderTest and loginsessionData[guid]
+	if not isIconOrderTest then
+		self:SetSessionTalentData(sessionData)
+		self:SetUnitAuraItemData()
+		self:SetClassVariables()
+	end
 
 	local iconIndex = 0
 	local syncIndex = 0
@@ -401,6 +430,15 @@ function GroupInfoMixin:SetupBar(isUpdateBarsOrGRU)
 							end
 						end
 					elseif race == raceID then
+						isValidSpell = true
+					end
+				elseif isIconOrderTest then
+					if cat == class then
+						-- Preview the union of baseline, selected-spec, talent-replacement
+						-- and other conditional class abilities. Mutual exclusions are
+						-- deliberately ignored so every possible icon can be positioned.
+						isValidSpell = IsIconOrderTestSpecEligible(spec, specID)
+					elseif cat == "PVPTRINKET" then
 						isValidSpell = true
 					end
 				elseif specID then

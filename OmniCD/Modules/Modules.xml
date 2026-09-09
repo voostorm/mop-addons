@@ -20,6 +20,7 @@
 	<Script file="Party\Sync.lua"/>
 	<Script file="Party\CD.lua"/>
 	<Script file="Party\CD_Mists.lua"/>
+	<Script file="Party\OrderTest.lua"/>
 
 	<!-- Blizzard -->
 	<Script file="Blizzard\Blizzard.lua"/>
