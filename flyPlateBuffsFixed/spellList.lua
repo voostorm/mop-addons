@@ -546,13 +546,8 @@ local drinkflags = {
 	140876, -- Alliance Mine (Silvershard Mines flag)
 	46393, -- Brutal Assault
 	46392, -- Focused Assault
-	22734, -- Drink
-	46755, -- Drink
-	27089, -- Drink
-	43183, -- Drink
-	57073, -- Drink
-	46755, -- Drink
-	44166, -- Refreshment
+	104270, -- Drink (no check spell id, too many spell ids for this)
+	104935, -- Food (no check spell id, too many spell ids for this)
 }
 
 -- size 1.6
