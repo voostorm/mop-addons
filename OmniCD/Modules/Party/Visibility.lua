@@ -164,12 +164,37 @@ local function ScheduleAnchorUpdate()
 	callbackTimers.anchorBackup = C_Timer.NewTicker(3, UpdateAnchor_OnDelayEnd, 2)
 end
 
-local function ScheduleRosterUpdate()
+local function RecoverArenaAnchors()
+	if not P.enabled or P.disabled or P.disabledZone or not P.isInArena or P.isInTestMode then
+		return
+	end
+	local refreshedSettings
+	for bar in P.BarPool:EnumerateActive() do
+		if not bar:IsVisible() then
+			-- Arena party frames can appear after the two initial anchor retries.
+			-- Retry only hidden bars; never rebuild icons or reset cooldowns here.
+			if not refreshedSettings and E:IsBlizzardCUFLoaded() then
+				P:UpdateCompactFrameSystemSettings()
+				refreshedSettings = true
+			end
+			bar:UpdatePosition()
+		end
+	end
+end
+
+local function ScheduleRosterUpdate(force)
 
 	if callbackTimers.rosterDelay then
 		callbackTimers.rosterDelay:Cancel()
 	end
-	callbackTimers.rosterDelay = C_Timer.NewTimer(2, P.UpdateRosterInfo)
+	callbackTimers.rosterDelay = C_Timer.NewTimer(2, function(timer)
+		callbackTimers.rosterDelay = nil
+		if force then
+			P:UpdateRosterInfo(true)
+		else
+			P.UpdateRosterInfo(timer)
+		end
+	end)
 end
 
 function P:PLAYER_ENTERING_WORLD(isInitialLogin, isReloadingUi, isRefresh)
@@ -214,6 +239,10 @@ function P:PLAYER_ENTERING_WORLD(isInitialLogin, isReloadingUi, isRefresh)
 			callbackTimers.arenaTicker = C_Timer.NewTicker(12, InspectAllGroupMembers, 6)
 		end
 	else
+		if callbackTimers.arenaAnchors then
+			callbackTimers.arenaAnchors:Cancel()
+			callbackTimers.arenaAnchors = nil
+		end
 		if callbackTimers.arenaTicker then
 			callbackTimers.arenaTicker:Cancel()
 			callbackTimers.arenaTicker = nil
@@ -257,8 +286,33 @@ function P:GROUP_JOINED()
 end
 
 function P:UpdateRosterInfo(force, clearSession)
+	-- A delayed callback may outlive a zone change or module shutdown.
+	if not P.enabled or P.disabledZone then
+		return
+	end
 	local size = P:GetEffectiveNumGroupMembers()
 	local isInRaid = IsInRaid()
+	local roster = {}
+	local rosterGUIDs = {}
+
+	-- Unit data arrives in stages while zoning. Do not release live bars or
+	-- cooldown state until the replacement roster has complete identities.
+	for i = 1, size do
+		local index = not isInRaid and i == size and 5 or i
+		local unit = isInRaid and RAID_UNIT[index] or PARTY_UNIT[index]
+		local guid = unit and UnitGUID(unit)
+		local name, subgroup, level, fileName, online, isDead
+		if unit then
+			name, subgroup, level, fileName, online, isDead = GetRosterInfo(i, isInRaid or unit)
+		end
+		if not guid or not name or not fileName or not level or rosterGUIDs[guid] then
+			ScheduleRosterUpdate(true)
+			return
+		end
+		rosterGUIDs[guid] = true
+		roster[i] = { index = index, unit = unit, guid = guid, name = name,
+			subgroup = subgroup, level = level, class = fileName, online = online, isDead = isDead }
+	end
 
 	local wasDisabled = P.disabled
 	P.disabled = not P.isInTestMode and (
@@ -282,6 +336,9 @@ function P:UpdateRosterInfo(force, clearSession)
 
 	CM:Enable()
 	CD:Enable()
+	if P.isInArena and not P.isInTestMode and not callbackTimers.arenaAnchors then
+		callbackTimers.arenaAnchors = C_Timer.NewTicker(1, RecoverArenaAnchors)
+	end
 
 	E.Libs.CBH:Fire("OnStartup")
 
@@ -291,7 +348,7 @@ function P:UpdateRosterInfo(force, clearSession)
 
 
 	for guid, info in pairs(groupInfo) do
-		if not UnitExists(info.name) or (not P.isInTestMode and info.isNPC) then
+		if not rosterGUIDs[guid] or (not P.isInTestMode and info.isNPC) then
 			info:Delete()
 		elseif clearSession then
 			info:ClearSessionItemData()
@@ -299,11 +356,11 @@ function P:UpdateRosterInfo(force, clearSession)
 	end
 
 	for i = 1, size do
-		local index = not isInRaid and i == size and 5 or i
-		local unit = isInRaid and RAID_UNIT[index] or PARTY_UNIT[index]
-		local guid = UnitGUID(unit)
+		local member = roster[i]
+		local index, unit, guid = member.index, member.unit, member.guid
 		local info = groupInfo[guid]
-		local name, subgroup, level, fileName, online, isDead = GetRosterInfo(i, isInRaid or unit)
+		local name, subgroup, level, fileName, online, isDead = member.name, member.subgroup,
+			member.level, member.class, member.online, member.isDead
 		local isDeadOrOffline = isDead or not online
 		local isNPC = strsub(guid, 1, 6) ~= "Player"
 
@@ -381,9 +438,7 @@ function P:UpdateRosterInfo(force, clearSession)
 		ScheduleSyncRequest()
 	end
 
-	if isCallback then
-		callbackTimers.rosterDelay = nil
-	else
+	if not isCallback then
 		ScheduleAnchorUpdate()
 		ScheduleRosterUpdate()
 	end
