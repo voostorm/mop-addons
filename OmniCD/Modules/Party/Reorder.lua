@@ -49,8 +49,8 @@ local function GetSpecOrder(info, create)
 		classOrder[specKey] = specOrder
 	end
 
-	-- MoP order is saved per race as well as class/spec so racials have a
-	-- deterministic position. Existing flat class/spec orders remain a fallback.
+	-- Keep explicit race layouts, but also share the last saved layout with
+	-- teammates of this spec whose race has not been arranged separately.
 	local raceKey = info.raceID and tostring(info.raceID)
 	if not E.isMoP or not raceKey then
 		return specOrder
@@ -67,7 +67,29 @@ local function GetSpecOrder(info, create)
 		order = {}
 		raceOrders[raceKey] = order
 	end
-	return order or specOrder
+	if order then
+		return order
+	end
+	if specOrder.__default then
+		return specOrder.__default
+	end
+	-- Preserve legacy flat orders. Older test-mode saves only populated
+	-- __races; reuse a sole race layout without requiring another drag.
+	for spellID, rank in pairs(specOrder) do
+		if type(spellID) == "number" and type(rank) == "number" then
+			return specOrder
+		end
+	end
+	local onlyOrder
+	for _, savedOrder in pairs(raceOrders or {}) do
+		if type(savedOrder) == "table" and next(savedOrder) then
+			if onlyOrder then
+				return specOrder
+			end
+			onlyOrder = savedOrder
+		end
+	end
+	return onlyOrder or specOrder
 end
 
 local function GetManualRank(icon)
@@ -141,6 +163,14 @@ local function SaveBarOrder(bar)
 	for i = 1, bar.numIcons do
 		order[bar.icons[i].spellID] = i
 	end
+	if E.isMoP and bar.info.raceID then
+		local specOrder = E.db.manualIconOrder[bar.info.class][tostring(bar.info.spec)]
+		local sharedOrder = {}
+		for spellID, rank in pairs(order) do
+			sharedOrder[spellID] = rank
+		end
+		specOrder.__default = sharedOrder
+	end
 end
 
 local function UpdateMatchingBars(sourceBar)
@@ -149,8 +179,7 @@ local function UpdateMatchingBars(sourceBar)
 		local info = bar.info
 		if info
 			and info.class == sourceInfo.class
-			and info.spec == sourceInfo.spec
-			and info.raceID == sourceInfo.raceID then
+			and info.spec == sourceInfo.spec then
 			bar:UpdateLayout(true)
 		end
 	end
