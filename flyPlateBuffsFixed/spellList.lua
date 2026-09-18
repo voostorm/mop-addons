@@ -280,6 +280,7 @@ local war_personal_nostack_debuffs = {
 	1943, -- Rupture 1.3
 	703, -- Garrote 1.3
 	89775, -- Hemorrhage 1.3
+	122233, -- Crimson Tempest 1.3
 }
 
 -- default size is 1.3

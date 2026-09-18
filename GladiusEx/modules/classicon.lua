@@ -179,6 +179,10 @@ local faerieFireClasses = {
 
 function ClassIcon:GetAuraPriority(unit, name, spellid)
 	if GladiusEx.IS_MOPC then
+		-- Hide the Angelic Bulwark lockout, even with saved name-based entries.
+		-- The actual absorb shield (114214) remains eligible.
+		if spellid == 114216 then return nil end
+
 		-- The DoT and dispel silence share a name. Also guard old saved
 		-- name-based entries so existing profiles cannot show the DoT.
 		if spellid == 31117 or spellid == 43523 then
