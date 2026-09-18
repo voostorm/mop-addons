@@ -6,6 +6,7 @@ LCT_SpellData[2139] = {
 	class = "MAGE",
 	interrupt = true,
 	cooldown = 24,
+	counterspell = true,
 }
 
 -- Remove Curse (dispel)

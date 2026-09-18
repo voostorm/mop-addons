@@ -71,6 +71,7 @@ local GUIFrame, EventFrame, TestFrame, db, aceDB, ProfileOptionsFrame, LocalPlay
 local FeignDeathGUIDs = {};
 local DetectedSpecs = {};
 local LearnedCooldowns = {};
+local CounterspellGlyphs = {};
 local AlterTimeStates = {};
 
 local ALTER_TIME_CAST, ALTER_TIME_AURA, ALTER_TIME_RETURN = 108978, 110909, 127140;
@@ -2747,6 +2748,53 @@ do
 		end
 	end
 
+	local function ResolveCounterspellUnit(srcGUID)
+		for i = 1, 5 do
+			local unit = "arena" .. i;
+			if (UnitGUID(unit) == srcGUID) then return unit; end
+		end
+		for frame, guid in pairs(NameplatesVisible) do
+			if (guid == srcGUID) then return NameplateUnits[frame]; end
+		end
+		for _, unit in ipairs({ "player", "target", "focus" }) do
+			if (UnitGUID(unit) == srcGUID) then return unit; end
+		end
+	end
+
+	local function HandleCounterspell(srcGUID, eventType, currentTime, isHostile)
+		if (eventType ~= "SPELL_CAST_SUCCESS" and eventType ~= "SPELL_INTERRUPT" and eventType ~= "SPELL_MISSED") then return; end
+		local entry = db.SpellCDs[2139];
+		if (not entry or not entry.enabled) then return; end
+		local unit = ResolveCounterspellUnit(srcGUID);
+		if (unit) then
+			local _, _, _, startMS, endMS = UnitCastingInfo(unit);
+			if (not startMS) then
+				_, _, _, startMS, endMS = UnitChannelInfo(unit);
+			end
+			-- An overlapping cast/channel proves glyph 115703; waiting 28 seconds does not.
+			if (startMS and endMS and startMS < currentTime * 1000 - 100 and endMS > currentTime * 1000) then
+				CounterspellGlyphs[srcGUID] = true;
+			end
+		end
+		local cooldown = entry.customCD or (CounterspellGlyphs[srcGUID] and 28 or 24);
+		local spells = SpellsPerPlayerGUID[srcGUID];
+		local state = spells and spells[2139];
+		if (not state or not state.started or currentTime - state.started > 1) then
+			RegisterCooldownForSource(srcGUID, 2139, cooldown, SpellTextureByID[2139], currentTime, false, true);
+			spells = SpellsPerPlayerGUID[srcGUID];
+			state = spells and spells[2139];
+			if (state) then state.counterspellInterrupted = nil; end
+		end
+		if (not state) then return; end
+		if (eventType == "SPELL_INTERRUPT") then state.counterspellInterrupted = true; end
+		-- Explicit enemy arena assumption: PvP two-piece. The reduction belongs
+		-- to this successful interrupt only, never to the next cast's base CD.
+		local reduction = not entry.customCD and InstanceType == "arena" and isHostile and state.counterspellInterrupted and 4 or 0;
+		state.expires = state.started + cooldown - reduction;
+		state.rechargeDuration = cooldown - reduction;
+		UpdateNameplatesForSource(srcGUID);
+	end
+
 	local function FinishAlterTime(srcGUID, restartAt)
 		local state = srcGUID and AlterTimeStates[srcGUID];
 		if (not state) then
@@ -2829,6 +2877,10 @@ do
 			or (db.ShowCDOnAllies == true and isFriendly and srcGUID ~= LocalPlayerGUID)
 			or (not isFriendly and srcGUID ~= nil and srcGUID ~= "" and srcGUID ~= LocalPlayerGUID and spellID ~= nil and (eventType == "SPELL_CAST_SUCCESS" or eventType == "SPELL_AURA_APPLIED" or eventType == "SPELL_MISSED" or eventType == "SPELL_SUMMON"));
 		if (isTrackedSource) then
+			if (spellID == 2139) then
+				HandleCounterspell(srcGUID, eventType, cTime, isHostile);
+				return;
+			end
 			if (eventType == "SPELL_CAST_SUCCESS" and rawSpellID == ALTER_TIME_CAST) then
 				BeginAlterTime(srcGUID, cTime);
 			elseif (eventType == "SPELL_CAST_SUCCESS" and rawSpellID == ALTER_TIME_RETURN) then
@@ -2970,6 +3022,7 @@ do
 		wipe(PetOwnerGUIDs);
 		wipe(DetectedSpecs);
 		wipe(LearnedCooldowns);
+		wipe(CounterspellGlyphs);
 		wipe(AlterTimeStates);
 		local inInstance, instanceType = IsInInstance();
 		if (not inInstance) then

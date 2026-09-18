@@ -12,7 +12,7 @@
 		spells_data = lib:GetCooldownsData()
 ]]
 
-local version = 14
+local version = 15
 local lib = LibStub:NewLibrary("LibCooldownTracker-1.0", version)
 local IsRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local LGIST = IsRetail and LibStub:GetLibrary("LibGroupInSpecT-1.1")
@@ -608,6 +608,42 @@ local function check_reduce(reduce, unit, spellid)
 	return true
 end
 
+-- A Counterspell used during an existing cast/channel proves glyph 115703.
+-- A late recast alone cannot prove the glyph (the player may simply wait).
+local function CounterspellHasGlyph(unit, now)
+	local _, _, _, startMS, endMS = UnitCastingInfo(unit)
+	if not startMS then
+		_, _, _, startMS, endMS = UnitChannelInfo(unit)
+	end
+	return startMS and endMS and startMS < now * 1000 - 100 and endMS > now * 1000
+end
+
+local function CounterspellEvent(event, unit, spellid)
+	if event ~= "UNIT_SPELLCAST_SUCCEEDED" and event ~= "SPELL_CAST_SUCCESS" and event ~= "SPELL_INTERRUPT" then return end
+	local now = GetTime()
+	lib.tracked_players[unit] = lib.tracked_players[unit] or {}
+	local tpu = lib.tracked_players[unit]
+	local tps = tpu[spellid] or {}
+	tpu[spellid] = tps
+	if CounterspellHasGlyph(unit, now) then tps.counterspellGlyph = true end
+
+	-- All three events may describe the same cast, in either delivery order.
+	local newCast = not tps.used_start or now - tps.used_start > 1
+	if newCast then
+		tps.used_start = now
+		tps.cooldown_start = now
+		tps.counterspellInterrupted = nil
+	end
+	if event == "SPELL_INTERRUPT" then tps.counterspellInterrupted = true end
+	local _, instanceType = IsInInstance()
+	-- Enemy gear is not inspectable in arenas. Explicit arena assumption:
+	-- enemy mages wear the PvP two-piece; never apply it to a missed interrupt.
+	local reduction = instanceType == "arena" and UnitCanAttack("player", unit) and tps.counterspellInterrupted and 4 or 0
+	tps.cooldown_end = tps.cooldown_start + (tps.counterspellGlyph and 28 or 24) - reduction
+	tps.detected = true
+	lib.callbacks:Fire("LCT_CooldownUsed", unit, spellid, newCast, false, true)
+end
+
 local function CooldownEvent(event, unit, spellid)
 	local raw_spellid = spellid
 	local cast_override = SpellAliases[raw_spellid]
@@ -625,6 +661,11 @@ local function CooldownEvent(event, unit, spellid)
     -- TODO log error
     return
   end
+
+	if spelldata.counterspell then
+		if lib:IsUnitRegistered(unit) then CounterspellEvent(event, unit, spellid) end
+		return
+	end
 
 	-- Some cooldowns begin on the actual cast and must not be touched by their
 	-- aura lifecycle. In particular, purging/consuming Fear Ward removes only
@@ -1373,7 +1414,8 @@ function events:CombatLogEvent(_, timestamp, event, hideCaster, sourceGUID, sour
 	end
 	if not unit then return end
 
-	if event == "SPELL_DISPEL" or
+	if (event == "SPELL_INTERRUPT" and resolved_spelldata and resolved_spelldata.counterspell) or
+	   event == "SPELL_DISPEL" or
 	   event == "SPELL_AURA_REMOVED" or
 	   event == "SPELL_AURA_APPLIED" or
 	   event == "SPELL_CAST_SUCCESS" then
