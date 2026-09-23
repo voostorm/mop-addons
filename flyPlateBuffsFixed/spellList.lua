@@ -274,25 +274,27 @@ local war_personal_nostack_debuffs = {
 	8921, -- Moonfire 1.3
 	146739, -- Corruption 1.3
 	30108, -- Unstable Affliction Dot
-	109466, -- Curse of Enfeeblement
 	44457, -- Living Bomb 1.5
 	84617, -- Revealing Strike
 	1943, -- Rupture 1.3
 	703, -- Garrote 1.3
 	89775, -- Hemorrhage 1.3
 	122233, -- Crimson Tempest 1.3
+	2818, -- deadly poison 1.3
+	603, -- doom 1.3
 }
 
 -- default size is 1.3
 -- if one of these debuff is applied, then don't need to re-apply the same debuff so show no matter who applied it
 local war_personal_stackable_debuffs = {
-	110310, -- Dampening 1.4
 	8680, -- Wound Poison Healing Debuff 1.4
 	115804, -- Mortal Wounds 1.4
+	82654, -- Widow Venom 1.4
 	81326, -- Physical Invulnerability 1.3 -- 4% dmg increase to the target with this debuff
 	64382, -- Shattering Throw 1.3 -- target with this debuff has 20% less armor
 	114205, -- Demoralizing Banner 1.3 -- target with this debuff does 10% less damage
 	115798, -- Weakened Blows 1.4 -- target with this debuff does 10% less physical damage
+	109466, -- Curse of Enfeeblement
 	113746, -- Sunder Armor 1.3 -- 4% less armor per stack
 	73975, -- necrotic strike
 }
