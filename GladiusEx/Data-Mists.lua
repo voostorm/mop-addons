@@ -116,7 +116,11 @@ function GladiusEx.Data.DefaultClassicon()
         [GladiusEx:SafeGetSpellName(118895)] = 10, -- Dragon Roar
         [GladiusEx:SafeGetSpellName(77505)] = 10, -- Earthquake
         [GladiusEx:SafeGetSpellName(113953)] = 10, -- Paralysis
-    
+        
+        -- Rogue Vanish Buff
+        [GladiusEx:SafeGetSpellName(115193)] = 9.5, -- Vanish (Rogue)
+        [GladiusEx:SafeGetSpellName(115192)] = 9.5, -- Subterfuge (Rogue)
+        
         -- Silences
         [GladiusEx:SafeGetSpellName(25046)]	= 9, -- Arcane Torrent (Racial, Energy)
         [GladiusEx:SafeGetSpellName(80483)]	= 9, -- Arcane Torrent (Racial, Focus)

@@ -221,8 +221,7 @@ local cc = {
 	22703, -- Inferno Effect
 	30283, -- Shadowfury
 	132168, -- Shockwave
-	107570, -- Storm Bolt
-	132169, -- Storm Bolt 2
+	132169, -- Storm Bolt
 	20549, -- War Stomp (Racial)
 	835, -- Tidal Charm (magic dispellable), (probably does not exist in the game and not usable in arena)
 
@@ -276,11 +275,12 @@ local war_personal_nostack_debuffs = {
 	30108, -- Unstable Affliction Dot
 	44457, -- Living Bomb 1.5
 	84617, -- Revealing Strike
-	1943, -- Rupture 1.3
+	1943, -- Rupture 1.4
 	703, -- Garrote 1.3
-	89775, -- Hemorrhage 1.3
+	89775, -- Hemorrhage 1.2
 	122233, -- Crimson Tempest 1.3
 	2818, -- deadly poison 1.3
+	137619, -- Mark for Death 1.5
 	603, -- doom 1.3
 }
 
@@ -297,6 +297,7 @@ local war_personal_stackable_debuffs = {
 	109466, -- Curse of Enfeeblement
 	113746, -- Sunder Armor 1.3 -- 4% less armor per stack
 	73975, -- necrotic strike
+	112947, -- Nerve Strike 1.4
 }
 
 -- size 1.8
@@ -380,6 +381,7 @@ local minor_defensive_buffs = {
 	53476, -- Intervene (Pet)
 	46947, -- Safeguard
 	122973, -- Safeguard
+	114029, -- Safeguard
 	97463, -- Rallying Cry
 	2565, -- Shield Block
 	23493, -- Restoration (BG Leaf Healing Buff)
@@ -395,6 +397,8 @@ local minor_defensive_buffs = {
 	113613, -- Growl (ROGUE Symbiosis)
 	131523, -- Zen Meditation
 	106922, -- Might of Ursoc
+	115193, -- Vanish buff
+	73651, -- Recuperate
 }
 
 -- size 1.8
@@ -456,6 +460,7 @@ local  minor_offensive_buffs = {
 	-- 128432, -- Cackling Howl
 	-- 108508, -- Mannoroth's Fury
 	-- 57934, -- Tricks of the Trade
+	115192, -- Subterfuge
 	80353, -- Time Warp
 	2825, -- Bloodlust
 	32182, -- Heroism

@@ -286,7 +286,6 @@ addon.Spells = {
     [110696] = { type = IMMUNITY }, -- Ice Block (Mage)
     [45438]  = { type = IMMUNITY }, -- Ice Block
     [122465] = { type = IMMUNITY }, -- Dematerialize
-    [11327]	= { type = IMMUNITY }, -- Vanish
 
     -- DEBUFF_OFFENSIVE -- for raid frames to see who they going what big damage is incoming
     [46392]  = { type = DEBUFF_OFFENSIVE }, -- Focused Assault
@@ -333,6 +332,7 @@ addon.Spells = {
     [45181]  = { type = DEBUFF_OFFENSIVE }, -- Cheated Death
     [131894] = { type = DEBUFF_OFFENSIVE }, -- Murder of Crows
     [77606]  = { type = DEBUFF_OFFENSIVE }, -- Dark Sim
+    [112947] = { type = DEBUFF_OFFENSIVE }, -- Nerve Strike
 
     -- BUFF_OTHER (includes debuffs too?)
     -- DRINKS
