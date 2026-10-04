@@ -2,6 +2,7 @@ local GladiusEx = _G.GladiusEx
 local L = LibStub("AceLocale-3.0"):GetLocale("GladiusEx")
 local fn = LibStub("LibFunctional-1.0")
 local LSM = LibStub("LibSharedMedia-3.0")
+local DRData = LibStub("DRList-1.0", true)
 
 -- K: Is this even needed anymore? Can't test on retail but it seems to stem from a beta workaround. It's causing taint in the talent frame in Classic.
 local function GetTexCoordsForRole(role)
@@ -35,6 +36,7 @@ local defaults = {
 	classIconGloss = false,
 	classIconGlossColor = { r = 1, g = 1, b = 1, a = 0.4 },
 	classIconImportantAuras = true,
+	classIconAdaptiveControlPriority = true,
 	classIconCrop = true,
 	classIconCooldown = true,
 	classIconCooldownReverse = true,
@@ -177,6 +179,77 @@ local faerieFireClasses = {
 	PRIEST = true,
 }
 
+-- Classify the afflicted unit by its MoP specialization, never by the caster
+-- of the aura. Hunters are ranged physical and intentionally retain saved priorities.
+local controlPreferenceBySpec = {
+	[250] = "root", [251] = "root", [252] = "root", -- Death Knight
+	[103] = "root", [104] = "root", -- Feral, Guardian
+	[268] = "root", [269] = "root", -- Brewmaster, Windwalker
+	[66] = "root", [70] = "root", -- Protection, Retribution
+	[259] = "root", [260] = "root", [261] = "root", -- Rogue
+	[263] = "root", -- Enhancement
+	[71] = "root", [72] = "root", [73] = "root", -- Warrior
+	[102] = "silence", [105] = "silence", -- Balance, Restoration
+	[62] = "silence", [63] = "silence", [64] = "silence", -- Mage
+	[270] = "silence", -- Mistweaver
+	[65] = "silence", -- Holy Paladin
+	[256] = "silence", [257] = "silence", [258] = "silence", -- Priest
+	[262] = "silence", [264] = "silence", -- Elemental, Restoration
+	[265] = "silence", [266] = "silence", [267] = "silence", -- Warlock
+}
+
+-- These silences are not in the MoP DR list (notably non-DR effects).
+-- Exact IDs prevent the Unstable Affliction DoT from being treated as silence.
+local extraSilences = {
+	[31117] = true, [43523] = true,
+	[78675] = true, [81261] = true, [133901] = true,
+	[129888] = true, [129889] = true, [133899] = true,
+	[113286] = true, [113287] = true,
+}
+
+-- Root auras already tracked by ClassIcon but absent from the bundled DR list.
+local extraRoots = {
+	[25999] = true, -- Charge
+	[39965] = true, -- Frost Grenade
+	[115757] = true, -- Frost Nova (Glyph of Ice Block)
+	[136634] = true, -- Narrow Escape
+	[91807] = true, -- Shambling Rush
+	[105771] = true, -- Charge root
+	[45334] = true, -- Immobilized
+}
+
+function ClassIcon:GetAdaptiveControlPriority(unit, spellid, priority)
+	if not GladiusEx.IS_MOPC or not self.db[unit].classIconAdaptiveControlPriority
+		or type(priority) ~= "number" or priority <= 0 then
+		return priority
+	end
+
+	local info
+	if GladiusEx:IsTesting(unit) then
+		info = GladiusEx.testing and GladiusEx.testing[unit]
+	else
+		info = GladiusEx.buttons and GladiusEx.buttons[unit]
+	end
+	local preferred = info and controlPreferenceBySpec[info.specID]
+	if not preferred then return priority end
+
+	-- Frostjaw applies both a root and a silence, so it matters to either role.
+	if spellid == 102051 then return 9 end
+	local category
+	if extraSilences[spellid] then
+		category = "silence"
+	elseif extraRoots[spellid] then
+		category = "root"
+	elseif DRData and DRData.GetCategoryBySpellID then
+		category = DRData:GetCategoryBySpellID(spellid)
+	end
+	if category == "random_root" then category = "root" end
+	if category == "root" or category == "silence" then
+		return category == preferred and 9 or 8
+	end
+	return priority
+end
+
 function ClassIcon:GetAuraPriority(unit, name, spellid)
 	if GladiusEx.IS_MOPC then
 		-- Hide the Angelic Bulwark lockout, even with saved name-based entries.
@@ -188,7 +261,7 @@ function ClassIcon:GetAuraPriority(unit, name, spellid)
 		if spellid == 31117 or spellid == 43523 then
 			local priority = self.db[unit].classIconAuras[spellid]
 			if type(priority) == "boolean" then return nil end
-			return priority or self:GetImportantAura(unit, name)
+			return self:GetAdaptiveControlPriority(unit, spellid, priority or self:GetImportantAura(unit, name))
 		elseif spellid == 30108 or name == GladiusEx:SafeGetSpellName(30108)
 			or name == GladiusEx:SafeGetSpellName(31117)
 			or name == GladiusEx:SafeGetSpellName(43523) then
@@ -202,7 +275,8 @@ function ClassIcon:GetAuraPriority(unit, name, spellid)
 		end
 	end
 
-	return self:GetImportantAura(unit, name) or self:GetImportantAura(unit, spellid)
+	local priority = self:GetImportantAura(unit, name) or self:GetImportantAura(unit, spellid)
+	return self:GetAdaptiveControlPriority(unit, spellid, priority)
 end
 
 function ClassIcon:ScanAuras(unit)
@@ -646,6 +720,14 @@ function ClassIcon:GetOptions(unit)
 							desc = L["If toggled, the important aura with the lowest remaining duration will be showed if there is a tie in priority"],
 							disabled = function() return not self:IsUnitEnabled(unit) or not self.db[unit].classIconImportantAuras end,
 							order = 30,
+						},
+						classIconAdaptiveControlPriority = {
+							type = "toggle",
+							name = "Adaptive root/silence priority",
+							desc = "Use priority 9 for roots on melee specs and silences on casters/healers; use 8 for the other effect. Frostjaw uses 9 for both. Overrides these auras' numeric priorities without enabling disabled auras. Hunters and unknown specs keep saved priorities.",
+							hidden = function() return not GladiusEx.IS_MOPC end,
+							disabled = function() return not self:IsUnitEnabled(unit) or not self.db[unit].classIconImportantAuras end,
+							order = 31,
 						},
 					},
 				},
