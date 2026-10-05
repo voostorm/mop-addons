@@ -1,7 +1,7 @@
 local AddonName, fPB = ...
 L = fPB.L
 
-local C_NamePlate_GetNamePlateForUnit, C_NamePlate_GetNamePlates, CreateFrame, UnitDebuff, UnitBuff, UnitName, UnitIsUnit, UnitIsPlayer, UnitPlayerControlled, UnitIsEnemy, UnitIsFriend, GetSpellInfo, table_sort, strmatch, format, wipe, pairs, GetTime, math_floor =
+local C_NamePlate_GetNamePlateForUnit, C_NamePlate_GetNamePlates, CreateFrame, UnitDebuff, UnitBuff, UnitName, UnitIsUnit, UnitIsPlayer, UnitPlayerControlled, UnitIsEnemy, UnitIsFriend, UnitCanAttack, GetSpellInfo, table_sort, strmatch, format, wipe, pairs, GetTime, math_floor =
   C_NamePlate.GetNamePlateForUnit,
   C_NamePlate.GetNamePlates,
   CreateFrame,
@@ -13,6 +13,7 @@ local C_NamePlate_GetNamePlateForUnit, C_NamePlate_GetNamePlates, CreateFrame, U
   UnitPlayerControlled,
   UnitIsEnemy,
   UnitIsFriend,
+  UnitCanAttack,
   C_Spell.GetSpellInfo,
   table.sort,
   strmatch,
@@ -766,7 +767,8 @@ local function ScanUnitBuffs(nameplateID, frame)
   if PlatesBuffs[frame] then
     wipe(PlatesBuffs[frame])
   end
-  local isAlly = UnitIsFriend(nameplateID, "player")
+  -- Same-faction duel opponents are friendly but attackable.
+  local isAlly = UnitIsFriend(nameplateID, "player") and not UnitCanAttack("player", nameplateID)
   local id = 1
   while UnitDebuff(nameplateID, id) do
     local aura = UnitDebuff(nameplateID, id)
@@ -828,7 +830,7 @@ local function FilterUnits(nameplateID)
   if UnitIsEnemy(nameplateID, "player") and (db and not db.showOnEnemy) then
     return true
   end
-  if UnitIsFriend(nameplateID, "player") and (db and not db.showOnFriend) then
+  if UnitIsFriend(nameplateID, "player") and not UnitCanAttack("player", nameplateID) and (db and not db.showOnFriend) then
     return true
   end
   if
