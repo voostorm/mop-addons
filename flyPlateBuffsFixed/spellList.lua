@@ -295,6 +295,7 @@ local war_personal_stackable_debuffs = {
 	114205, -- Demoralizing Banner 1.3 -- target with this debuff does 10% less damage
 	115798, -- Weakened Blows 1.4 -- target with this debuff does 10% less physical damage
 	109466, -- Curse of Enfeeblement
+	1490, -- Curse of the Elements
 	113746, -- Sunder Armor 1.3 -- 4% less armor per stack
 	73975, -- necrotic strike
 	112947, -- Nerve Strike 1.4
