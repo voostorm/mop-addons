@@ -935,12 +935,13 @@ elseif Lib.gameExpansion == "mop" then
         [132169] = "stun", -- Storm Bolt 2
         [20549]  = "stun", -- War Stomp (Racial)
 
-        -- *** Non-controlled Stun Effects *** -- was "random_stun". 
-        -- I get that the original author wants to separate it but having another category of dr is confusing for me or rather of an eye sore
-        [118895] = "stun", -- Dragon Roar
-        [77505]  = "stun", -- Earthquake
-        -- [100]    = "stun", -- Charge
-        [118000] = "stun", -- Dragon Roar
+        -- *** Non-controlled Stun Effects ***
+        [113953] = "random_stun", -- Paralysis
+        [118895] = "random_stun", -- Dragon Roar
+        [118000] = "random_stun", -- Dragon Roar
+        [77505]  = "random_stun", -- Earthquake
+        [7922]    = "charge", -- Charge
+        
 
         -- *** Fear Effects ***
         [113004] = "fear", -- Intimidating Roar (Symbiosis)

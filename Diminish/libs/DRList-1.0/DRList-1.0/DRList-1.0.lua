@@ -33,7 +33,7 @@ L["STUNS"] = "Stun"
 L["TAUNTS"] = "Taunt"
 L["FEARS"] = "Fear"
 L["RANDOM_ROOTS"] = "Root"
-L["RANDOM_STUNS"] = "Stun"
+L["RANDOM_STUNS"] = "Rstun"
 L["OPENER_STUN"] = "Opener Stuns"
 L["HORROR"] = "Hor"
 L["SCATTERS"] = "Scat"
@@ -45,9 +45,9 @@ L["DEATH_COIL"] = "Coil"
 L["UNSTABLE_AFFLICTION"] = "UA"
 L["CHASTISE"] = "Chast"
 L["COUNTERATTACK"] = "Counter"
-L["BIND_ELEMENTAL"] = GetSpellName(76780) or "Bind Elemental"
+L["BIND_ELEMENTAL"] = GetSpellName(76780) or "BE"
 L["CYCLONE"] = "Cyc"
-L["CHARGE"] = "Charge"
+L["CHARGE"] = "Char"
 
 -- luacheck: push ignore 542
 local locale = GetLocale()
@@ -271,6 +271,7 @@ Lib.categoryNames = {
         ["knockback"] = L.KNOCKBACKS,
         ["mind_control"] = L.MIND_CONTROL,
         ["taunt"] = L.TAUNTS,
+        ["charge"] = L.CHARGE,
     },
 }
 
@@ -307,10 +308,21 @@ Lib.categoriesPvE = {
     },
 
     mop = {
-        ["taunt"] = L.TAUNTS,
+        ["disorient"] = L.DISORIENTS,
+        ["incapacitate"] = L.INCAPACITATES,
+        ["silence"] = L.SILENCES,
+        ["disarm"] = L.DISARMS,
+        ["fear"] = L.FEARS,
         ["stun"] = L.STUNS,
         ["random_stun"] = L.RANDOM_STUNS,
+        ["root"] = L.ROOTS,
+        ["random_root"] = L.RANDOM_ROOTS,
+        ["horror"] = L.HORROR,
         ["cyclone"] = L.CYCLONE,
+        ["knockback"] = L.KNOCKBACKS,
+        ["mind_control"] = L.MIND_CONTROL,
+        ["taunt"] = L.TAUNTS,
+        ["charge"] = L.CHARGE,
     },
 }
 
