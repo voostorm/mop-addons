@@ -290,15 +290,18 @@ local war_personal_stackable_debuffs = {
 	8680, -- Wound Poison Healing Debuff 1.4
 	115804, -- Mortal Wounds 1.4
 	82654, -- Widow Venom 1.4
+	115625, -- Mortal Cleave
 	81326, -- Physical Invulnerability 1.3 -- 4% dmg increase to the target with this debuff
 	64382, -- Shattering Throw 1.3 -- target with this debuff has 20% less armor
 	114205, -- Demoralizing Banner 1.3 -- target with this debuff does 10% less damage
 	115798, -- Weakened Blows 1.4 -- target with this debuff does 10% less physical damage
 	109466, -- Curse of Enfeeblement
 	1490, -- Curse of the Elements
+	116202, -- Aura of the Elements
 	113746, -- Sunder Armor 1.3 -- 4% less armor per stack
 	73975, -- necrotic strike
 	112947, -- Nerve Strike 1.4
+	113952, -- Paralytic Poison 1.5
 }
 
 -- size 1.8
@@ -588,6 +591,7 @@ local constraint_debuffs = {
 	41425, -- Hypothermia 1.8
 	87023, -- Cauterize
 	25771, -- Forbearance 1.8
+	89140, -- Demonic Rebirth 1.5
 	770, -- Faerie Fire, No Check Spell ID, just the debuff name
 	31615, -- Hunter's Mark, No Check Spell ID, just the debuff name
 	1543, -- Flare -- don't check id, not sure exact debuff id

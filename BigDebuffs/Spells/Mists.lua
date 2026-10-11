@@ -333,6 +333,7 @@ addon.Spells = {
     [131894] = { type = DEBUFF_OFFENSIVE }, -- Murder of Crows
     [77606]  = { type = DEBUFF_OFFENSIVE }, -- Dark Sim
     [112947] = { type = DEBUFF_OFFENSIVE }, -- Nerve Strike
+    [113952] = { type = DEBUFF_OFFENSIVE }, -- Paralytic Poison
 
     -- BUFF_OTHER (includes debuffs too?)
     -- DRINKS
