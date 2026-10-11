@@ -937,7 +937,6 @@ elseif Lib.gameExpansion == "mop" then
 
         -- *** Non-controlled Stun Effects *** -- was "random_stun". 
         -- I get that the original author wants to separate it but having another category of dr is confusing for me or rather of an eye sore
-        [113953] = "stun", -- Paralysis
         [118895] = "stun", -- Dragon Roar
         [77505]  = "stun", -- Earthquake
         -- [100]    = "stun", -- Charge

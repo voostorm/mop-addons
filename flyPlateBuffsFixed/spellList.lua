@@ -93,7 +93,7 @@ local roots = {
 	116706, -- Disable (Root)
 	113275, -- Entangling Roots (Symbiosis) [Monk]
 	123407, -- Spinning Fire Blossom
-	115197, -- Partial Paralysis
+	-- 115197, -- Partial Paralysis -- rather see the stun. Cleaner this way.
 	64695, -- Earthgrab (Earthgrab Totem)
 	63685, -- Freeze (Frozen Power)
 	87194, -- Glyph of Mind Blast
