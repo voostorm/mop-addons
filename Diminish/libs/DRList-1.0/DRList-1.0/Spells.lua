@@ -928,7 +928,6 @@ elseif Lib.gameExpansion == "mop" then
         [118345] = "stun", -- Pulverize (Primal Earth Elemental)
         [118905] = "stun", -- Static Charge (Capacitor Totem)
         [89766]  = "stun", -- Axe Toss (Felguard)
-        [22703]  = "stun", -- Inferno Effect
         [30283]  = "stun", -- Shadowfury
         [132168] = "stun", -- Shockwave
         [107570] = "stun", -- Storm Bolt
