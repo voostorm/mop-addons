@@ -271,7 +271,7 @@ Lib.categoryNames = {
         ["knockback"] = L.KNOCKBACKS,
         ["mind_control"] = L.MIND_CONTROL,
         ["taunt"] = L.TAUNTS,
-        ["charge"] = L.CHARGE,
+        -- ["charge"] = L.CHARGE,
     },
 }
 
@@ -322,7 +322,7 @@ Lib.categoriesPvE = {
         ["knockback"] = L.KNOCKBACKS,
         ["mind_control"] = L.MIND_CONTROL,
         ["taunt"] = L.TAUNTS,
-        ["charge"] = L.CHARGE,
+        -- ["charge"] = L.CHARGE,
     },
 }
 
