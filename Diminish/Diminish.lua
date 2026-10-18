@@ -369,6 +369,7 @@ do
             local drlistCategory = DRList:GetCategoryBySpellID(spellID)
             if not drlistCategory or drlistCategory == "knockback" then return end
             local category = DRList:GetCategoryLocalization(drlistCategory)
+            if not category then return end -- Never insert a timer for an unsupported DR category.
 
             local isMindControlled = false
             local isNotPetOrPlayer = false
