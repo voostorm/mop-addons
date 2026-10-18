@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "DRList-1.0", 82 -- Don't forget to change this in DRList-1.0.lua aswell!
+local MAJOR, MINOR = "DRList-1.0", 83 -- Don't forget to change this in DRList-1.0.lua aswell!
 local Lib = LibStub(MAJOR)
 if Lib.spellListVersion and Lib.spellListVersion >= MINOR then
     return
@@ -939,7 +939,6 @@ elseif Lib.gameExpansion == "mop" then
         [118895] = "random_stun", -- Dragon Roar
         [118000] = "random_stun", -- Dragon Roar
         [77505]  = "random_stun", -- Earthquake
-        [7922]    = "charge", -- Charge
         
 
         -- *** Fear Effects ***
