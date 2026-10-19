@@ -207,19 +207,19 @@ addon.Spells = {
     [113287] = { type = CROWD_CONTROL }, -- Solar Beam (Symbiosis)
 
 
-    [76577] = { type = CROWD_CONTROL }, -- Smoke Bomb
+    [88611] = { type = CROWD_CONTROL }, -- Smoke Bomb
 
     -- INTERRUPTS
     [1766]  = { type = INTERRUPT, duration = 5 }, -- Kick (Rogue)
     [2139]  = { type = INTERRUPT, duration = 8 }, -- Counterspell (Mage)
     [6552]  = { type = INTERRUPT, duration = 4 }, -- Pummel
     [19647] = { type = INTERRUPT, duration = 6 }, -- Spell Lock - Rank 1 (Warlock)
-    [26090] = { type = INTERRUPT, duration = 2, }, -- Pummel (Pet)
+    [26090] = { type = INTERRUPT, duration = 2 }, -- Pummel (Pet)
     [26679] = { type = INTERRUPT, duration = 3 }, -- Deadly Throw
-    [47528] = { type = INTERRUPT, duration = 4, },  -- Mind Freeze
+    [47528] = { type = INTERRUPT, duration = 4 },  -- Mind Freeze
     [50318] = { type = INTERRUPT, duration = 4 }, -- Serenity Dust (Moth - Hunter Pet)
     [50479] = { type = INTERRUPT, duration = 2},  -- Nether Shock (Nether Ray - Hunter Pet)
-    [57994] = { type = INTERRUPT, duration = 2, },  -- Wind Shear
+    [57994] = { type = INTERRUPT, duration = 2 },  -- Wind Shear
     [113288] = { type = INTERRUPT, duration = 4 }, -- Solar Beam (Symbiosis) Interrupt
     [97547] = { type = INTERRUPT, duration = 5 }, -- Solar Beam Interrupt
     [80964] = { type = INTERRUPT, duration = 4 }, -- Skull Bash (Bear)
