@@ -194,6 +194,44 @@ end
 
 MergeMissingDefaults(db.profile, defaultsSource)
 
+-- Keep WoW's declared SavedVariables global bound to AceDB's actual storage.
+-- The older custom profile format can coexist with AceDB, so explicitly
+-- preserve the active profile and selection in the registered account-wide DB.
+local function SyncSavedVariables()
+    local root = db.sv
+    if type(root) ~= "table" then
+        return
+    end
+
+    local name = db:GetCurrentProfile()
+    local profile = db.profile
+    if type(name) ~= "string" or type(profile) ~= "table" then
+        return
+    end
+
+    if type(root.profiles) ~= "table" then
+        root.profiles = {}
+    end
+    root.profiles[name] = profile
+
+    if type(root.profileKeys) ~= "table" then
+        root.profileKeys = {}
+    end
+    root.profileKeys[CharacterKey()] = name
+
+    _G.LoseControlDBProfiles = root
+end
+
+SyncSavedVariables()
+
+-- Also restore the binding immediately before WoW writes SavedVariables,
+-- whether the user exits the game or reloads the UI.
+local saveFrame = CreateFrame("Frame")
+saveFrame:RegisterEvent("PLAYER_LOGOUT")
+saveFrame:SetScript("OnEvent", function()
+    SyncSavedVariables()
+end)
+
 -- This is the compatibility bridge used by the existing LoseControl engine.
 _G.LoseControlDB = db.profile
 
@@ -227,6 +265,7 @@ local function ApplySelectedProfile()
     -- are rebound. Existing values (including false) are never overwritten.
     local profile = db.profile
     MergeMissingDefaults(profile, defaultsSource)
+    SyncSavedVariables()
     _G.LoseControlDB = profile
 
     if type(_G.LoseControlApplyProfileSettings) == "function" then
