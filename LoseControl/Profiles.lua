@@ -200,48 +200,56 @@ _G.LoseControlDB = db.profile
 -------------------------------------------------------------------------------
 -- Profile callbacks
 --
--- LoseControl frame objects cache references to per-frame settings. A reload
--- is therefore the safest profile transition: all frame references are rebuilt
--- from the newly selected profile, with no stale combat-time references.
+-- AceDB has already saved the selected profile key before firing these events.
+-- Rebind the existing LoseControl frames in place; never force a UI reload.
 -------------------------------------------------------------------------------
 
 local ProfileController = {}
-local reloadPending = false
+local applyPending = false
 local combatFrame = CreateFrame("Frame")
 
-local function ReloadForProfileChange()
+local function ApplySelectedProfile()
     if InCombatLockdown and InCombatLockdown() then
-        if not reloadPending then
-            reloadPending = true
+        if not applyPending then
+            applyPending = true
             combatFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
             DEFAULT_CHAT_FRAME:AddMessage(
-                "|cff33ff99LoseControl:|r Profile changed. UI will reload when combat ends."
+                "|cff33ff99LoseControl:|r Profile will apply when combat ends."
             )
         end
         return
     end
 
-    ReloadUI()
+    applyPending = false
+    combatFrame:UnregisterEvent("PLAYER_REGEN_ENABLED")
+
+    -- A newly created or reset profile needs concrete defaults before frames
+    -- are rebound. Existing values (including false) are never overwritten.
+    local profile = db.profile
+    MergeMissingDefaults(profile, defaultsSource)
+    _G.LoseControlDB = profile
+
+    if type(_G.LoseControlApplyProfileSettings) == "function" then
+        _G.LoseControlApplyProfileSettings(profile)
+    end
 end
 
 combatFrame:SetScript("OnEvent", function(self, event)
-    if event == "PLAYER_REGEN_ENABLED" and reloadPending then
-        reloadPending = false
-        self:UnregisterEvent("PLAYER_REGEN_ENABLED")
-        ReloadUI()
+    if event == "PLAYER_REGEN_ENABLED" and applyPending then
+        ApplySelectedProfile()
     end
 end)
 
 function ProfileController:OnProfileChanged()
-    ReloadForProfileChange()
+    ApplySelectedProfile()
 end
 
 function ProfileController:OnProfileCopied()
-    ReloadForProfileChange()
+    ApplySelectedProfile()
 end
 
 function ProfileController:OnProfileReset()
-    ReloadForProfileChange()
+    ApplySelectedProfile()
 end
 
 db.RegisterCallback(ProfileController, "OnProfileChanged", "OnProfileChanged")
