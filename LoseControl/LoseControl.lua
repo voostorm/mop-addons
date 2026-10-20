@@ -11552,6 +11552,47 @@ function LoseControl:ADDON_LOADED(arg1)
 	end
 end
 
+-- Rebind the combat engine and existing frames to a newly selected AceDB
+-- profile. Reinitializing the frames uses the same path as the native options
+-- controls, without a disruptive ReloadUI during profile selection.
+function LoseControl:ApplyProfileSettings(profile)
+	if type(profile) ~= "table" or type(profile.frames) ~= "table" then
+		return
+	end
+	if InCombatLockdown and InCombatLockdown() then
+		return
+	end
+
+	LoseControlDB = profile
+	_G.LoseControlDB = profile
+	self.noCooldownCount = profile.noCooldownCount
+	self.noBlizzardCooldownCount = profile.noBlizzardCooldownCount
+	self.noLossOfControlCooldown = profile.noLossOfControlCooldown
+	profile.frames.player2.enabled = profile.duplicatePlayerPortrait and profile.frames.player.enabled
+	profile.showPartyplayerIcon = profile.frames.partyplayer.enabled
+
+	local hideNumbers = profile.noCooldownCount and profile.noBlizzardCooldownCount or true
+	self:SetHideCountdownNumbers(hideNumbers)
+	for _, frame in pairs(LCframes) do
+		frame:SetHideCountdownNumbers(hideNumbers)
+	end
+	if LCframeplayer2 then
+		LCframeplayer2:SetHideCountdownNumbers(hideNumbers)
+	end
+	self:UpdateSpellIdsTableWithCustomSpellIds()
+
+	for _, frame in pairs(LCframes) do
+		frame:PLAYER_ENTERING_WORLD()
+	end
+	if LCframeplayer2 then
+		LCframeplayer2:PLAYER_ENTERING_WORLD()
+	end
+end
+
+_G.LoseControlApplyProfileSettings = function(profile)
+	LoseControl:ApplyProfileSettings(profile)
+end
+
 LoseControl:RegisterEvent("ADDON_LOADED")
 
 function LoseControl:CheckNameplateAnchor()
