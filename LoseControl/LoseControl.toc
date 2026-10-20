@@ -19,7 +19,6 @@
 ## X-Category: Buffs
 ## OptionalDeps: LibStub, PitBull4, Ace3, flyPlateBuffsFixed
 ## SavedVariables: LoseControlDBProfiles
-## SavedVariablesPerCharacter: LoseControlDB
 
 #@no-lib-strip@
 Libs\LibStub\LibStub.lua
