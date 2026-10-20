@@ -10,8 +10,8 @@ Profile implementation intentionally follows flyPlateBuffsFixed:
     explicitly selects another profile.
 
 LoseControl.lua still consumes the traditional LoseControlDB table. This
-module points LoseControlDB at the active AceDB profile before ADDON_LOADED
-fires, so the combat/aura engine does not need to know about AceDB.
+module points LoseControlDB at the active AceDB profile from the engine's
+ADDON_LOADED handler, after WoW has restored SavedVariables.
 -------------------------------------------------------------------------------
 ]]
 
@@ -73,6 +73,15 @@ local function CharacterKey()
     return name .. " - " .. realm
 end
 
+local initialized = false
+
+-- Called by the engine before it reads settings. File-scope initialization is
+-- too early: WoW restores SavedVariables after executing the addon's files.
+function _G.LoseControlInitializeProfiles()
+if initialized then
+    return
+end
+
 local defaultsSource = _G.LoseControlDBDefaults
 if type(defaultsSource) ~= "table" then
     -- Defensive fallback. This should never occur with the provided TOC order.
@@ -125,6 +134,7 @@ local db = AceDB:New(
 )
 
 _G.LoseControlProfileDB = db
+initialized = true
 
 -- Existing profiles from the previous custom implementation are already close
 -- to AceDB's storage shape (`profiles` + `profileKeys`). Never overwrite them
@@ -312,3 +322,5 @@ if AceDBOptions and AceConfig and AceConfigDialog then
     AceConfig:RegisterOptionsTable(appName, profileOptions)
     AceConfigDialog:AddToBlizOptions(appName, "Profiles", addonName)
 end
+end -- LoseControlInitializeProfiles
+

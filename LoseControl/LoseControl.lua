@@ -11415,6 +11415,9 @@ end
 -- Handle default settings
 function LoseControl:ADDON_LOADED(arg1)
 	if arg1 == addonName then
+		if type(_G.LoseControlInitializeProfiles) == "function" then
+			_G.LoseControlInitializeProfiles()
+		end
 		-- Always initialize against AceDB's active profile, not a detached copy.
 		local activeProfile = _G.LoseControlProfileDB and _G.LoseControlProfileDB.profile
 		if type(activeProfile) == "table" then
