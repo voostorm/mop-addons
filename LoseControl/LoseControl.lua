@@ -11571,7 +11571,10 @@ function LoseControl:ApplyProfileSettings(profile)
 	profile.frames.player2.enabled = profile.duplicatePlayerPortrait and profile.frames.player.enabled
 	profile.showPartyplayerIcon = profile.frames.partyplayer.enabled
 
-	local hideNumbers = profile.noCooldownCount and profile.noBlizzardCooldownCount or true
+	local hideNumbers = true
+	if profile.noCooldownCount then
+		hideNumbers = profile.noBlizzardCooldownCount
+	end
 	self:SetHideCountdownNumbers(hideNumbers)
 	for _, frame in pairs(LCframes) do
 		frame:SetHideCountdownNumbers(hideNumbers)
