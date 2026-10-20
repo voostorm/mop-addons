@@ -11415,9 +11415,19 @@ end
 -- Handle default settings
 function LoseControl:ADDON_LOADED(arg1)
 	if arg1 == addonName then
+		-- Always initialize against AceDB's active profile, not a detached copy.
+		local activeProfile = _G.LoseControlProfileDB and _G.LoseControlProfileDB.profile
+		if type(activeProfile) == "table" then
+			_G.LoseControlDB = activeProfile
+		end
 		if (_G.LoseControlDB == nil) or (_G.LoseControlDB.version == nil) then
-			_G.LoseControlDB = CopyTable(DBdefaults)
-			print(L["LoseControl reset."])
+			if type(activeProfile) == "table" then
+				-- Preserve profile data and let the existing defaults migration fill gaps.
+				activeProfile.version = 0
+			else
+				_G.LoseControlDB = CopyTable(DBdefaults)
+				print(L["LoseControl reset."])
+			end
 		end
 		if _G.LoseControlDB.version < DBdefaults.version then
 			for j, u in pairs(DBdefaults) do
