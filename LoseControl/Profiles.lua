@@ -104,8 +104,9 @@ if priorSharedDefault
     priorSharedDefault = nil
 end
 
+-- Persist concrete profile values. AceDB's profile-default cleanup can otherwise
+-- prune settings during logout and obscure values during legacy migrations.
 local DefaultSettings = {
-    profile = DeepCopy(defaultsSource),
     global = {
         profileMigrationVersion = 1,
         legacyDefaultImported = false,
@@ -176,6 +177,22 @@ if not db.global.migratedCharacters[charKey] then
 
     db.global.migratedCharacters[charKey] = true
 end
+
+-- Materialize missing defaults directly in the active saved profile.
+-- Never overwrite existing choices, including explicit false values. Because no
+-- AceDB profile defaults are registered, these values remain in SavedVariables.
+local function MergeMissingDefaults(destination, source)
+    for key, value in pairs(source) do
+        local existing = rawget(destination, key)
+        if existing == nil then
+            destination[key] = DeepCopy(value)
+        elseif type(value) == "table" and type(existing) == "table" then
+            MergeMissingDefaults(existing, value)
+        end
+    end
+end
+
+MergeMissingDefaults(db.profile, defaultsSource)
 
 -- This is the compatibility bridge used by the existing LoseControl engine.
 _G.LoseControlDB = db.profile
