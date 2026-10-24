@@ -121,6 +121,9 @@ function GladiusEx.Data.DefaultClassicon()
         [GladiusEx:SafeGetSpellName(115193)] = 9.5, -- Vanish (Rogue)
         [GladiusEx:SafeGetSpellName(115192)] = 9.5, -- Subterfuge (Rogue)
         
+        -- Area denial
+        [88611] = 9, -- Smoke Bomb (aura; 76577 is the cast)
+
         -- Silences
         [GladiusEx:SafeGetSpellName(25046)]	= 9, -- Arcane Torrent (Racial, Energy)
         [GladiusEx:SafeGetSpellName(80483)]	= 9, -- Arcane Torrent (Racial, Focus)
