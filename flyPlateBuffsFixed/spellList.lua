@@ -262,7 +262,7 @@ local cc = {
 	33786, -- Cyclone
 	113506, -- Cyclone (Symbiosis)
 
-	76577, -- Smoke Bomb -- no check because id might be wrong
+	88611, -- Smoke Bomb (aura)
 }
 
 -- show mine only on enemies because I need to make sure MY debuff is applied, regardless of other people's debuffs
