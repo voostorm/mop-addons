@@ -648,6 +648,25 @@ local interruptsIds = {
 	[412700] = 2		-- Deafening Roar
 }
 
+-- MoP Classic school-lockout durations (SPELL_INTERRUPT), not ability cooldowns.
+-- Keep retail durations above unchanged; these values come from MoP spells.
+local mopInterruptDurations = {
+	[1766] = 5, -- Kick
+	[2139] = 6, -- Counterspell
+	[6552] = 4, -- Pummel
+	[19647] = 6, -- Spell Lock (Felhunter)
+	[47528] = 4, -- Mind Freeze
+	[57994] = 3, -- Wind Shear
+	[96231] = 4, -- Rebuke
+	[93985] = 4, -- Skull Bash (triggered)
+	[80964] = 4, -- Skull Bash (Bear)
+	[80965] = 4, -- Skull Bash (Cat)
+	[106839] = 4, -- Skull Bash
+	[116705] = 4, -- Spear Hand Strike
+	[132409] = 6, -- Spell Lock (Command Demon)
+	[34490] = 3, -- Silencing Shot
+}
+
 local spellIds = {
 	-- Brian's new category: Big Offensive CDs
 	-- Warrior
@@ -12232,7 +12251,7 @@ function LoseControl:COMBAT_LOG_EVENT_UNFILTERED()
 		local _, event, _, sourceGUID, _, _, _, destGUID, _, _, _, spellId, _, _, exSpellId, _, spellSchool = CombatLogGetCurrentEventInfo()
 		if (destGUID ~= nil and destGUID ~= "") then
 			if (event == "SPELL_INTERRUPT") then
-				local duration = interruptsIds[spellId]
+				local duration = (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC and mopInterruptDurations[spellId]) or interruptsIds[spellId]
 				if (duration ~= nil) then
 					if (type(duration)=="table") then
 						local _, _, difficultyID = GetInstanceInfo()
