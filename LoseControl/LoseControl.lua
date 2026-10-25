@@ -11034,64 +11034,55 @@ function LoseControl:GetEnabled()
 	return enabled
 end
 
--- Reflow visible school icons into 50% quadrants, starting bottom-right.
--- This also supports the alternative interrupted-spell mini-icons.
-local function LayoutInterruptMiniIcons(iconFrame)
-    local size = iconFrame.lockoutIconBaseSize
-    if not size then return end
-
-    local shown = {}
-    local function collect(list)
-        for _, icon in pairs(list) do
-            if icon:IsShown() then
-                shown[#shown + 1] = {icon = icon, order = icon.interruptIconOrder or 1}
-            end
-        end
-    end
-    collect(iconFrame.iconInterruptList)
-    collect(iconFrame.iconExtraInterruptList)
-    collect(iconFrame.iconQueueInterruptList)
-    table.sort(shown, function(a, b) return a.order < b.order end)
-
-    local columns = #shown > 4 and 3 or 2
-    local cell = size / columns
-    for index, item in ipairs(shown) do
-        local icon = item.icon
-        icon:ClearAllPoints()
-        icon:SetSize(cell, cell)
-        icon:SetPoint("BOTTOMRIGHT", iconFrame, "BOTTOMRIGHT",
-            -((index - 1) % columns) * cell,
-            math.floor((index - 1) / columns) * cell)
-    end
-end
-
--- Lockout mini-icons use an exact quarter of the main icon (50% x 50%).
+-- Function to set the size of the schoolinterrupt icons based on the size of the main icon
 local function SetInterruptIconsSize(iconFrame, iconSize)
-    iconFrame.lockoutIconBaseSize = iconSize
-    iconFrame.interruptIconOrderPos = {}
-    for index = 1, 9 do
-        local columns = index > 4 and 3 or 2
-        local cell = iconSize / columns
-        iconFrame.interruptIconOrderPos[index] = {
-            -((index - 1) % columns) * cell,
-            math.floor((index - 1) / columns) * cell
-        }
-    end
-    iconFrame.iconInterruptBackground:SetSize(iconSize, iconSize)
-
-    local function resize(list)
-        for _, icon in pairs(list) do
-            icon:SetSize(iconSize / 2, iconSize / 2)
-            local order = icon.interruptIconOrder or 1
-            local pos = iconFrame.interruptIconOrderPos[order]
-            icon:ClearAllPoints()
-            icon:SetPoint("BOTTOMRIGHT", iconFrame, "BOTTOMRIGHT", pos[1], pos[2])
-        end
-    end
-    resize(iconFrame.iconInterruptList)
-    resize(iconFrame.iconExtraInterruptList)
-    resize(iconFrame.iconQueueInterruptList)
-    LayoutInterruptMiniIcons(iconFrame)
+	local interruptIconSize = (iconSize * 0.88) / 3
+	local interruptIconOffset = (iconSize * 0.06)
+	local frame = iconFrame.frame or LoseControlDB.frames[iconFrame.fakeUnitId or iconFrame.unitId]
+	if frame.anchor == "Blizzard" and not(iconFrame.useCompactPartyFrames) then
+		iconFrame.interruptIconOrderPos = {
+			[1] = {-interruptIconOffset-interruptIconSize, interruptIconOffset},						-- Center, Bottom
+			[2] = {-interruptIconOffset, interruptIconOffset+interruptIconSize},						-- Right, Center
+			[3] = {-interruptIconOffset-interruptIconSize, interruptIconOffset+interruptIconSize},		-- Center, Center
+			[4] = {-interruptIconOffset-interruptIconSize*2, interruptIconOffset+interruptIconSize},	-- Left, Center
+			[5] = {-interruptIconOffset, interruptIconOffset+interruptIconSize*2},						-- Right, Top
+			[6] = {-interruptIconOffset-interruptIconSize, interruptIconOffset+interruptIconSize*2},	-- Center, Top
+			[7] = {-interruptIconOffset-interruptIconSize*2, interruptIconOffset+interruptIconSize*2},	-- Left, Top
+			[8] = {-interruptIconOffset, interruptIconOffset},											-- Right, Bottom
+			[9] = {-interruptIconOffset-interruptIconSize*2, interruptIconOffset}						-- Left, Bottom
+		}
+	else
+		iconFrame.interruptIconOrderPos = {
+			[1] = {-interruptIconOffset, interruptIconOffset},											-- Right, Bottom
+			[2] = {-interruptIconOffset-interruptIconSize, interruptIconOffset},						-- Center, Bottom
+			[3] = {-interruptIconOffset-interruptIconSize*2, interruptIconOffset},						-- Left, Bottom
+			[4] = {-interruptIconOffset, interruptIconOffset+interruptIconSize},						-- Right, Center
+			[5] = {-interruptIconOffset-interruptIconSize, interruptIconOffset+interruptIconSize},		-- Center, Center
+			[6] = {-interruptIconOffset-interruptIconSize*2, interruptIconOffset+interruptIconSize},	-- Left, Center
+			[7] = {-interruptIconOffset, interruptIconOffset+interruptIconSize*2},						-- Right, Top
+			[8] = {-interruptIconOffset-interruptIconSize, interruptIconOffset+interruptIconSize*2},	-- Center, Top
+			[9] = {-interruptIconOffset-interruptIconSize*2, interruptIconOffset+interruptIconSize*2}	-- Left, Top
+		}
+	end
+	iconFrame.iconInterruptBackground:SetWidth(iconSize)
+	iconFrame.iconInterruptBackground:SetHeight(iconSize)
+	local i = 1
+	for _, v in pairs(iconFrame.iconInterruptList) do
+		v:SetWidth(interruptIconSize)
+		v:SetHeight(interruptIconSize)
+		v:SetPoint("BOTTOMRIGHT", iconFrame.interruptIconOrderPos[v.interruptIconOrder or i][1], iconFrame.interruptIconOrderPos[v.interruptIconOrder or i][2])
+		i = i + 1
+	end
+	for _, v in pairs(iconFrame.iconExtraInterruptList) do
+		v:SetWidth(interruptIconSize)
+		v:SetHeight(interruptIconSize)
+		v:SetPoint("BOTTOMRIGHT", iconFrame.interruptIconOrderPos[v.interruptIconOrder or 1][1], iconFrame.interruptIconOrderPos[v.interruptIconOrder or 1][2])
+	end
+	for k, v in ipairs(iconFrame.iconQueueInterruptList) do
+		v:SetWidth(interruptIconSize)
+		v:SetHeight(interruptIconSize)
+		v:SetPoint("BOTTOMRIGHT", iconFrame.interruptIconOrderPos[v.interruptIconOrder or k][1], iconFrame.interruptIconOrderPos[v.interruptIconOrder or k][2])
+	end
 end
 
 -- Callback function called when user changes the background interrupt color in color picker frame
@@ -13133,8 +13124,6 @@ function LoseControl:UNIT_AURA(unitId, updatedAuras, typeUpdate) -- fired when a
 		for _, mini in pairs(self.iconInterruptList) do mini:Hide() end
 		for _, mini in pairs(self.iconExtraInterruptList) do mini:Hide() end
 		for _, mini in ipairs(self.iconQueueInterruptList) do mini:Hide() end
-	else
-		LayoutInterruptMiniIcons(self)
 	end
 
 	if maxExpirationTime == 0 then -- no (de)buffs found
