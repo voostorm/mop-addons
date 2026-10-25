@@ -108,6 +108,7 @@ function GladiusEx.Data.DefaultClassicon()
         [GladiusEx:SafeGetSpellName(132168)] = 10, -- Shockwave
         [GladiusEx:SafeGetSpellName(50519)] = 10, -- Sonic Blast
         [GladiusEx:SafeGetSpellName(118905)] = 10, -- Static Charge (Capacitor Totem)
+        [GladiusEx:SafeGetSpellName(96201)] = 10, -- Web Wrap (Shale Spider) is a stun, not a root
         [GladiusEx:SafeGetSpellName(56626)] = 10, -- Sting (Wasp)
         [GladiusEx:SafeGetSpellName(107570)] = 10, -- Storm Bolt
         [GladiusEx:SafeGetSpellName(132169)] = 10, -- Storm Bolt 2
@@ -201,7 +202,6 @@ function GladiusEx.Data.DefaultClassicon()
         [GladiusEx:SafeGetSpellName(111340)] = 8, -- Ice Ward
         [GladiusEx:SafeGetSpellName(102359)] = 8, -- Mass Entanglement
         [GladiusEx:SafeGetSpellName(136634)] = 8, -- Narrow Escape
-        [GladiusEx:SafeGetSpellName(115000)] = 8, -- Remorseless Winter
         [GladiusEx:SafeGetSpellName(91807)]	= 8, -- Shambling Rush (Dark Transformation)
         [GladiusEx:SafeGetSpellName(123407)] = 8, -- Spinning Fire Blossom
         [GladiusEx:SafeGetSpellName(107566)] = 8, -- Staggering Shout
@@ -209,7 +209,6 @@ function GladiusEx.Data.DefaultClassicon()
         [GladiusEx:SafeGetSpellName(114404)] = 8, -- Void Tendril's Grasp
         [GladiusEx:SafeGetSpellName(105771)] = 8, -- Warbringer
         [GladiusEx:SafeGetSpellName(4167)] = 8, -- Web (Spider)
-        [GladiusEx:SafeGetSpellName(96201)] = 8, -- Web Wrap (Shale Spider)
 		[GladiusEx:SafeGetSpellName(339)] = 8, -- Entangling Roots
 		[GladiusEx:SafeGetSpellName(122)] = 8, -- Frost Nova
 		[GladiusEx:SafeGetSpellName(33395)]	= 8, -- Freeze (Water Elemental)

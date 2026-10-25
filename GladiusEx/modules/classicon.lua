@@ -255,6 +255,9 @@ function ClassIcon:GetAuraPriority(unit, name, spellid)
 		-- Hide the Angelic Bulwark lockout, even with saved name-based entries.
 		-- The actual absorb shield (114214) remains eligible.
 		if spellid == 114216 then return nil end
+		-- Remorseless Winter stacks a snare; only 115001 is the stun.
+		-- Both auras share the same name, so never display the snare as CC.
+		if spellid == 115000 then return nil end
 
 		-- The DoT and dispel silence share a name. Also guard old saved
 		-- name-based entries so existing profiles cannot show the DoT.
@@ -276,6 +279,11 @@ function ClassIcon:GetAuraPriority(unit, name, spellid)
 	end
 
 	local priority = self:GetImportantAura(unit, name) or self:GetImportantAura(unit, spellid)
+	-- Upgrade old default root values retained in existing profiles, without
+	-- re-enabling disabled auras or replacing other custom numeric priorities.
+	if GladiusEx.IS_MOPC and priority == 8 and (spellid == 96201 or spellid == 115001) then
+		priority = 10
+	end
 	return self:GetAdaptiveControlPriority(unit, spellid, priority)
 end
 
