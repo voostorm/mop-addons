@@ -169,7 +169,10 @@ function Interrupt:UpdateSchoolIcons(unit, frame, visible)
     end)
     if #sorted == 0 then return end
     if not icons then icons = {}; frame.lockoutSchoolIcons = icons end
-    local size = math.max(5, math.floor(math.min(frame:GetWidth(), frame:GetHeight()) * 0.28))
+    -- One school occupies the exact bottom-right 50% x 50% quadrant.
+    -- Use a 3x3 grid only when more than four schools need showing.
+    local columns = #sorted > 4 and 3 or 2
+    local width, height = frame:GetWidth() / columns, frame:GetHeight() / columns
     for n, entry in ipairs(sorted) do
         local mask = entry[1]
         local icon = icons[mask]
@@ -180,10 +183,10 @@ function Interrupt:UpdateSchoolIcons(unit, frame, visible)
             icons[mask] = icon
         end
         icon:ClearAllPoints()
-        icon:SetSize(size, size)
+        icon:SetSize(width, height)
         icon:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT",
-            -1 - ((n - 1) % 3) * (size + 1),
-            1 + math.floor((n - 1) / 3) * (size + 1))
+            -((n - 1) % columns) * width,
+            math.floor((n - 1) / columns) * height)
         icon:Show()
     end
 end
