@@ -7,7 +7,7 @@ local timer
 -- K: Improved
 
 local defaults = {
-	interruptPrio = 3.0,
+	interruptPrio = GladiusEx.IS_MOPC and 9.1 or 3.0,
 }
 
 local Interrupt = GladiusEx:NewGladiusExModule("Interrupts", defaults, defaults)
