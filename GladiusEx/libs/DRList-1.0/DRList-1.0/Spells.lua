@@ -939,6 +939,7 @@ elseif Lib.gameExpansion == "mop" then
         [118895] = "random_stun", -- Dragon Roar
         [77505]  = "random_stun", -- Earthquake
         [118000] = "random_stun", -- Dragon Roar
+        [7922]   = "charge", -- Charge Stun (category disabled in MoP)
 
         -- *** Fear Effects ***
         [113004] = "fear", -- Intimidating Roar (Symbiosis)
