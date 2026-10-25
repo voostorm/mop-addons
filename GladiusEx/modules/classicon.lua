@@ -281,7 +281,7 @@ end
 
 function ClassIcon:ScanAuras(unit)
 	local best_priority = 0
-	local best_name, best_icon, best_duration, best_expires
+	local best_name, best_icon, best_duration, best_expires, best_isInterrupt
 
 	local showShortest = self.db[unit].classIconShowLowestRemainingAura
 	
@@ -299,6 +299,7 @@ function ClassIcon:ScanAuras(unit)
 			local prio = self:GetAuraPriority(unit, name, spellid)
 			if prio and prio > best_priority or (prio == best_priority and best_expires and ((showShortest and expires and expires <= best_expires) or (not showShortest and (not expires or expires >= best_expires)))) then
 				best_name, best_icon, best_duration, best_expires, best_priority = name, icon, duration, expires, prio
+				best_isInterrupt = false
 			end
 			index = index + 1
 		end
@@ -311,22 +312,27 @@ function ClassIcon:ScanAuras(unit)
 		local name, icon, duration, expires, prio = unpack(interrupt)
 		if prio and prio > best_priority or (prio == best_priority and best_expires and ((showShortest and expires and expires <= best_expires) or (not showShortest and (not expires or expires >= best_expires)))) then
 			best_name, best_icon, best_duration, best_expires, best_priority = name, icon, duration, expires, prio
+			best_isInterrupt = true
 		end
 	end
 	
-	return best_name, best_icon, best_duration, best_expires
+	return best_name, best_icon, best_duration, best_expires, best_isInterrupt
 end
 
 function ClassIcon:UpdateAura(unit)
-	if not self.frame[unit] or not self.db[unit].classIconImportantAuras then return end
-
-	local name, icon, duration, expires = self:ScanAuras(unit)
-
-	if name then
-		self:SetAura(unit, name, icon, duration, expires)
-	else
-		self:SetClassIcon(unit)
-	end
+    if not self.frame[unit] then return end
+    local interrupt = GladiusEx:GetModule("Interrupts", true)
+    if not self.db[unit].classIconImportantAuras then
+        if interrupt then interrupt:UpdateSchoolIcons(unit, self.frame[unit], false) end
+        return
+    end
+    local name, icon, duration, expires, isInterrupt = self:ScanAuras(unit)
+    if name then
+        self:SetAura(unit, name, icon, duration, expires)
+    else
+        self:SetClassIcon(unit)
+    end
+    if interrupt then interrupt:UpdateSchoolIcons(unit, self.frame[unit], isInterrupt) end
 end
 
 function ClassIcon:SetAura(unit, name, icon, duration, expires)
