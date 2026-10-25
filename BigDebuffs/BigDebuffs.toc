@@ -32,5 +32,6 @@ Locales\Locales.xml
 BigDebuffs.xml
 Spells\[Game].lua
 BigDebuffs.lua
+SchoolLockouts.lua
 Options.lua
 ImportExport.lua

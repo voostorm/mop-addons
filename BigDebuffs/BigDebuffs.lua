@@ -1725,12 +1725,12 @@ end
 function BigDebuffs:COMBAT_LOG_EVENT_UNFILTERED()
     if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then return end
 
-    local _, event, _, _, _, _, _, destGUID, _, _, _, spellId, spellName = CombatLogGetCurrentEventInfo()
+    local _, event, _, _, _, _, _, destGUID, _, _, _, spellId, spellName, _, _, _, extraSchool = CombatLogGetCurrentEventInfo()
 
     -- SPELL_INTERRUPT doesn't fire for some channeled spells
     if event ~= "SPELL_INTERRUPT" and event ~= "SPELL_CAST_SUCCESS" then return end
 
-    if spellId == 0 then spellId = spellIdByName[spellName] end
+    if spellId == 0 and spellIdByName then spellId = spellIdByName[spellName] end
 
     local spell = self.Spells[spellId]
     if not spell then return end
@@ -1777,6 +1777,9 @@ function BigDebuffs:COMBAT_LOG_EVENT_UNFILTERED()
                 end
             end
 
+            if event == "SPELL_INTERRUPT" then
+                self:RecordSchoolLockout(destGUID, extraSchool, GetTime() + duration)
+            end
             self.units[destGUID] = self.units[destGUID] or {}
             self.units[destGUID].expires = GetTime() + duration
             self.units[destGUID].spellId = spellId
@@ -2542,7 +2545,7 @@ if useModernAuraPath then
                 local spellId = self.units[guid].spellId
                 local size = self:GetDebuffSize(spellId, false)
                 local fakeAura = { spellId = spellId, icon = GetSpellTexture(spellId), applications = 1, isRaid = false,
-                    expirationTime = spell.expires, duration = spell.duration, dispelName = "none" }
+                    expirationTime = spell.expires, duration = spell.duration, dispelName = "none", isBDInterrupt = true }
                 if size then
                     tinsert(debuffs, { fakeAura,
                         size, self:GetDebuffPriority(spellId) })
@@ -2612,6 +2615,7 @@ if useModernAuraPath then
                 debuffFrame.isBossBuff = false
                 debuffFrame:SetSize(debuffFrame.baseSize, debuffFrame.baseSize)
                 debuffFrame:Show()
+                self:UpdateSchoolLockoutIcons(debuffFrame, UnitGUID(unitId), aura.isBDInterrupt)
                 frame.BigDebuffs[index].cooldown:SetSwipeColor(0, 0, 0, 0.7)
                 index = index + 1
             end
@@ -3013,7 +3017,9 @@ function BigDebuffs:UNIT_AURA(unit)
         frame.buff = buff
         frame.interrupt = interrupt
         frame.current = icon
+        self:UpdateSchoolLockoutIcons(frame, guid, interrupt ~= nil)
     else
+        self:UpdateSchoolLockoutIcons(frame, guid, false)
         frame:Hide()
         frame.current = nil
     end
@@ -3243,7 +3249,9 @@ function BigDebuffs:UNIT_AURA_NAMEPLATE(unit)
         frame.buff = buff
         frame.interrupt = interrupt
         frame.current = icon
+        self:UpdateSchoolLockoutIcons(frame, guid, interrupt ~= nil)
     else
+        self:UpdateSchoolLockoutIcons(frame, guid, false)
         frame:Hide()
         frame.current = nil
     end
