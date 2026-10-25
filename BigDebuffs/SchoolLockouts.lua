@@ -13,6 +13,14 @@ local masks = {1, 2, 4, 8, 16, 32, 64, 28, 124}
 function BD:RecordSchoolLockout(guid, school, expires)
   if WOW_PROJECT_ID ~= WOW_PROJECT_MISTS_CLASSIC or not guid or
      type(school) ~= "number" or school <= 0 then return end
+  -- Purge expired GUID buckets even after opponents leave our frame set.
+  local now = GetTime()
+  for unitGUID, records in pairs(self.schoolLockouts) do
+    for i = #records, 1, -1 do
+      if records[i].expires <= now then table.remove(records, i) end
+    end
+    if #records == 0 then self.schoolLockouts[unitGUID] = nil end
+  end
   local list = self.schoolLockouts[guid] or {}
   self.schoolLockouts[guid] = list
   table.insert(list, {school=school, expires=expires})

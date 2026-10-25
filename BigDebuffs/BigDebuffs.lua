@@ -2736,6 +2736,7 @@ else
                     CompactUnitFrame_UtilSetDebuff(frame.BigDebuffs[index],
                         frame.displayedUnit, debuffs[i][1], nil, false, false)
                     frame.BigDebuffs[index].cooldown:SetSwipeColor(0, 0, 0, 0.7)
+                    self:UpdateSchoolLockoutIcons(frame.BigDebuffs[index], guid, debuffs[i][1] == -1)
                     index = index + 1
                 end
             end
