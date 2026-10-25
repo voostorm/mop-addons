@@ -928,7 +928,6 @@ elseif Lib.gameExpansion == "mop" then
         [118345] = "stun", -- Pulverize (Primal Earth Elemental)
         [118905] = "stun", -- Static Charge (Capacitor Totem)
         [89766]  = "stun", -- Axe Toss (Felguard)
-        [22703]  = "stun", -- Inferno Effect
         [30283]  = "stun", -- Shadowfury
         [132168] = "stun", -- Shockwave
         [107570] = "stun", -- Storm Bolt
@@ -939,7 +938,6 @@ elseif Lib.gameExpansion == "mop" then
         [113953] = "random_stun", -- Paralysis
         [118895] = "random_stun", -- Dragon Roar
         [77505]  = "random_stun", -- Earthquake
-        [100]    = "random_stun", -- Charge
         [118000] = "random_stun", -- Dragon Roar
 
         -- *** Fear Effects ***
@@ -976,6 +974,7 @@ elseif Lib.gameExpansion == "mop" then
         [33395]  = "root", -- Freeze (Water Elemental)
         [122]    = "root", -- Frost Nova
         [110693] = "root", -- Frost Nova (Symbiosis)
+        [115757] = "root", -- Frost Nova (Glyph of Ice Block)
         [116706] = "root", -- Disable
         [87194]  = "root", -- Glyph of Mind Blast
         [114404] = "root", -- Void Tendrils
@@ -983,11 +982,11 @@ elseif Lib.gameExpansion == "mop" then
         [63685]  = "root", -- Freeze (Frost Shock)
         [107566] = "root", -- Staggering Shout
 
-        -- *** Non-controlled Root Effects ***
-        [64803]  = "random_root", -- Entrapment
-        [111340] = "random_root", -- Ice Ward
-        [123407] = "random_root", -- Spinning Fire Blossom
-        [64695]  = "random_root", -- Earthgrab Totem
+        -- *** Root Effects (shared DR with other roots) ***
+        [64803]  = "root", -- Entrapment
+        [111340] = "root", -- Ice Ward
+        [123407] = "root", -- Spinning Fire Blossom
+        [64695]  = "root", -- Earthgrab Totem
 
         -- *** Disarm Weapon Effects ***
         [50541]  = "disarm", -- Clench (Scorpid)
