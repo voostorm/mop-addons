@@ -188,7 +188,8 @@ do
 				ShowCooldownAnimation = false,
 			},
 		};
-		aceDB = LibStub("AceDB-3.0"):New("NameplateCooldownsAceDB", aceDBDefaults);
+		-- Reuse the shared Default profile for new characters without overriding saved choices.
+		aceDB = LibStub("AceDB-3.0"):New("NameplateCooldownsAceDB", aceDBDefaults, true);
 		db = aceDB.profile;
 		addonTable.db = aceDB.profile;
 		addonTable.MigrateDB();
