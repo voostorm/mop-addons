@@ -1,4 +1,4 @@
-## Interface: 50500
+## Interface: 50504
 ## Title: GladiusEx
 ## Notes: Arena unit frames and more
 ## SavedVariables: GladiusExDB
