@@ -12624,18 +12624,29 @@ function LoseControl:UNIT_AURA(unitId, updatedAuras, typeUpdate) -- fired when a
 		end
 	end
 	local priority = LoseControlDB.priority
-	-- Swap only enabled root/silence priorities. A saved 0 remains disabled.
+	-- Prefer roots for melee and full silences for casters, including over
+	-- single-school interrupts. A disabled category (priority 0) stays disabled.
 	local effectiveRoot, effectiveSilence = priority.Root, priority.Silence
-	if LoseControlDB.adaptiveRootSilencePriority
-		and type(effectiveRoot) == "number" and effectiveRoot > 0
-		and type(effectiveSilence) == "number" and effectiveSilence > 0 then
+	if LoseControlDB.adaptiveRootSilencePriority then
 		local preferred = GetMoPControlPreference(self.unitId)
 		if preferred then
-			local higher = math.max(effectiveRoot, effectiveSilence)
-			local lower = math.min(effectiveRoot, effectiveSilence)
-			if higher == lower then lower = math.max(1, higher - 5) end
-			effectiveRoot = preferred == "root" and higher or lower
-			effectiveSilence = preferred == "silence" and higher or lower
+			local interruptPriority = priority.Interrupt or 0
+			local higher = math.max(effectiveRoot or 0, effectiveSilence or 0, interruptPriority) + 5
+			-- Keep stuns/CC ahead of adaptive roots and silences by default.
+			if priority.CC and priority.CC > interruptPriority then
+				higher = math.min(higher, priority.CC - 5)
+			end
+			if preferred == "root" and type(effectiveRoot) == "number" and effectiveRoot > 0 then
+				effectiveRoot = higher
+				if effectiveSilence and effectiveSilence >= higher then
+					effectiveSilence = math.max(1, higher - 5)
+				end
+			elseif preferred == "silence" and type(effectiveSilence) == "number" and effectiveSilence > 0 then
+				effectiveSilence = higher
+				if effectiveRoot and effectiveRoot >= higher then
+					effectiveRoot = math.max(1, higher - 5)
+				end
+			end
 		end
 	end
 	local maxPriority = 1
@@ -13105,6 +13116,14 @@ function LoseControl:UNIT_AURA(unitId, updatedAuras, typeUpdate) -- fired when a
 				end
 			end
 		end
+	end
+
+	-- School mini-icons describe the selected interrupt, not a full silence.
+	-- They are rebuilt on UNIT_AURA when the silence ends and lockout remains.
+	if not maxPriorityIsInterrupt then
+		for _, mini in pairs(self.iconInterruptList) do mini:Hide() end
+		for _, mini in pairs(self.iconExtraInterruptList) do mini:Hide() end
+		for _, mini in ipairs(self.iconQueueInterruptList) do mini:Hide() end
 	end
 
 	if maxExpirationTime == 0 then -- no (de)buffs found

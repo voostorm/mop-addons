@@ -218,19 +218,23 @@ local extraRoots = {
 	[45334] = true, -- Immobilized
 }
 
-function ClassIcon:GetAdaptiveControlPriority(unit, spellid, priority)
-	if not GladiusEx.IS_MOPC or not self.db[unit].classIconAdaptiveControlPriority
-		or type(priority) ~= "number" or priority <= 0 then
-		return priority
-	end
-
+local function GetControlPreference(self, unit)
 	local info
 	if GladiusEx:IsTesting(unit) then
 		info = GladiusEx.testing and GladiusEx.testing[unit]
 	else
 		info = GladiusEx.buttons and GladiusEx.buttons[unit]
 	end
-	local preferred = info and controlPreferenceBySpec[info.specID]
+	return info and controlPreferenceBySpec[info.specID]
+end
+
+function ClassIcon:GetAdaptiveControlPriority(unit, spellid, priority)
+	if not GladiusEx.IS_MOPC or not self.db[unit].classIconAdaptiveControlPriority
+		or type(priority) ~= "number" or priority <= 0 then
+		return priority
+	end
+
+	local preferred = GetControlPreference(self, unit)
 	if not preferred then return priority end
 
 	-- Frostjaw applies both a root and a silence, so it matters to either role.
@@ -318,6 +322,13 @@ function ClassIcon:ScanAuras(unit)
 	if interrupt then
 		interrupt = {interrupt:GetInterruptFor(unit)}
 		local name, icon, duration, expires, prio = unpack(interrupt)
+		-- Default MoP interrupts yield to a melee root or caster silence,
+		-- then reappear for whatever school-lockout time remains.
+		-- Keep manually configured interrupt priorities and unknown specs intact.
+		if GladiusEx.IS_MOPC and self.db[unit].classIconAdaptiveControlPriority
+			and prio == 9.1 and GetControlPreference(self, unit) then
+			prio = 8.5
+		end
 		if prio and prio > best_priority or (prio == best_priority and best_expires and ((showShortest and expires and expires <= best_expires) or (not showShortest and (not expires or expires >= best_expires)))) then
 			best_name, best_icon, best_duration, best_expires, best_priority = name, icon, duration, expires, prio
 			best_isInterrupt = true
