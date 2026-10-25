@@ -25,6 +25,7 @@ local function TimerIsFinished(timer, timestamp)
 end
 
 function Timers:Insert(unitGUID, srcGUID, category, spellID, isFriendly, isNotPetOrPlayer, isApplied, testMode)
+    if not unitGUID or not category then return end
     if isApplied then -- SPELL_AURA_APPLIED
         if NS.db.timerStartAuraEnd and not testMode then
             -- on timerStartAuraEnd=true mode we start timer on SPELL_AURA_REMOVED instead of SPELL_AURA_APPLIED.

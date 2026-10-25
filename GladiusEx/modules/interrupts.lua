@@ -44,14 +44,8 @@ function Interrupt:CombatLogEvent(_, ...)
 	local unit = GladiusEx:GetUnitIdByGUID(destGUID)
 	if not unit then return end
 
-	if subEvent ~= "SPELL_CAST_SUCCESS" and subEvent ~= "SPELL_INTERRUPT" then
-		return
-	end
-	-- it is necessary to check ~= false, as if the unit isn't casting a channeled spell, it will be nil
-	if subEvent == "SPELL_CAST_SUCCESS" and select(8, UnitChannelInfo(unit)) ~= false then
-		-- not interruptible
-		return
-	end
+	-- Only a confirmed SPELL_INTERRUPT starts a school-lockout indicator.
+	if subEvent ~= "SPELL_INTERRUPT" then return end
 	if INTERRUPTS[spellID] == nil then return end
 	local duration = INTERRUPTS[spellID].duration
 	if not duration then return end
@@ -75,9 +69,10 @@ function Interrupt:UpdateInterrupt(unit, spellid, duration, oldTime)
 	if spellid and duration then
 		self.interrupts[unit] = {spellid, t, duration}
 	elseif oldTime then
-		if t == oldTime then -- this ensures we don't overwrite a new interrupt with an old c_timer
-			self.interrupts[unit] = nil
-		end
+		-- Clear only the interrupt that scheduled this callback, never a newer one.
+		local active = self.interrupts and self.interrupts[unit]
+		if not active or active[2] ~= oldTime then return end
+		self.interrupts[unit] = nil
 	end
 
 	self:SendMessage("GLADIUSEX_INTERRUPT", unit)
@@ -88,7 +83,7 @@ function Interrupt:UpdateInterrupt(unit, spellid, duration, oldTime)
 	C_Timer.After(
 		duration + 0.1,
 		function()
-			self:UpdateInterrupt(unit, spellid, nil, t+duration+0.1)
+			self:UpdateInterrupt(unit, spellid, nil, t)
 		end
 	)
 end
