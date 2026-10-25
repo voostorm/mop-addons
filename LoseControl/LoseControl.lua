@@ -8150,9 +8150,57 @@ local anchors = {
 }
 
 -------------------------------------------------------------------------------
+-- Match GladiusEx's spec-based root/silence preference on MoP Classic.
+-- Only use a known specialization; Hunters/unknown specs retain saved priorities.
+local mopControlPreferenceBySpec = {
+    [250] = "root", [251] = "root", [252] = "root", -- Death Knight
+    [103] = "root", [104] = "root", -- Feral / Guardian
+    [268] = "root", [269] = "root", -- Brewmaster / Windwalker
+    [66] = "root", [70] = "root", -- Protection / Retribution
+    [259] = "root", [260] = "root", [261] = "root", -- Rogue
+    [263] = "root", -- Enhancement
+    [71] = "root", [72] = "root", [73] = "root", -- Warrior
+    [102] = "silence", [105] = "silence", -- Balance / Restoration
+    [62] = "silence", [63] = "silence", [64] = "silence", -- Mage
+    [270] = "silence", -- Mistweaver
+    [65] = "silence", -- Holy Paladin
+    [256] = "silence", [257] = "silence", [258] = "silence", -- Priest
+    [262] = "silence", [264] = "silence", -- Elemental / Restoration
+    [265] = "silence", [266] = "silence", [267] = "silence", -- Warlock
+}
+
+local function GetMoPControlPreference(unit)
+    if WOW_PROJECT_ID ~= WOW_PROJECT_MISTS_CLASSIC or not UnitIsPlayer(unit) then return end
+
+    local specID
+    if UnitIsUnit(unit, "player") then
+        if type(GetSpecialization) == "function" and type(GetSpecializationInfo) == "function" then
+            local index = GetSpecialization()
+            if index then specID = GetSpecializationInfo(index) end
+        end
+    elseif type(GetArenaOpponentSpec) == "function" then
+        local index = tonumber(string.match(unit, "^arena(%d+)$"))
+        if not index then
+            local guid = UnitGUID(unit)
+            if guid then
+                for i = 1, 5 do
+                    if UnitGUID("arena" .. i) == guid then
+                        index = i
+                        break
+                    end
+                end
+            end
+        end
+        if index then specID = GetArenaOpponentSpec(index) end
+    end
+
+    return mopControlPreferenceBySpec[specID]
+end
+
 -- Default settings
 local DBdefaults = {
 	version = 8.1, -- This is the settings version, not necessarily the same as the LoseControl version
+	adaptiveRootSilencePriority = true,
 	noCooldownCount = false,
 	noBlizzardCooldownCount = true,
 	noLossOfControlCooldown = false,
@@ -12576,6 +12624,20 @@ function LoseControl:UNIT_AURA(unitId, updatedAuras, typeUpdate) -- fired when a
 		end
 	end
 	local priority = LoseControlDB.priority
+	-- Swap only enabled root/silence priorities. A saved 0 remains disabled.
+	local effectiveRoot, effectiveSilence = priority.Root, priority.Silence
+	if LoseControlDB.adaptiveRootSilencePriority
+		and type(effectiveRoot) == "number" and effectiveRoot > 0
+		and type(effectiveSilence) == "number" and effectiveSilence > 0 then
+		local preferred = GetMoPControlPreference(self.unitId)
+		if preferred then
+			local higher = math.max(effectiveRoot, effectiveSilence)
+			local lower = math.min(effectiveRoot, effectiveSilence)
+			if higher == lower then lower = math.max(1, higher - 5) end
+			effectiveRoot = preferred == "root" and higher or lower
+			effectiveSilence = preferred == "silence" and higher or lower
+		end
+	end
 	local maxPriority = 1
 	local maxExpirationTime = 0
 	local maxPriorityIsInterrupt = false
@@ -12726,6 +12788,11 @@ function LoseControl:UNIT_AURA(unitId, updatedAuras, typeUpdate) -- fired when a
 
 			local spellCategory = newCategory or spellIds[spellId]
 			local Priority = priority[spellCategory]
+			if spellCategory == "Root" then
+				Priority = effectiveRoot
+			elseif spellCategory == "Silence" then
+				Priority = spellId == 102051 and math.max(effectiveRoot or 0, effectiveSilence or 0) or effectiveSilence
+			end
 			if Priority then
 				if self.frame.categoriesEnabled.debuff[reactionToPlayer] and self.frame.categoriesEnabled.debuff[reactionToPlayer][spellCategory] then
 					if Priority == maxPriority and expirationTime > maxExpirationTime then
@@ -13799,6 +13866,20 @@ for k in pairs(DBdefaults.priority) do
 	end)
 end
 
+-- Per-profile switch. Priority sliders remain the source of the actual values.
+local AdaptiveRootSilencePriority = CreateFrame("CheckButton",
+    O.."AdaptiveRootSilencePriority", OptionsPanel.container, "OptionsBaseCheckButtonTemplate")
+_G[O.."AdaptiveRootSilencePriorityText"]:SetText("Adaptive roots / silences by target spec (MoP)")
+AdaptiveRootSilencePriority:SetScript("OnClick", function(self)
+    LoseControlDB.adaptiveRootSilencePriority = self:GetChecked()
+    for _, frame in pairs(LCframes) do
+        if frame.unitId and not frame.unlockMode then frame:UNIT_AURA(frame.unitId) end
+    end
+    if LCframeplayer2 and not LCframeplayer2.unlockMode then
+        LCframeplayer2:UNIT_AURA(LCframeplayer2.unitId)
+    end
+end)
+
 local BlizzardLossOfControl = OptionsPanel.container:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 BlizzardLossOfControl:SetText(L["BlizzardLossOfControl"])
 
@@ -13987,6 +14068,7 @@ PrioritySlider.ImmuneSpell:SetPoint("TOPLEFT", PrioritySlider.Immune, "BOTTOMLEF
 PrioritySlider.ImmunePhysical:SetPoint("TOPLEFT", PrioritySlider.ImmuneSpell, "BOTTOMLEFT", 0, -24)
 PrioritySlider.CC:SetPoint("TOPLEFT", PrioritySlider.ImmunePhysical, "BOTTOMLEFT", 0, -24)
 PrioritySlider.Silence:SetPoint("TOPLEFT", PrioritySlider.CC, "BOTTOMLEFT", 0, -24)
+AdaptiveRootSilencePriority:SetPoint("TOPLEFT", PrioritySlider.Silence, "BOTTOMLEFT", 0, -12)
 PrioritySlider.Interrupt:SetPoint("TOPLEFT", PrioritySlider.PvE, "TOPRIGHT", 40, 0)
 PrioritySlider.Disarm:SetPoint("TOPLEFT", PrioritySlider.Interrupt, "BOTTOMLEFT", 0, -24)
 PrioritySlider.Root:SetPoint("TOPLEFT", PrioritySlider.Disarm, "BOTTOMLEFT", 0, -24)
@@ -14027,6 +14109,7 @@ function OptionsPanelRefresh() -- This method will run when the Interface Option
 	DisableCooldownCount:SetChecked(LoseControlDB.noCooldownCount)
 	DisableBlizzardCooldownCount:SetChecked(LoseControlDB.noBlizzardCooldownCount)
 	DisableLossOfControlCooldown:SetChecked(LoseControlDB.noLossOfControlCooldown)
+	AdaptiveRootSilencePriority:SetChecked(LoseControlDB.adaptiveRootSilencePriority)
 	if not LoseControlDB.noCooldownCount then
 		DisableBlizzardCooldownCount:Disable()
 		_G[O.."DisableBlizzardCooldownCountText"]:SetTextColor(0.5,0.5,0.5)
