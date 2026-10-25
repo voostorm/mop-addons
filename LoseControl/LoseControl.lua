@@ -11034,34 +11034,16 @@ function LoseControl:GetEnabled()
 	return enabled
 end
 
--- Function to set the size of the schoolinterrupt icons based on the size of the main icon
-local function SetInterruptIconsSize(iconFrame, iconSize)
-	local interruptIconSize = (iconSize * 0.88) / 3
-	local interruptIconOffset = (iconSize * 0.06)
-	local frame = iconFrame.frame or LoseControlDB.frames[iconFrame.fakeUnitId or iconFrame.unitId]
-	if frame.anchor == "Blizzard" and not(iconFrame.useCompactPartyFrames) then
-		iconFrame.interruptIconOrderPos = {
-			[1] = {-interruptIconOffset-interruptIconSize, interruptIconOffset},						-- Center, Bottom
-			[2] = {-interruptIconOffset, interruptIconOffset+interruptIconSize},						-- Right, Center
-			[3] = {-interruptIconOffset-interruptIconSize, interruptIconOffset+interruptIconSize},		-- Center, Center
-			[4] = {-interruptIconOffset-interruptIconSize*2, interruptIconOffset+interruptIconSize},	-- Left, Center
-			[5] = {-interruptIconOffset, interruptIconOffset+interruptIconSize*2},						-- Right, Top
-			[6] = {-interruptIconOffset-interruptIconSize, interruptIconOffset+interruptIconSize*2},	-- Center, Top
-			[7] = {-interruptIconOffset-interruptIconSize*2, interruptIconOffset+interruptIconSize*2},	-- Left, Top
-			[8] = {-interruptIconOffset, interruptIconOffset},											-- Right, Bottom
-			[9] = {-interruptIconOffset-interruptIconSize*2, interruptIconOffset}						-- Left, Bottom
-		}
-	else
-		iconFrame.interruptIconOrderPos = {
-			[1] = {-interruptIconOffset, interruptIconOffset},											-- Right, Bottom
-			[2] = {-interruptIconOffset-interruptIconSize, interruptIconOffset},						-- Center, Bottom
-			[3] = {-interruptIconOffset-interruptIconSize*2, interruptIconOffset},						-- Left, Bottom
-			[4] = {-interruptIconOffset, interruptIconOffset+interruptIconSize},						-- Right, Center
-			[5] = {-interruptIconOffset-interruptIconSize, interruptIconOffset+interruptIconSize},		-- Center, Center
-			[6] = {-interruptIconOffset-interruptIconSize*2, interruptIconOffset+interruptIconSize},	-- Left, Center
-			[7] = {-interruptIconOffset, interruptIconOffset+interruptIconSize*2},						-- Right, Top
-			[8] = {-interruptIconOffset-interruptIconSize, interruptIconOffset+interruptIconSize*2},	-- Center, Top
-			[9] = {-interruptIconOffset-interruptIconSize*2, interruptIconOffset+interruptIconSize*2}	-- Left, Top
+-- Size locked-school icons to quadrants of the main icon.
+-- Reuse this existing helper (no extra file-scope locals in this large Lua file).
+local function SetInterruptIconsSize(iconFrame, iconSize, visibleCount)
+	local columns = visibleCount and visibleCount <= 4 and 2 or 3
+	local interruptIconSize = iconSize / columns
+	iconFrame.interruptIconOrderPos = {}
+	for i = 1, 9 do
+		iconFrame.interruptIconOrderPos[i] = {
+			-((i - 1) % columns) * interruptIconSize,
+			math.floor((i - 1) / columns) * interruptIconSize
 		}
 	end
 	iconFrame.iconInterruptBackground:SetWidth(iconSize)
@@ -11070,17 +11052,20 @@ local function SetInterruptIconsSize(iconFrame, iconSize)
 	for _, v in pairs(iconFrame.iconInterruptList) do
 		v:SetWidth(interruptIconSize)
 		v:SetHeight(interruptIconSize)
+		v:ClearAllPoints()
 		v:SetPoint("BOTTOMRIGHT", iconFrame.interruptIconOrderPos[v.interruptIconOrder or i][1], iconFrame.interruptIconOrderPos[v.interruptIconOrder or i][2])
 		i = i + 1
 	end
 	for _, v in pairs(iconFrame.iconExtraInterruptList) do
 		v:SetWidth(interruptIconSize)
 		v:SetHeight(interruptIconSize)
+		v:ClearAllPoints()
 		v:SetPoint("BOTTOMRIGHT", iconFrame.interruptIconOrderPos[v.interruptIconOrder or 1][1], iconFrame.interruptIconOrderPos[v.interruptIconOrder or 1][2])
 	end
 	for k, v in ipairs(iconFrame.iconQueueInterruptList) do
 		v:SetWidth(interruptIconSize)
 		v:SetHeight(interruptIconSize)
+		v:ClearAllPoints()
 		v:SetPoint("BOTTOMRIGHT", iconFrame.interruptIconOrderPos[v.interruptIconOrder or k][1], iconFrame.interruptIconOrderPos[v.interruptIconOrder or k][2])
 	end
 end
@@ -13124,6 +13109,19 @@ function LoseControl:UNIT_AURA(unitId, updatedAuras, typeUpdate) -- fired when a
 		for _, mini in pairs(self.iconInterruptList) do mini:Hide() end
 		for _, mini in pairs(self.iconExtraInterruptList) do mini:Hide() end
 		for _, mini in ipairs(self.iconQueueInterruptList) do mini:Hide() end
+	else
+		-- Reflow only the icons being shown, starting at the bottom-right.
+		local miniCount = 0
+		for _, mini in pairs(self.iconInterruptList) do
+			if mini:IsShown() then miniCount = miniCount + 1 end
+		end
+		for _, mini in pairs(self.iconExtraInterruptList) do
+			if mini:IsShown() then miniCount = miniCount + 1 end
+		end
+		for _, mini in ipairs(self.iconQueueInterruptList) do
+			if mini:IsShown() then miniCount = miniCount + 1 end
+		end
+		SetInterruptIconsSize(self, self.frame.size, miniCount)
 	end
 
 	if maxExpirationTime == 0 then -- no (de)buffs found
