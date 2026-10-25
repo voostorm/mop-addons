@@ -52,6 +52,7 @@ local snares50 = {
 	54644, -- Frost Breath (Chimaera) -- 50%
 	135299, -- Ice Trap -- 50%
 	17962, -- Conflagrate -- 50%
+	116330, -- Dizzying Haze -- 50%
 }
 
 -- size 1.2
@@ -282,6 +283,7 @@ local war_personal_nostack_debuffs = {
 	2818, -- deadly poison 1.3
 	137619, -- Mark for Death 1.5
 	603, -- doom 1.3
+	123725, -- Breath of Fire 1.3
 }
 
 -- default size is 1.3
@@ -520,7 +522,6 @@ local mobility_buffs = {
 	77761, -- Stampeding Roar
 	96268, -- Death's Advance
 	137573, -- Burst of Speed
-	108212, -- Burst of Speed
 	114896, -- Windwalk
 	58875, -- Spirit Walk
 	111400, -- Burning Rush
@@ -537,6 +538,7 @@ local speed_buffs = {
 	133278,  -- warrior heroic leap PVP set bonus speed buff
 	85499, -- Speed of Light
 	87173, -- Long Arm of the Law (A successful Judgment increases your movement speed by 45% for 3 sec.)
+	116189, -- Provoke
 }
 
 -- size 1.5
