@@ -478,6 +478,7 @@ local  minor_offensive_buffs = {
 	126700, -- Surge of Victory
 	126705, -- Surge of Dominance
 	126707, -- Surge of Conquest
+	121125, -- touch of death
 }
 
 -- size 2.0 -- includes cc reductions too
