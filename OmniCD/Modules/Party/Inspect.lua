@@ -53,6 +53,7 @@ function CM:Enable()
 		self:RegisterEvent("PLAYER_TALENT_UPDATE")
 	elseif E.preMoP then
 
+		self:RegisterEvent("PLAYER_TALENT_UPDATE")
 		self:RegisterUnitEvent("PLAYER_SPECIALIZATION_CHANGED", "player")
 	else
 
