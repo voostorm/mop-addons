@@ -548,7 +548,7 @@ function GroupInfoMixin:SetupBar(isUpdateBarsOrGRU)
 			if not isUser and enabledSpell or isUserEnabled or isUserSyncOnly then
 				local mopChoice = E.isMoP and P.isInArena and not isUser and not isIconOrderTest
 					and mopTalentChoiceBySpell[spellID]
-				if mopChoice and cat == mopChoice.class then
+				if mopChoice and cat == class and mopChoice.class == class then
 					local learned = lvl >= (GetSpellLevelLearned(spellID) or 0)
 					if CM.syncedGroupMembers[guid] then
 						-- Verified OmniCD sync wins over observational fallback.
