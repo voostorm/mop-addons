@@ -785,8 +785,13 @@ for castID in pairs(E.mopTalentChoiceByCast) do
 	local previous = registeredEvents["SPELL_CAST_SUCCESS"][observedCastID]
 	registeredEvents["SPELL_CAST_SUCCESS"][observedCastID] = function(info, ...)
 		local revealedSpellID = info:ObserveMoPTalentCast(observedCastID)
+		local canonicalSpellID = E.mopTalentChoiceByCast[observedCastID].spellID
 		if revealedSpellID and E.hash_spelldb[revealedSpellID] then
 			info:ProcessSpell(revealedSpellID)
+		elseif canonicalSpellID ~= observedCastID and info.spellIcons[canonicalSpellID] then
+			-- Cast aliases (e.g. Xuen 123904) need cooldown starts even
+			-- when an OmniCD-synced talent selection is already known.
+			info:ProcessSpell(canonicalSpellID)
 		end
 		if previous then
 			previous(info, ...)
