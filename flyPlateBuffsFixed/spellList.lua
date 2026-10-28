@@ -405,6 +405,7 @@ local minor_defensive_buffs = {
 	106922, -- Might of Ursoc
 	115193, -- Vanish buff
 	73651, -- Recuperate
+	108446, -- Soul Link
 }
 
 -- size 1.8
