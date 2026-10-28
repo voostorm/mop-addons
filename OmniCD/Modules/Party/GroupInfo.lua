@@ -14,6 +14,126 @@ local loginsessionData = {}
 
 local GroupInfoMixin = {}
 
+-- MoP talent rows with multiple tracked arena cooldown choices.  A row is
+-- mutually exclusive, but its options are deliberately all shown in arena
+-- until we have either a teammate OmniCD sync or a cast observed this match.
+local mopTalentRows = E.isMoP and {
+	DEATHKNIGHT = {
+		[1] = {115989, 123693},                -- Unholy Blight / Plague Leech
+		[2] = {49039, 51052, 114556},         -- Lichborne / AMZ / Purgatory
+		[3] = {108194, 96268},                -- Asphyxiate / Death's Advance
+		[6] = {108199, 108200, 108201},       -- Gorefiend / Winter / Desecrated Ground
+	},
+	DRUID = {
+		[1] = {102280, 102417},               -- Displacer Beast / Wild Charge
+		[2] = {108238, 102351},               -- Renewal / Cenarion Ward
+		[3] = {102359, 132469},               -- Mass Entanglement / Typhoon
+		[5] = {99, 102793, 5211},             -- Disorienting Roar / Vortex / Bash
+		[6] = {108291, 124974},               -- Heart of the Wild / Nature's Vigil
+	},
+	HUNTER = {
+		[2] = {109248, 19386, 19577},        -- Binding Shot / Wyvern / Intimidation
+		[4] = {82726, 120679},               -- Fervor / Dire Beast
+		[5] = {131894, 120697},              -- Crows / Lynx Rush
+		[6] = {117050, 109259, 120360},      -- Glaive Toss / Powershot / Barrage
+	},
+	MAGE = {
+		[1] = {12043, 108843, 108839},       -- PoM / Blazing Speed / Ice Floes
+		[2] = {115610, 11426},               -- Temporal Shield / Ice Barrier
+		[3] = {113724, 111264, 102051},      -- Ring of Frost / Ice Ward / Frostjaw
+		[4] = {110959, 86949, 11958},        -- Greater Invis / Cauterize / Cold Snap
+	},
+	MONK = {
+		[2] = {115098, 123986},              -- Chi Wave / Chi Burst
+		[4] = {116844, 119392, 119381},      -- Ring of Peace / Ox Wave / Leg Sweep
+		[5] = {122278, 122783},              -- Dampen Harm / Diffuse Magic
+		[6] = {115008, 123995},              -- Chi Torpedo / Xuen (123904 cast)
+	},
+	PALADIN = {
+		[6] = {114165, 114158, 114157},      -- Holy Prism / Light's Hammer / Execution Sentence
+	},
+	PRIEST = {
+		[1] = {108920, 108921},              -- Void Tendrils / Psyfiend
+		[3] = {123040, 34433},               -- Mindbender replaces Shadowfiend
+		[4] = {19236, 112833},               -- Desperate Prayer / Spectral Guise
+		[6] = {121135, 110744, 120517},      -- Cascade / Divine Star / Halo
+	},
+	SHAMAN = {
+		[1] = {108270, 108271},              -- Stone Bulwark / Astral Shift
+		[2] = {51485, 108273},               -- Earthgrab / Windwalk Totem
+		[4] = {16166, 16188},                -- Elemental Mastery / Ancestral Swiftness
+	},
+	WARLOCK = {
+		[2] = {47897, 6789, 30283},         -- Demonic Breath / Mortal Coil / Shadowfury
+		[3] = {108416, 110913},              -- Sacrificial Pact / Dark Bargain
+		[4] = {111397, 108482, 111400},      -- Blood Horror / Unbound Will / Burning Rush
+		[5] = {108501, 108503},              -- Grimoire of Service / Sacrifice
+	},
+	WARRIOR = {
+		[2] = {55694, 103840},               -- Enraged Regeneration / Impending Victory
+		[3] = {102060, 107566},              -- Disrupting / Staggering Shout
+		[4] = {46924, 46968, 118000},        -- Bladestorm / Shockwave / Dragon Roar
+		[5] = {114028, 114029, 114030},      -- Mass Reflect / Safeguard / Vigilance
+		[6] = {107574, 12292, 107570},      -- Avatar / Bloodbath / Storm Bolt
+	},
+} or {}
+
+local mopTalentSelectionIDs = {
+	[102417] = 102401,  -- Wild Charge's cast/track ID differs from its talent ID
+	[108291] = 108288,  -- Heart of the Wild activation differs from talent ID
+	[123995] = 123904,  -- Xuen: tracked icon vs. actual cast/talent
+}
+
+local mopTalentChoiceBySpell, mopTalentChoiceByCast = {}, {}
+for class, rows in pairs(mopTalentRows) do
+	for tier, ids in pairs(rows) do
+		for _, spellID in ipairs(ids) do
+			local choice = {class = class, tier = tier, spellID = spellID}
+			mopTalentChoiceBySpell[spellID] = choice
+			mopTalentChoiceByCast[spellID] = choice
+		end
+	end
+end
+
+-- The combat log and unit-cast event may carry the real cast ID rather than
+-- the spell ID used by the tracked icon. These aliases resolve to one choice.
+local mopCastAliases = {
+	[123904] = 123995,                    -- Invoke Xuen
+	[16979] = 102417, [49376] = 102417,
+	[102383] = 102417,                    -- Wild Charge shapeshift variants
+	[108292] = 108291, [108293] = 108291,
+	[108294] = 108291,                    -- Heart of the Wild spec variants
+	[121828] = 115008,                    -- Chi Torpedo variant
+}
+for castID, spellID in pairs(mopCastAliases) do
+	mopTalentChoiceByCast[castID] = mopTalentChoiceBySpell[spellID]
+end
+E.mopTalentChoiceByCast = mopTalentChoiceByCast
+
+-- Return the canonical icon ID only when a previously unknown talent is
+-- revealed. First observed selection is locked until the next arena match.
+function GroupInfoMixin:ObserveMoPTalentCast(castID)
+	if not E.isMoP or not P.isInArena or P.isInTestMode or
+		self.guid == E.userGUID or CM.syncedGroupMembers[self.guid] then
+		return
+	end
+	local choice = mopTalentChoiceByCast[castID]
+	if not choice or choice.class ~= self.class then
+		return
+	end
+	local selected = self.mopObservedTalentChoices
+	if selected and selected[choice.tier] then
+		return
+	end
+	if not selected then
+		selected = {}
+		self.mopObservedTalentChoices = selected
+	end
+	selected[choice.tier] = choice.spellID
+	self:SetupBar()
+	return choice.spellID
+end
+
 function GroupInfoMixin:ProcessSpell(spellID)
 
 	local guid = self.guid
@@ -421,7 +541,25 @@ function GroupInfoMixin:SetupBar(isUpdateBarsOrGRU)
 			end
 
 			if not isUser and enabledSpell or isUserEnabled or isUserSyncOnly then
-				if cat == "RACIAL" then
+				local mopChoice = E.isMoP and P.isInArena and not isUser and not isIconOrderTest
+					and mopTalentChoiceBySpell[spellID]
+				if mopChoice and cat == mopChoice.class then
+					local learned = lvl >= (GetSpellLevelLearned(spellID) or 0)
+					if CM.syncedGroupMembers[guid] then
+						-- Verified OmniCD sync wins over observational fallback.
+						-- Shadowfiend is the baseline alternative to Mindbender.
+						if spellID == 34433 then
+							isValidSpell = learned and not self.talentData[123040]
+						else
+							isValidSpell = learned and self.talentData[mopTalentSelectionIDs[spellID] or spellID]
+						end
+					else
+						-- Unknown talent: display all tracked candidates in that row.
+						local selected = self.mopObservedTalentChoices
+						isValidSpell = learned and (not selected or not selected[mopChoice.tier]
+							or selected[mopChoice.tier] == spellID)
+					end
+				elseif cat == "RACIAL" then
 					if type(race) == "table" then
 						for k = 1, #race do
 							local id = race[k]
@@ -448,9 +586,15 @@ function GroupInfoMixin:SetupBar(isUpdateBarsOrGRU)
 					end
 				elseif specID then
 					if cat == class then
+						local mopReplacement = E.isMoP and P.isInArena and not isUser
+							and not CM.syncedGroupMembers[guid] and type(talent) == "number"
+							and mopTalentChoiceBySpell[talent]
+						local isReplaced = mopReplacement and self.mopObservedTalentChoices
+							and self.mopObservedTalentChoices[mopReplacement.tier] == talent
 						isValidSpell = (not E.postSL or not E.covenant_abilities[spellID] or P.isInShadowlands)
 							and self:IsSpecOrTalentForPvpStatus(spec==true and spellID or spec, lvl >= GetSpellLevelLearned(spellID))
-							and (not talent or not self:IsSpecOrTalentForPvpStatus(talent, true))
+							and (mopReplacement and not isReplaced or
+								(not mopReplacement and (not talent or not self:IsSpecOrTalentForPvpStatus(talent, true))))
 					elseif cat == "COVENANT" then
 						isValidSpell = P.isInShadowlands and self:IsSpecOrTalentForPvpStatus(spec==true and spellID or spec, true)
 					elseif cat == "ESSENCE" then
@@ -462,7 +606,11 @@ function GroupInfoMixin:SetupBar(isUpdateBarsOrGRU)
 				else
 
 					if cat == class then
-						isValidSpell = lvl >= GetSpellLevelLearned(spellID) and (not spec or (sessionData and sessionData[spec])) and not talent
+						local mopReplacement = E.isMoP and P.isInArena and not isUser
+							and type(talent) == "number" and mopTalentChoiceBySpell[talent]
+						local selected = mopReplacement and self.mopObservedTalentChoices
+						isValidSpell = lvl >= GetSpellLevelLearned(spellID) and (not spec or (sessionData and sessionData[spec]))
+							and (mopReplacement and (not selected or selected[mopReplacement.tier] ~= talent) or not talent)
 					elseif cat == "COVENANT" then
 						isValidSpell = P.isInShadowlands and sessionData and sessionData[spec]
 					elseif cat == "TRINKET" then

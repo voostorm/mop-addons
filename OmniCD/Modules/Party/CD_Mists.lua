@@ -778,6 +778,21 @@ registeredEvents["SPELL_CAST_SUCCESS"][6262] = function(info, srcGUID, spellID)
 	end
 end
 
+-- Watch all multi-choice talents, including casts the unit event can miss.
+-- Existing specialized handlers remain intact.
+for castID in pairs(E.mopTalentChoiceByCast) do
+	local previous = registeredEvents["SPELL_CAST_SUCCESS"][castID]
+	registeredEvents["SPELL_CAST_SUCCESS"][castID] = function(info, ...)
+		local revealedSpellID = info:ObserveMoPTalentCast(castID)
+		if revealedSpellID and E.hash_spelldb[revealedSpellID] then
+			info:ProcessSpell(revealedSpellID)
+		end
+		if previous then
+			previous(info, ...)
+		end
+	end
+end
+
 setmetatable(registeredEvents, nil)
 setmetatable(registeredHostileEvents, nil)
 

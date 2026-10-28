@@ -25,8 +25,11 @@ function BarFrameMixin:OnEvent(event, ...)
 			return
 		end
 
+		local revealedSpellID = info:ObserveMoPTalentCast(spellID)
 		if E.spellcast_all[spellID] then
 			info:ProcessSpell(spellID)
+		elseif revealedSpellID and E.hash_spelldb[revealedSpellID] then
+			info:ProcessSpell(revealedSpellID)
 		end
 	elseif event == "UNIT_HEALTH" then
 		local unit = ...

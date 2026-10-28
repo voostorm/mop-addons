@@ -301,6 +301,10 @@ local MIN_RESET_DURATION = (E.isWOTLKC or E.isCata or E.TocVersion > 90100) and 
 function P:ResetAllIcons(reason, clearSession)
 	local notEncounterEnd = reason ~= "encounterEnd"
 	for guid, info in pairs(self.groupInfo) do
+		if E.isMoP and reason == "joinedPvP" then
+			-- A new arena match must not inherit the previous match's choice.
+			info.mopObservedTalentChoices = nil
+		end
 		local isDeadOrOffline = info.isDeadOrOffline
 		local condition = E.db.highlight.glowBorderCondition
 		for spellID, icon in pairs(info.spellIcons) do
@@ -344,6 +348,9 @@ function P:ResetAllIcons(reason, clearSession)
 		info:CancelTimers(not notEncounterEnd)
 		if clearSession then
 			info:ClearSessionItemData()
+			info:SetupBar()
+		elseif E.isMoP and reason == "joinedPvP" and info.bar then
+			-- Restore all unknown alternatives at the start of a new match.
 			info:SetupBar()
 		elseif not self.displayInactive then
 			info.bar:UpdateLayout()
