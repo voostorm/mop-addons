@@ -109,6 +109,11 @@ for castID, spellID in pairs(mopCastAliases) do
 	mopTalentChoiceByCast[castID] = mopTalentChoiceBySpell[spellID]
 end
 E.mopTalentChoiceByCast = mopTalentChoiceByCast
+-- Passive talent procs do not produce a player SPELL_CAST_SUCCESS.
+E.mopTalentChoiceByAura = {
+	[87023] = mopTalentChoiceBySpell[86949],  -- Cauterize burn
+	[116888] = mopTalentChoiceBySpell[114556], -- Shroud of Purgatory
+}
 
 -- Return the canonical icon ID only when a previously unknown talent is
 -- revealed. First observed selection is locked until the next arena match.

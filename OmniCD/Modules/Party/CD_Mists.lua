@@ -781,9 +781,10 @@ end
 -- Watch all multi-choice talents, including casts the unit event can miss.
 -- Existing specialized handlers remain intact.
 for castID in pairs(E.mopTalentChoiceByCast) do
-	local previous = registeredEvents["SPELL_CAST_SUCCESS"][castID]
-	registeredEvents["SPELL_CAST_SUCCESS"][castID] = function(info, ...)
-		local revealedSpellID = info:ObserveMoPTalentCast(castID)
+	local observedCastID = castID
+	local previous = registeredEvents["SPELL_CAST_SUCCESS"][observedCastID]
+	registeredEvents["SPELL_CAST_SUCCESS"][observedCastID] = function(info, ...)
+		local revealedSpellID = info:ObserveMoPTalentCast(observedCastID)
 		if revealedSpellID and E.hash_spelldb[revealedSpellID] then
 			info:ProcessSpell(revealedSpellID)
 		end
@@ -815,6 +816,18 @@ function CD:COMBAT_LOG_EVENT_UNFILTERED()
 		local destInfo = groupInfo[destGUID]
 		if destInfo then
 			FinishAlterTime(destInfo, GetTime())
+		end
+	end
+
+	-- Passive talent selections are revealed by the aura on the teammate,
+	-- not by a cast from that teammate.
+	if event == "SPELL_AURA_APPLIED" and E.mopTalentChoiceByAura[spellID] then
+		local destInfo = groupInfo[destGUID]
+		if destInfo then
+			local revealedSpellID = destInfo:ObserveMoPTalentCast(E.mopTalentChoiceByAura[spellID].spellID)
+			if revealedSpellID and E.hash_spelldb[revealedSpellID] then
+				destInfo:ProcessSpell(revealedSpellID)
+			end
 		end
 	end
 
