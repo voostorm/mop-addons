@@ -528,6 +528,7 @@ local mobility_buffs = {
 	58875, -- Spirit Walk
 	111400, -- Burning Rush
 	79438, -- Soulburn: Demonic Circle
+	48108, -- Demonic Circle: Summon -- to see if the warlock even has a port
 }
 
 -- size 1.6
