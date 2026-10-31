@@ -308,21 +308,10 @@ Lib.categoriesPvE = {
     },
 
     mop = {
-        ["disorient"] = L.DISORIENTS,
-        ["incapacitate"] = L.INCAPACITATES,
-        ["silence"] = L.SILENCES,
-        ["disarm"] = L.DISARMS,
-        ["fear"] = L.FEARS,
+        ["taunt"] = L.TAUNTS,
         ["stun"] = L.STUNS,
         ["random_stun"] = L.RANDOM_STUNS,
-        ["root"] = L.ROOTS,
-        ["random_root"] = L.RANDOM_ROOTS,
-        ["horror"] = L.HORROR,
         ["cyclone"] = L.CYCLONE,
-        ["knockback"] = L.KNOCKBACKS,
-        ["mind_control"] = L.MIND_CONTROL,
-        ["taunt"] = L.TAUNTS,
-        -- ["charge"] = L.CHARGE,
     },
 }
 
