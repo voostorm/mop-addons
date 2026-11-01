@@ -14,24 +14,28 @@ local loginsessionData = {}
 
 local GroupInfoMixin = {}
 
--- MoP talent rows with multiple tracked arena cooldown choices.  A row is
--- mutually exclusive, but its options are deliberately all shown in arena
--- until we have either a teammate OmniCD sync or a cast observed this match.
+-- MoP talent rows containing significant tracked cooldown choices.
+-- An unobserved row contributes no icons in a live arena. Non-cooldown
+-- alternatives remain absent; an observed cast or verified OmniCD sync
+-- reveals only the selected choice. Order-test mode remains a full preview.
 local mopTalentRows = E.isMoP and {
 	DEATHKNIGHT = {
 		[1] = {115989, 123693},                -- Unholy Blight / Plague Leech
 		[2] = {49039, 51052, 114556},         -- Lichborne / AMZ / Purgatory
 		[3] = {108194, 96268},                -- Asphyxiate / Death's Advance
+		[4] = {48743},                       -- Death Pact
 		[6] = {108199, 108200, 108201},       -- Gorefiend / Winter / Desecrated Ground
 	},
 	DRUID = {
 		[1] = {102280, 102417},               -- Displacer Beast / Wild Charge
 		[2] = {108238, 102351},               -- Renewal / Cenarion Ward
 		[3] = {102359, 132469},               -- Mass Entanglement / Typhoon
+		[4] = {102560, 102543, 102558, 33891}, -- Incarnation spec variants
 		[5] = {99, 102793, 5211},             -- Disorienting Roar / Vortex / Bash
 		[6] = {108291, 124974},               -- Heart of the Wild / Nature's Vigil
 	},
 	HUNTER = {
+		[1] = {109304},                      -- Exhilaration
 		[2] = {109248, 19386, 19577},        -- Binding Shot / Wyvern / Intimidation
 		[4] = {82726, 120679},               -- Fervor / Dire Beast
 		[5] = {131894, 120697},              -- Crows / Lynx Rush
@@ -42,32 +46,51 @@ local mopTalentRows = E.isMoP and {
 		[2] = {115610, 11426},               -- Temporal Shield / Ice Barrier
 		[3] = {113724, 111264, 102051},      -- Ring of Frost / Ice Ward / Frostjaw
 		[4] = {110959, 86949, 11958},        -- Greater Invis / Cauterize / Cold Snap
+		[6] = {1463},                        -- Incanter's Ward
 	},
 	MONK = {
+		[1] = {116841},                      -- Tiger's Lust
 		[2] = {115098, 123986},              -- Chi Wave / Chi Burst
+		[3] = {115399},                      -- Chi Brew
 		[4] = {116844, 119392, 119381},      -- Ring of Peace / Ox Wave / Leg Sweep
 		[5] = {122278, 122783},              -- Dampen Harm / Diffuse Magic
 		[6] = {115008, 123995},              -- Chi Torpedo / Xuen (123904 cast)
 	},
 	PALADIN = {
+		[1] = {85499},                       -- Speed of Light
+		[2] = {105593, 20066},               -- Fist of Justice / Repentance
+		[4] = {114039},                      -- Hand of Purity
+		[5] = {105809},                      -- Holy Avenger
 		[6] = {114165, 114158, 114157},      -- Holy Prism / Light's Hammer / Execution Sentence
 	},
 	PRIEST = {
 		[1] = {108920, 108921},              -- Void Tendrils / Psyfiend
+		[2] = {121536},                      -- Angelic Feather
 		[3] = {123040, 34433},               -- Mindbender replaces Shadowfiend
 		[4] = {19236, 112833},               -- Desperate Prayer / Spectral Guise
+		[5] = {10060},                       -- Power Infusion
 		[6] = {121135, 110744, 120517},      -- Cascade / Divine Star / Halo
+	},
+	ROGUE = {
+		[2] = {74001},                       -- Combat Readiness
+		[3] = {31230},                       -- Cheat Death (passive proc)
+		[4] = {36554},                       -- Shadowstep
+		[6] = {137619},                      -- Marked for Death
 	},
 	SHAMAN = {
 		[1] = {108270, 108271},              -- Stone Bulwark / Astral Shift
 		[2] = {51485, 108273},               -- Earthgrab / Windwalk Totem
+		[3] = {108285},                      -- Call of the Elements
 		[4] = {16166, 16188},                -- Elemental Mastery / Ancestral Swiftness
+		[5] = {108281},                      -- Ancestral Guidance
 	},
 	WARLOCK = {
+		[1] = {108359},                      -- Dark Regeneration
 		[2] = {47897, 6789, 30283},         -- Demonic Breath / Mortal Coil / Shadowfury
 		[3] = {108416, 110913},              -- Sacrificial Pact / Dark Bargain
 		[4] = {111397, 108482, 111400},      -- Blood Horror / Unbound Will / Burning Rush
 		[5] = {108501, 108503},              -- Grimoire of Service / Sacrifice
+		[6] = {108508},                      -- Mannoroth's Fury
 	},
 	WARRIOR = {
 		[2] = {55694, 103840},               -- Enraged Regeneration / Impending Victory
@@ -80,6 +103,7 @@ local mopTalentRows = E.isMoP and {
 
 local mopTalentSelectionIDs = {
 	[102417] = 102401,  -- Wild Charge's cast/track ID differs from its talent ID
+	[102558] = 106731,  -- Guardian Incarnation uses a different talent ID
 	[108291] = 108288,  -- Heart of the Wild activation differs from talent ID
 	[123995] = 123904,  -- Xuen: tracked icon vs. actual cast/talent
 }
@@ -113,6 +137,7 @@ E.mopTalentChoiceByCast = mopTalentChoiceByCast
 E.mopTalentChoiceByAura = {
 	[87023] = mopTalentChoiceBySpell[86949],  -- Cauterize burn
 	[116888] = mopTalentChoiceBySpell[114556], -- Shroud of Purgatory
+	[45182] = mopTalentChoiceBySpell[31230],  -- Rogue Cheat Death proc
 }
 
 -- Return the canonical icon ID only when a previously unknown talent is
@@ -559,10 +584,10 @@ function GroupInfoMixin:SetupBar(isUpdateBarsOrGRU)
 							isValidSpell = learned and self.talentData[mopTalentSelectionIDs[spellID] or spellID]
 						end
 					else
-						-- Unknown talent: display all tracked candidates in that row.
+						-- Unknown talent: no speculative icons. Only the first
+						-- observed choice in this arena match can be displayed.
 						local selected = self.mopObservedTalentChoices
-						isValidSpell = learned and (not selected or not selected[mopChoice.tier]
-							or selected[mopChoice.tier] == spellID)
+						isValidSpell = learned and selected and selected[mopChoice.tier] == spellID
 					end
 				elseif cat == "RACIAL" then
 					if type(race) == "table" then

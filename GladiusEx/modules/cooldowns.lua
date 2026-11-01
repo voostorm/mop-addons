@@ -774,13 +774,15 @@ local function GetCooldownList(unit, group)
         if db.cooldownsSpells[spellid] or (spelldata.replaces and db.cooldownsSpells[spelldata.replaces]) then
             local tracked = CT:GetUnitCooldownInfo(unit, spellid)
             local detected = tracked and tracked.detected
-            -- General class spells are always visible. Symbiosis is always
-            -- detection-gated; talents, items, and pet abilities can optionally
-            -- remain hidden until combat-log detection.
+            -- In live MoP, talent icons are always detection-gated, even if
+            -- a saved profile disables the broader optional-spell filter.
+            -- Test previews and baseline abilities keep their old behavior.
+            local hideOptional = db.cooldownsHideTalentsUntilDetected or
+                (GladiusEx.IS_MOPC and spelldata.talent and not GladiusEx:IsTesting(unit))
             local shouldShowSpell = ShouldShowCooldown(
                 spelldata,
                 detected,
-                db.cooldownsHideTalentsUntilDetected
+                hideOptional
             )
 
             if

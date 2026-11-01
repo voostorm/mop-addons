@@ -788,9 +788,9 @@ for castID in pairs(E.mopTalentChoiceByCast) do
 		local canonicalSpellID = E.mopTalentChoiceByCast[observedCastID].spellID
 		if revealedSpellID and E.hash_spelldb[revealedSpellID] then
 			info:ProcessSpell(revealedSpellID)
-		elseif canonicalSpellID ~= observedCastID and info.spellIcons[canonicalSpellID] then
-			-- Cast aliases (e.g. Xuen 123904) need cooldown starts even
-			-- when an OmniCD-synced talent selection is already known.
+		elseif info.spellIcons[canonicalSpellID] and (canonicalSpellID ~= observedCastID or not previous) then
+			-- Cast aliases (e.g. Xuen 123904) and repeated casts without
+			-- specialized handlers must still restart the known cooldown.
 			info:ProcessSpell(canonicalSpellID)
 		end
 		if previous then
