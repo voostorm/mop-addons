@@ -319,6 +319,7 @@ local major_defensive_buffs = {
 	6940, -- Blessing of Sacrifice
 	45182, -- Cheating Death
 	74001, -- Combat Readiness
+	74002, -- Combat Insight
 	1742, -- Cower (Pet)
 	110913, -- Dark Bargain 
 	31821, -- Devotion Aura
