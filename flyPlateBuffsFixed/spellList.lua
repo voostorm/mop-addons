@@ -284,6 +284,7 @@ local war_personal_nostack_debuffs = {
 	137619, -- Mark for Death 1.5
 	603, -- doom 1.3
 	123725, -- Breath of Fire 1.3
+	117952, -- Crackling Jade Lightning 1.3
 }
 
 -- default size is 1.3
@@ -407,6 +408,7 @@ local minor_defensive_buffs = {
 	115193, -- Vanish buff
 	73651, -- Recuperate
 	108446, -- Soul Link
+	116033, -- Sparring
 }
 
 -- size 1.8
@@ -463,7 +465,9 @@ local  minor_offensive_buffs = {
 	-- 125489, -- Swordguard Embroidery
 	-- 104993, -- Jade Spirit
 	5217, -- Tiger's Fury
-	126734, -- Synapse Springs
+	96228, -- Synapse Springs (Agility)
+	96230, -- Synapse Springs (Intellect)
+	96229, -- Synapse Springs (Strength)
 	-- 115989, -- Unholy Blight
 	-- 128432, -- Cackling Howl
 	-- 108508, -- Mannoroth's Fury
