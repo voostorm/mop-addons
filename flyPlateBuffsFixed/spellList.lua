@@ -285,6 +285,8 @@ local war_personal_nostack_debuffs = {
 	603, -- doom 1.3
 	123725, -- Breath of Fire 1.3
 	117952, -- Crackling Jade Lightning 1.3
+	130320, -- Rising Sun Kick 1.3
+	128531, -- Blackout Kick 1.3
 }
 
 -- default size is 1.3
@@ -449,7 +451,8 @@ local major_offensive_buffs = {
 
 -- size 1.6
 local  minor_offensive_buffs = {
-	116740, -- Tigereye Brew, could be 1247275
+	1247275, -- Tigereye Brew
+	1247279, -- Tigereye Brew (Stacks)
 	103958, -- Metamorphosis
 	82726, -- Fervor
 	16166, -- Elemental Mastery
