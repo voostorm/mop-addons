@@ -1,0 +1,395 @@
+local AddonName,SAO=...
+local chainHeal=1064
+local chainLightning=421
+local earthShock=8042
+local elementalBlast=117014
+local flameShock=8050
+local frostShock=8056
+local greaterHealingWave=77472
+local healingRain=73920
+local healingSurge=8004
+local healingWave=SAO.IsRetail() and 77472 or 331
+local hex=51514
+local lavaBurst=51505
+local lavaBurstSoD=408490
+local lesserHealingWave=8004
+local lightningBolt=403
+local stormstrike=17364
+local elementalFocusVariants
+local function lazyCreateElementalFocusVariants(self)
+if elementalFocusVariants then
+return
+end
+if self.IsProject(SAO.FOREVER + SAO.CATA_AND_ONWARD)then
+return
+end
+local spellID=16246
+local textureVariant1="genericarc_05"
+local textureVariant2="echo_of_the_elements"
+local weakText=PET_BATTLE_COMBAT_LOG_DAMAGE_WEAK:gsub("[ ()]","")
+local strongText=PET_BATTLE_COMBAT_LOG_DAMAGE_STRONG:gsub("[ ()]","")
+elementalFocusVariants=self:CreateTextureVariants(spellID,0,{
+self:TextureVariantValue(textureVariant1,false,weakText),
+self:TextureVariantValue(textureVariant2,false,strongText),
+})
+end
+local function useElementalFocus(self)
+local hash0Stacks=self:HashNameFromStacks(0)
+local hash2Stacks=self:HashNameFromStacks(2)
+lazyCreateElementalFocusVariants(self)
+local texture=elementalFocusVariants and elementalFocusVariants.textureFunc or "genericarc_05"
+local variants=elementalFocusVariants or nil
+self:CreateEffect(
+"elemental_focus",
+SAO.FOREVER + SAO.TBC_AND_ONWARD - SAO.RETAIL,
+16246,
+"aura",
+{
+talent=16164,
+overlays={
+[SAO.FOREVER]={
+{stacks=0,texture=texture,position="Left + Right (Flipped)" ,scale=1.5,pulse=false},
+},
+[SAO.ALL_PROJECTS - SAO.FOREVER]={
+{stacks=1,texture=texture,position="Left" ,scale=1.5,pulse=false,option=false},
+{stacks=2,texture=texture,position="Left + Right (Flipped)" ,scale=1.5,pulse=false,option={setupHash=hash0Stacks,testHash=hash2Stacks,variants=variants}},
+},
+},
+}
+)
+if self.IsEra() and not self.IsSoD()then
+self:RegisterAura("elemental_focus",0,16246,texture, "Left + Right (Flipped)",1.25,255,255,255,false)
+end
+end
+local function useEyeOfTheStorm(self)
+self:CreateEffect(
+"eye_of_the_storm",
+SAO.ERA + SAO.TBC,
+29063,
+"aura",
+{
+talent=29062,
+overlay={texture="white_tiger",position="Left + Right (Flipped)",scale=1.4,color={32,192,255},level=5,pulse=false},
+}
+)
+end
+local function useShamanisticFocus(self)
+self:CreateEffect(
+"shamanistic_focus",
+SAO.TBC + SAO.WRATH + SAO.CATA,
+43339,
+"aura",
+{
+talent=43338,
+overlay=
+{texture="genericarc_05",position="Left + Right (Flipped)",scale=1.25,color={255,128,0},pulse=false},
+buttons={earthShock,flameShock,frostShock},
+}
+)
+end
+local function useLavaSurge(self)
+self:CreateEffect(
+"lava_surge",
+SAO.CATA,
+lavaBurst,
+"counter",
+{
+talent=77756,
+requireTalent=true,
+combatOnly=true,
+overlay={texture="imp_empowerment",position="Left + Right (Flipped)"},
+}
+)
+local lavaSurgeMop=77762
+self:CreateEffect(
+"lava_surge",
+SAO.MOP,
+lavaSurgeMop,
+"aura",
+{
+talent=77756,
+combatOnly=true,
+overlay={texture="imp_empowerment",position="Left + Right (Flipped)"},
+button={spellID=lavaBurst,option={isNative=true}},
+}
+)
+self:CreateEffect(
+"lava_burst",
+SAO.MOP,
+lavaBurst,
+"counter",
+{combatOnly=true}
+)
+end
+local function useTidalWaves(self)
+local hash0Stacks=self:HashNameFromStacks(0)
+local hash2Stacks=self:HashNameFromStacks(2)
+local tidalWavesBuff=self.IsSoD() and 432041 or 53390
+local tidalWavesTalent=self.IsSoD() and 432233 or 51564
+self:CreateEffect(
+"tidal_waves",
+SAO.SOD + SAO.WRATH_AND_ONWARD,
+tidalWavesBuff,
+"aura",
+{
+talent=tidalWavesTalent,
+overlays={
+[SAO.ALL_PROJECTS - SAO.RETAIL]={
+{stacks=1,texture="high_tide",position="Left (CCW)",scale=0.8,option=false},
+{stacks=2,texture="high_tide",position="Left (CCW)",scale=0.8,option=false},
+{stacks=2,texture="high_tide",position="Right (CW)",scale=0.8,option={setupHash=hash0Stacks,testHash=hash2Stacks}},
+},
+[SAO.RETAIL]={
+{texture="high_tide",position="Left (CCW)",scale=0.8,option=false},
+{texture="high_tide",position="Right (CW)",scale=0.8,option=true},
+},
+},
+buttons={
+[SAO.SOD + SAO.WRATH]={lesserHealingWave,healingWave},
+[SAO.CATA + SAO.MOP]={greaterHealingWave,healingWave,healingSurge},
+[SAO.RETAIL]={healingWave,chainHeal},
+},
+}
+)
+end
+local function useStormstrike(self)
+SAO:CreateEffect(
+"stormstrike",
+SAO.ALL_PROJECTS,
+stormstrike,
+"counter",
+{combatOnly=true}
+)
+SAO:CreateEffect(
+"stormstrike_debuff",
+SAO.FOREVER,
+27775,
+"aura",
+{
+aka=stormstrike,
+talent=stormstrike,-- To override text in option,otherwise it would display the spell name of 27775 "The Furious Storm"
+auraProps={debuff=true,mineOnly=true},
+overlay={
+texture="fury_of_stormrage",position="Top",
+pulse=false,
+scale=1.28,level=1,alpha=222,
+},
+}
+)
+end
+local function useMaelstromWeapon(self)
+local hash0Stacks=self:HashNameFromStacks(0)
+local hash4Stacks=self:HashNameFromStacks(4)
+local hash6Stacks=self:HashNameFromStacks(6)
+local hash9Stacks=self:HashNameFromStacks(9)
+local maelstromWeaponBuff=self.IsProject(SAO.FOREVER + SAO.SOD) and 408505 or 53817
+local maelstromWeaponTalent=self.IsProject(SAO.FOREVER + SAO.SOD) and 408498 or 51530
+local maelstromWeaponScale=self.IsSoD() and 0.8 or 1
+local color1,color2,color3,color4,color5
+local level1,level2,level3,level4,level5
+if SAO.IsForever()then
+color1={128,128,128}
+color2={160,160,160}
+color3={192,192,192}
+color4={224,224,224}
+color5={255,255,255}
+level1=1
+level2=2
+level3=3
+level4=4
+level5=5
+end
+local mustPulseMSW5=function()
+local t4Items={240131,240135,240128,240136,240134,240129,240137,240130}
+local nbT4Items=self:GetNbItemsEquipped(t4Items)
+if nbT4Items < 6 then
+return true
+else
+return false
+end
+end
+self:CreateEffect(
+"maelstrom_weapon",
+SAO.FOREVER + SAO.SOD + SAO.WRATH_AND_ONWARD - SAO.RETAIL,
+maelstromWeaponBuff,
+"aura",
+{
+aka={
+[SAO.MOP]=60349,
+},
+talent=maelstromWeaponTalent,
+overlays={
+{stacks=1,texture="maelstrom_weapon_1",position="Top",scale=maelstromWeaponScale,pulse=false,color=color1,level=level1,option=false},
+{stacks=2,texture="maelstrom_weapon_2",position="Top",scale=maelstromWeaponScale,pulse=false,color=color2,level=level2,option=false},
+{stacks=3,texture="maelstrom_weapon_3",position="Top",scale=maelstromWeaponScale,pulse=false,color=color3,level=level3,option=false},
+{stacks=4,texture="maelstrom_weapon_4",position="Top",scale=maelstromWeaponScale,pulse=false,color=color4,level=level4,option={setupHash=hash0Stacks,testHash=hash4Stacks,subText=self:NbStacks(1,4)}},
+[SAO.FOREVER]={
+{stacks=5,texture="maelstrom_weapon" ,position="Top",scale=maelstromWeaponScale,pulse=false ,color=color5,level=level5,option=true},
+},
+[SAO.WRATH_AND_ONWARD]={
+{stacks=5,texture="maelstrom_weapon" ,position="Top",scale=maelstromWeaponScale,pulse=true ,option=true},
+},
+[SAO.SOD]={
+{stacks=5,texture="maelstrom_weapon" ,position="Top",scale=maelstromWeaponScale,pulse=mustPulseMSW5,option=true},
+{stacks=6,texture="maelstrom_weapon_6",position="Top",scale=maelstromWeaponScale,pulse=false,option=false},
+{stacks=7,texture="maelstrom_weapon_7",position="Top",scale=maelstromWeaponScale,pulse=false,option=false},
+{stacks=8,texture="maelstrom_weapon_8",position="Top",scale=maelstromWeaponScale,pulse=false,option=false},
+{stacks=9,texture="maelstrom_weapon_9",position="Top",scale=maelstromWeaponScale,pulse=false,option={setupHash=hash6Stacks,testHash=hash9Stacks,subText=self:NbStacks(6,9)}},
+{stacks=10,texture="maelstrom_weapon_10" ,position="Top",scale=maelstromWeaponScale,pulse=true ,option=true},
+},
+},
+buttons={
+default={stacks=5},
+[SAO.SOD]={lightningBolt,chainLightning,lesserHealingWave,lavaBurstSoD},
+[SAO.WRATH]={lightningBolt,chainLightning,lesserHealingWave,healingWave,chainHeal,hex},
+[SAO.CATA]={lightningBolt,chainLightning,healingSurge,greaterHealingWave,healingWave,chainHeal,healingRain,hex},
+[SAO.MOP]={lightningBolt,chainLightning,healingSurge,greaterHealingWave,healingWave,chainHeal,healingRain,hex,elementalBlast},
+},
+handlers={
+[SAO.SOD]={onRepeat=function(bucket) bucket:refresh(); end},
+},
+}
+)
+end
+local function useFulmination(self)
+SAO:CreateEffect(
+"fulmination",
+SAO.CATA_AND_ONWARD - SAO.RETAIL,
+324,
+"aura",
+{
+aka=95774,
+talent=88767,
+combatOnly=true,
+overlays={
+default={texture="fulmination",position="Top"},
+[SAO.CATA]={
+{scale=0.5,stacks=6,pulse=false,},
+{scale=0.6,stacks=7,pulse=false,},
+{scale=0.7,stacks=8,pulse=false,},
+{scale=0.8,stacks=9,pulse=true,},
+},
+[SAO.MOP]={
+{scale=0.8,stacks=7,},
+},
+},
+buttons={
+default={spellID=earthShock},
+[SAO.CATA]={stacks=9},
+[SAO.MOP]={stacks=7},
+},
+}
+)
+SAO:CreateLinkedEffects(
+"rolling_thunder",
+SAO.SOD,
+{324,325,905,945,8134,10431,10432},
+"aura",
+{
+talent=432056,
+requireTalent=true,
+combatOnly=true,
+overlays={
+default={texture="fulmination",position="Top"},
+{scale=0.6,stacks=7,pulse=false,},
+{scale=0.7,stacks=8,pulse=false,},
+{scale=0.8,stacks=9,pulse=true,},
+},
+button={stacks=9,spellID=earthShock},
+}
+)
+end
+local function useMoltenBlast(self)
+local moltenBlastSoD=425339
+self:CreateEffect(
+"molten_blast",
+SAO.SOD,
+moltenBlastSoD,
+"counter",
+{
+combatOnly=true,
+overlay={texture="impact",position="Top",scale=0.8},
+}
+)
+end
+local function usePowerSurge(self)
+if not self.IsSoD()then
+return
+end
+local powerSurgeSoDBuff=415105
+local powerSurgeSoDHealBuff=468526
+local powerSurgeSpells={
+self:GetSpellName(chainLightning),
+self:GetSpellName(lavaBurstSoD),
+}
+local elementalFocusBuff=16246
+local elementalFocusTalent=16164
+local _,_,efTalentTab,efTalentIndex=SAO:GetTalentByName(self:GetSpellName(elementalFocusTalent))
+local powerSurgeSoDRune=48829
+lazyCreateElementalFocusVariants(self)
+local powerSurgeRightTextureFunc=function()
+local hasElementalFocusOption=SpellActivationOverlayDB.classes["SHAMAN"]["alert"][elementalFocusBuff][0]
+local canProcElementalFocus=efTalentTab and efTalentIndex and self:GetNbTalentPoints(efTalentTab,efTalentIndex) > 0
+if hasElementalFocusOption and canProcElementalFocus then
+return
+end
+return self.TexName["imp_empowerment"]
+end
+local elementalFocusLeftTextureFunc=function()
+local hasPowerSurgeOption=SpellActivationOverlayDB.classes["SHAMAN"]["alert"][powerSurgeSoDBuff][0]
+local canProcPowerSurge=C_Engraving and C_Engraving.IsRuneEquipped(powerSurgeSoDRune)
+if hasPowerSurgeOption and canProcPowerSurge then
+return
+end
+return elementalFocusVariants and elementalFocusVariants.textureFunc() or self.TexName["genericarc_05"]
+end
+self:RegisterAura("power_surge_sod",0,powerSurgeSoDBuff, "imp_empowerment", "Left",1.25,255,255,255,true,powerSurgeSpells)
+self:RegisterAura("power_surge_sod",0,powerSurgeSoDBuff,powerSurgeRightTextureFunc, "Right (Flipped)",1.25,255,255,255,true,powerSurgeSpells)
+self:RegisterAura("elemental_focus",0,elementalFocusBuff,elementalFocusLeftTextureFunc, "Left",1.25,255,255,255,false)
+self:RegisterAura("elemental_focus",0,elementalFocusBuff,elementalFocusVariants and elementalFocusVariants.textureFunc or "genericarc_05", "Right (Flipped)",1.25,255,255,255,false)
+SAO:CreateEffect(
+"power_surge_sod_heal",
+SAO.SOD,
+powerSurgeSoDHealBuff,
+"aura",
+{
+talent=powerSurgeSoDHealBuff,
+button={spellID=chainHeal,option={talentSubText=HEALER}},
+}
+)
+end
+local function registerClass(self)
+useElementalFocus(self)
+useEyeOfTheStorm(self)
+useShamanisticFocus(self)
+useLavaSurge(self)
+useTidalWaves(self)
+useStormstrike(self)
+useMaelstromWeapon(self)
+useFulmination(self)
+useMoltenBlast(self)
+usePowerSurge(self)
+self:RegisterAuraEyeOfGruul("eye_of_gruul_shaman",37722)
+self:RegisterAuraSoulPreserver("soul_preserver_shaman",60515)
+end
+local function loadOptions(self)
+if self.IsEra()then
+local elementalFocusBuff=16246
+local elementalFocusTalent=16164
+lazyCreateElementalFocusVariants(self)
+self:AddOverlayOption(elementalFocusTalent,elementalFocusBuff,0,nil,elementalFocusVariants)
+end
+self:AddEyeOfGruulOverlayOption(37722)
+self:AddSoulPreserverOverlayOption(60515)
+if self.IsSoD()then
+local powerSurgeSoDBuff=415105
+local powerSurgeSoD=415100
+self:AddOverlayOption(powerSurgeSoD,powerSurgeSoDBuff,nil,DAMAGER)
+self:AddGlowingOption(powerSurgeSoD,powerSurgeSoDBuff,chainLightning,DAMAGER)
+self:AddGlowingOption(powerSurgeSoD,powerSurgeSoDBuff,lavaBurstSoD,DAMAGER)
+end
+end
+SAO.Class["SHAMAN"]={
+["Register"]=registerClass,
+["LoadOptions"]=loadOptions,
+}
