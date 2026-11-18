@@ -1039,9 +1039,9 @@ local function UpdateBuffIconOptions(self, token)
     self:SetScript("OnLeave", function()
       tooltip:Hide()
     end)
-  else
-    self:EnableMouse(false)
   end
+  -- Aura icons are display-only and must not intercept camera dragging.
+  self:EnableMouse(false)
 end
 local function iconOnHide(self)
   self.stacktext:Hide()
@@ -1063,6 +1063,7 @@ local function CreateBuffIcon(frame, i)
   buffIcon.cooldown = CreateFrame("Cooldown", nil, buffIcon, "CooldownFrameTemplate")
   buffIcon.cooldown:SetReverse(true)
   buffIcon.cooldown:SetDrawEdge(false)
+  buffIcon.cooldown:EnableMouse(false)
 
   buffIcon.durationtext = buffIcon:CreateFontString(nil, "ARTWORK")
 
@@ -1106,6 +1107,8 @@ local function CreateBuffIcon(frame, i)
       AutoCast = false,
     })
   end
+  -- Masque must not make the skinned button clickable either.
+  buffIcon:EnableMouse(false)
 end
 
 local function UpdateUnitAuras(nameplateID, updateOptions)
@@ -1136,6 +1139,7 @@ local function UpdateUnitAuras(nameplateID, updateOptions)
     -- if parent == frame then it will change scale and alpha with nameplates
     -- otherwise use UIParent, but this causes mess of icon/border textures
     frame.fPBiconsFrame = CreateFrame("Frame")
+    frame.fPBiconsFrame:EnableMouse(false)
     local attachmentFrame = GetAnchorFrame(frame)
     frame.fPBiconsFrame:SetFrameStrata("HIGH")
     frame.fPBiconsFrame:SetFrameLevel(attachmentFrame:GetFrameLevel() + 1)
