@@ -3,6 +3,7 @@ local tranquilizingShot=19801
 local blackoutKick=100784
 local tigerPalm=100787
 local touchOfDeath=115080
+local deathNote=121125
 local IsUsableSpell=C_Spell and C_Spell.IsSpellUsable or IsUsableSpell
 local function useComboBreakerBlackoutKick()
 SAO:CreateEffect(
@@ -49,12 +50,17 @@ local playerHealth=UnitHealth("player")
 local targetMaxHealth=UnitHealthMax("target")
 if type(targetHealth)~="number" or targetHealth<=0
 or type(playerHealth)~="number" or playerHealth<=0
-or type(targetMaxHealth)~="number" or targetMaxHealth<=0
-or targetHealth>playerHealth then
+or type(targetMaxHealth)~="number" or targetMaxHealth<=0 then
 return false
 end
--- In MoP, player targets also require the PvP execute condition (10% HP).
-if UnitIsPlayer("target") and targetHealth/targetMaxHealth>0.10 then
+if UnitIsPlayer("target") then
+-- The PvP 4-piece bonus is player-only; Death Note confirms actual eligibility.
+if targetHealth/targetMaxHealth>0.10
+or not SAO:HasPlayerAuraBySpellID(deathNote) then
+return false
+end
+elseif select(2,IsInInstance())=="arena" or targetHealth>playerHealth then
+-- Pets can be executable normally, but must not trigger arena PvP glows.
 return false
 end
 -- Let the client resolve Chi cost (including the glyph) and other usability rules.
@@ -89,6 +95,7 @@ events={
 ["SPELL_UPDATE_COOLDOWN"]=refreshTouchOfDeath,
 ["SPELLS_CHANGED"]=refreshTouchOfDeath,
 ["PLAYER_EQUIPMENT_CHANGED"]=refreshTouchOfDeath,
+[{"UNIT_AURA", "player"}]=refreshTouchOfDeath,
 [{"UNIT_HEALTH", "target", "player"}]=refreshTouchOfDeath,
 [{"UNIT_HEALTH_FREQUENT", "target", "player"}]=refreshTouchOfDeath,
 [{"UNIT_MAXHEALTH", "target", "player"}]=refreshTouchOfDeath,
