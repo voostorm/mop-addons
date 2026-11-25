@@ -287,6 +287,7 @@ local war_personal_nostack_debuffs = {
 	117952, -- Crackling Jade Lightning 1.3
 	130320, -- Rising Sun Kick 1.3
 	128531, -- Blackout Kick 1.3
+	47960, -- Shadowflame 1.3
 }
 
 -- default size is 1.3
