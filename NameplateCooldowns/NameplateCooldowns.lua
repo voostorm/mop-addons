@@ -674,14 +674,36 @@ do
 		end,
 	};
 
-	local function Nameplate_SortAuras(cds)
+	local function IsCooldownAvailable(spellInfo, currentTime)
+		if (spellInfo.maxCharges) then
+			return (spellInfo.charges or 0) > 0;
+		end
+		return spellInfo.expires <= currentTime;
+	end
+
+	local function Nameplate_SortAuras(cds, currentTime)
 		local t = { };
 		for _, spellInfo in pairs(cds) do
 			if (spellInfo ~= nil) then
+				RefreshChargeState(spellInfo, currentTime);
 				t[#t+1] = spellInfo;
 			end
 		end
-		table_sort(t, CDSortFunctions[db.IconSortMode] or CDSortFunctions[SORT_MODE_CATEGORY_ORDER]);
+		local sortByType = CDSortFunctions[db.IconSortMode] or CDSortFunctions[SORT_MODE_CATEGORY_ORDER];
+		local growLeft = db.IconGrowDirection == ICON_GROW_DIRECTION_LEFT;
+		table_sort(t, function(item1, item2)
+			-- Left-growing frames place index 1 on the right; reverse the
+			-- comparison to preserve the same visual left-to-right order.
+			if (growLeft) then
+				item1, item2 = item2, item1;
+			end
+			local available1 = IsCooldownAvailable(item1, currentTime);
+			local available2 = IsCooldownAvailable(item2, currentTime);
+			if (available1 ~= available2) then
+				return available1;
+			end
+			return sortByType(item1, item2);
+		end);
 		return t;
 	end
 
@@ -785,10 +807,9 @@ do
 		if (canShowForUnit and GlobalFilterNameplate(unitGUID)) then
 			if (SpellsPerPlayerGUID[unitGUID]) then
 				local currentTime = GetTime();
-				local sortedCDs = Nameplate_SortAuras(SpellsPerPlayerGUID[unitGUID]);
+				local sortedCDs = Nameplate_SortAuras(SpellsPerPlayerGUID[unitGUID], currentTime);
 				for _, spellInfo in ipairs(sortedCDs) do
 					local spellID = spellInfo.spellID;
-					RefreshChargeState(spellInfo, currentTime);
 					local isActiveCD = spellInfo.expires > currentTime or spellInfo.rechargeStarted ~= nil;
 					if (db.InverseLogic) then
 						isActiveCD = not isActiveCD;
