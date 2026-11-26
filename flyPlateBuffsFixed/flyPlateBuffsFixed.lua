@@ -520,6 +520,59 @@ do --add default spells
 
 end
 
+local MASTER_PROFILE = "Master"
+
+local function EnsureMasterProfile()
+  local profiles = fPB.db.profiles
+  local master = profiles[MASTER_PROFILE]
+  if not master then
+    master = {}
+    profiles[MASTER_PROFILE] = master
+  end
+  local ignored = master.ignoredDefaultSpells
+  if ignored then
+    for spell in pairs(DefaultSettings.profile.Spells) do
+      ignored[spell] = nil
+    end
+  end
+end
+
+local function IsMasterSourceSpell(spell)
+  return fPB.db:GetCurrentProfile() == MASTER_PROFILE and DefaultSettings.profile.Spells[spell] ~= nil
+end
+
+local function CanModifySpellID(spell)
+  if IsMasterSourceSpell(spell) then
+    DEFAULT_CHAT_FRAME:AddMessage(chatColor .. "Master: edit hardcoded spell IDs in spellList.lua, or set Show to Never to hide them.|r")
+    return false
+  end
+  return true
+end
+
+local function ProtectMasterProfileOptions(profileOptions)
+  -- AceDBOptions shares its option definitions with other addons; copy before editing.
+  local options, args, delete = {}, {}, {}
+  for k, v in pairs(profileOptions) do options[k] = v end
+  for k, v in pairs(profileOptions.args) do args[k] = v end
+  for k, v in pairs(args.delete) do delete[k] = v end
+  delete.values = function(info)
+    local profiles = info.handler:ListProfiles(info)
+    profiles[MASTER_PROFILE] = nil
+    return profiles
+  end
+  delete.disabled = function(info)
+    return next(delete.values(info)) == nil
+  end
+  delete.set = function(info, value)
+    if value ~= MASTER_PROFILE then
+      info.handler:DeleteProfile(info, value)
+    end
+  end
+  args.delete = delete
+  options.args = args
+  return options
+end
+
 --timeIntervals
 local minute, hour, day = 60, 3600, 86400
 local aboutMinute, aboutHour, aboutDay = 59.5, 60 * 59.5, 3600 * 23.5
@@ -1322,6 +1375,7 @@ function fPB.AddNewSpell(spell)
   UpdateAllNameplates(true)
 end
 function fPB.RemoveSpell(spell)
+  if not CanModifySpellID(spell) then return end
   if DefaultSettings.profile.Spells[spell] then
     db.ignoredDefaultSpells[spell] = true
   end
@@ -1331,6 +1385,7 @@ function fPB.RemoveSpell(spell)
   UpdateAllNameplates(true)
 end
 function fPB.ChangeSpellID(oldID, newID)
+  if not CanModifySpellID(oldID) then return end
   if db.Spells[newID] then
     local spellInfo = GetSpellInfo(newID)
     if spellInfo then
@@ -1440,6 +1495,9 @@ local function ConvertDBto2()
 end
 function fPB.OnProfileChanged()
   db = fPB.db.profile
+  if fPB.db:GetCurrentProfile() == MASTER_PROFILE then
+    EnsureMasterProfile()
+  end
   fPB.OptionsOnEnable()
   UpdateAllNameplates(true)
 end
@@ -1449,6 +1507,7 @@ local function Initialize()
   end
 
   fPB.db = LibStub("AceDB-3.0"):New("flyPlateBuffsFixedDB", DefaultSettings, true)
+  EnsureMasterProfile()
   fPB.db.RegisterCallback(fPB, "OnProfileChanged", "OnProfileChanged")
   fPB.db.RegisterCallback(fPB, "OnProfileCopied", "OnProfileChanged")
   fPB.db.RegisterCallback(fPB, "OnProfileReset", "OnProfileChanged")
@@ -1465,7 +1524,8 @@ local function Initialize()
   config:RegisterOptionsTable(AddonName .. " Spells", fPB.SpellsTable)
   dialog:AddToBlizOptions(AddonName .. " Spells", L["Specific spells"], AddonName)
 
-  config:RegisterOptionsTable(AddonName .. " Profiles", LibStub("AceDBOptions-3.0"):GetOptionsTable(fPB.db))
+  local profileOptions = LibStub("AceDBOptions-3.0"):GetOptionsTable(fPB.db)
+  config:RegisterOptionsTable(AddonName .. " Profiles", ProtectMasterProfileOptions(profileOptions))
   dialog:AddToBlizOptions(AddonName .. " Profiles", L["Profiles"], AddonName)
 
   SLASH_FLYPLATEBUFFSFIXED1, SLASH_FLYPLATEBUFFSFIXED2 = "/fpb", "/pb"
