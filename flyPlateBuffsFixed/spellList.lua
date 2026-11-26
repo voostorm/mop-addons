@@ -532,6 +532,7 @@ local mobility_buffs = {
 	124488, -- Zen Focus
 	96267, -- Inner Focus
 	79206, -- spiritwalker's grace
+	110806, -- spiritwalker's grace SYMB
 	114239, -- Phantasm "Check spell ID" disabled.
 	1044, -- Hand of Freedom
 	54216, -- Master's Call (Magic, Dispellable)
