@@ -287,12 +287,12 @@ local war_personal_nostack_debuffs = {
 
 	30108, -- Unstable Affliction Dot
 	146739, -- Corruption 1.4
-	603, -- Doom 1.4
-	47960, -- Shadowflame 1.5
+	603, -- Doom 1.5
+	47960, -- Shadowflame 1.6
 
 	123725, -- Breath of Fire 1.3
 	117952, -- Crackling Jade Lightning 1.3
-	130320, -- Rising Sun Kick 1.3
+	130320, -- Rising Sun Kick 1.4
 	128531, -- Blackout Kick 1.3
 }
 
