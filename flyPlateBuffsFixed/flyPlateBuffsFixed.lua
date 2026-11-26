@@ -518,6 +518,12 @@ do --add default spells
     end
   end
 
+  -- Match hardcoded spells by exact ID unless an explicit default says otherwise.
+  for _, spell in pairs(DefaultSettings.profile.Spells) do
+    if spell.checkID == nil then
+      spell.checkID = true
+    end
+  end
 end
 
 local MASTER_PROFILE = "Master"
