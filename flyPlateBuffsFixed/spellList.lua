@@ -267,14 +267,16 @@ local cc = {
 }
 
 -- show mine only on enemies because I need to make sure MY debuff is applied, regardless of other people's debuffs
+-- mine only
 local war_personal_nostack_debuffs = {
 	115767, -- Deep Wounds 1.3
 	86346, -- Colossus Smash 1.5
+
 	1822, -- Rake 1.3
 	8921, -- Moonfire 1.3
-	146739, -- Corruption 1.3
-	30108, -- Unstable Affliction Dot
+	
 	44457, -- Living Bomb 1.5
+
 	84617, -- Revealing Strike
 	1943, -- Rupture 1.4
 	703, -- Garrote 1.3
@@ -282,29 +284,38 @@ local war_personal_nostack_debuffs = {
 	122233, -- Crimson Tempest 1.3
 	2818, -- deadly poison 1.3
 	137619, -- Mark for Death 1.5
-	603, -- doom 1.3
+
+	30108, -- Unstable Affliction Dot
+	146739, -- Corruption 1.4
+	603, -- Doom 1.4
+	47960, -- Shadowflame 1.5
+
 	123725, -- Breath of Fire 1.3
 	117952, -- Crackling Jade Lightning 1.3
 	130320, -- Rising Sun Kick 1.3
 	128531, -- Blackout Kick 1.3
-	47960, -- Shadowflame 1.3
 }
 
 -- default size is 1.3
+-- enemy only
 -- if one of these debuff is applied, then don't need to re-apply the same debuff so show no matter who applied it
 local war_personal_stackable_debuffs = {
 	8680, -- Wound Poison Healing Debuff 1.4
 	115804, -- Mortal Wounds 1.4
 	82654, -- Widow Venom 1.4
-	115625, -- Mortal Cleave
-	81326, -- Physical Invulnerability 1.3 -- 4% dmg increase to the target with this debuff
-	64382, -- Shattering Throw 1.3 -- target with this debuff has 20% less armor
+	115625, -- Mortal Cleave 1.4
 	114205, -- Demoralizing Banner 1.3 -- target with this debuff does 10% less damage
-	115798, -- Weakened Blows 1.4 -- target with this debuff does 10% less physical damage
-	109466, -- Curse of Enfeeblement
-	1490, -- Curse of the Elements
-	116202, -- Aura of the Elements
+
 	113746, -- Sunder Armor 1.3 -- 4% less armor per stack
+	81326, -- Physical Invulnerability 1.3 -- 4% dmg increase to the target with this debuff -- *I want to only show to physical damage specs (player)*
+	64382, -- Shattering Throw 1.3 -- target with this debuff has 20% less armor -- *I want to only show to physical damage specs (player)*
+	115798, -- Weakened Blows 1.4 -- target with this debuff does 10% less physical damage
+
+	109466, -- Curse of Enfeeblement 1.4 -- *not stackable*
+	116198, -- Aura of Enfeeblement 1.4 -- *not stackable*
+	1490, -- Curse of the Elements 1.4 -- *not stackable*
+	116202, -- Aura of the Elements 1.4 -- *not stackable* 
+
 	73975, -- necrotic strike
 	112947, -- Nerve Strike 1.4
 	113952, -- Paralytic Poison 1.5
