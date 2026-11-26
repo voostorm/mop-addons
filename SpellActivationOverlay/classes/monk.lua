@@ -3,7 +3,6 @@ local tranquilizingShot=19801
 local blackoutKick=100784
 local tigerPalm=100787
 local touchOfDeath=115080
-local deathNote=121125
 local IsUsableSpell=C_Spell and C_Spell.IsSpellUsable or IsUsableSpell
 local function useComboBreakerBlackoutKick()
 SAO:CreateEffect(
@@ -54,13 +53,26 @@ or type(targetMaxHealth)~="number" or targetMaxHealth<=0 then
 return false
 end
 if UnitIsPlayer("target") then
--- The PvP 4-piece bonus is player-only; Death Note confirms actual eligibility.
-if targetHealth/targetMaxHealth>0.10
-or not SAO:HasPlayerAuraBySpellID(deathNote) then
+-- A player below 10% is executable even if the Death Note aura has not updated yet.
+if targetHealth/targetMaxHealth>0.10 then
 return false
 end
 elseif select(2,IsInInstance())=="arena" or targetHealth>playerHealth then
 -- Pets can be executable normally, but must not trigger arena PvP glows.
+return false
+end
+-- A spell-range check is more accurate than an estimated distance to the target.
+-- Nil means this client cannot check the range, not that the target is out of range.
+local inRange
+if C_Spell and type(C_Spell.IsSpellInRange)=="function" then
+inRange=C_Spell.IsSpellInRange(touchOfDeath,"target")
+elseif type(IsSpellInRange)=="function" then
+local spellName=SAO:GetSpellName(touchOfDeath)
+if spellName then
+inRange=IsSpellInRange(spellName,"target")
+end
+end
+if inRange==false or inRange==0 then
 return false
 end
 -- Let the client resolve Chi cost (including the glyph) and other usability rules.
@@ -72,6 +84,31 @@ return not onCooldown or onGCD
 end
 local function refreshTouchOfDeath(bucket)
 bucket.trigger:manualCheck(SAO.TRIGGER_CUSTOM)
+end
+-- Movement alone may not fire a health or usability event; check range while fighting.
+-- Reuse the custom event frame, with one throttled OnUpdate and no repeating timers.
+local function updateTouchOfDeathRange(frame,elapsed)
+frame.todElapsed=(frame.todElapsed or 0)+elapsed
+if frame.todElapsed>=0.15 then
+frame.todElapsed=0
+if UnitExists("target") then
+refreshTouchOfDeath(frame.todBucket)
+end
+end
+end
+local function updateTouchOfDeathCombat(bucket)
+local frame=bucket.custom and bucket.custom.frame
+if frame then
+if InCombatLockdown() then
+frame.todBucket=bucket
+frame.todElapsed=0
+frame:SetScript("OnUpdate",updateTouchOfDeathRange)
+else
+frame:SetScript("OnUpdate",nil)
+frame.todBucket=nil
+end
+end
+refreshTouchOfDeath(bucket)
 end
 local function refreshTouchOfDeathPower(bucket,state,unit,powerType)
 if unit=="player" and powerType=="CHI" then
@@ -90,7 +127,9 @@ custom={
 isActivated=isTouchOfDeathAvailable,
 events={
 ["PLAYER_TARGET_CHANGED"]=refreshTouchOfDeath,
-["PLAYER_ENTERING_WORLD"]=refreshTouchOfDeath,
+["PLAYER_ENTERING_WORLD"]=updateTouchOfDeathCombat,
+["PLAYER_REGEN_DISABLED"]=updateTouchOfDeathCombat,
+["PLAYER_REGEN_ENABLED"]=updateTouchOfDeathCombat,
 ["SPELL_UPDATE_USABLE"]=refreshTouchOfDeath,
 ["SPELL_UPDATE_COOLDOWN"]=refreshTouchOfDeath,
 ["SPELLS_CHANGED"]=refreshTouchOfDeath,
